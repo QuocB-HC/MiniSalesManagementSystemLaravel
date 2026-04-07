@@ -19,7 +19,7 @@ class ProductController extends Controller
             ->latest()
             ->paginate(12); // Paginate with 12 products per page
 
-        return view('products.index', compact('products'));
+        return view('pages.home', compact('products'));
     }
 
     /**
