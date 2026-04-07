@@ -24,9 +24,12 @@
                     Kho: {{ $product->stock_quantity }} | SKU: {{ $product->sku }}
                 </p>
 
-                <button class="btn-add-cart">
-                    Add to cart
-                </button>
+                <form action="{{ route('cart.add', $product->id) }}" method="POST">
+                    @csrf
+                    <button type="submit" class="btn-add-cart">
+                        Add to cart
+                    </button>
+                </form>
             </div>
         </div>
     @endforeach
