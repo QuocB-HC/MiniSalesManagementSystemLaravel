@@ -6,6 +6,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController; // Rename to avoid conflict with public ProductController
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\CategoryController as AdminCategoryController; // Rename to avoid conflict with public CategoryController
 use Illuminate\Support\Facades\Route;
 
 // 1. PUBLIC ROUTES (accessible to all users)
@@ -49,5 +50,6 @@ Route::middleware('auth')->group(function () {
     Route::middleware('can:admin')->prefix('admin')->as('admin.')->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard'); // admin.dashboard
         Route::resource('products', AdminProductController::class)->except(['show']); // admin.products.index, admin.products.create, etc.
+        Route::resource('categories', AdminCategoryController::class)->except(['show']); // admin.categories.index, admin.categories.create, etc.
     });
 });

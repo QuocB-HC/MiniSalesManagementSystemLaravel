@@ -10,7 +10,7 @@ class Category extends Model
     /** @use HasFactory<\Database\Factories\CategoryFactory> */
     use HasFactory;
 
-    protected $fillable = ['name', 'slug']; // Add 'slug' to the fillable properties
+    protected $fillable = ['name', 'slug', 'description']; // Cập nhật đầy đủ các trường
 
     // Relationship: Một category có nhiều products
     public function products()

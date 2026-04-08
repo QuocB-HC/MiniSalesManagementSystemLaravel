@@ -10,8 +10,9 @@
         <ul>
             <li class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}"><a
                     href='{{ route('admin.dashboard') }}'>Dashboard</a></li>
-            <li class="{{ request()->routeIs('admin.categories.*') ? 'active' : '' }}"><a href='#'>Categories</a>
-            </li>
+            <li class="{{ request()->routeIs('admin.categories.*') ? 'active' : '' }}"><a
+                    href='{{ route('admin.categories.index') }}'>Categories</a>
+            </li>   
             <li class="{{ request()->routeIs('admin.products.*') ? 'active' : '' }}"><a
                     href='{{ route('admin.products.index') }}'>Products</a></li>
             <li class="{{ request()->routeIs('admin.orders.*') ? 'active' : '' }}"><a href='#'>Orders</a></li>
