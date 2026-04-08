@@ -2,11 +2,25 @@
 
 namespace App\Models;
 
+use Database\Factories\OrderItemFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class OrderItem extends Model
 {
-    /** @use HasFactory<\Database\Factories\OrderItemFactory> */
+    /** @use HasFactory<OrderItemFactory> */
     use HasFactory;
+
+    protected $fillable = [
+        'order_id',
+        'product_id',
+        'quantity',
+        'price',
+    ];
+
+    public function product()
+    {
+        // One order item belongs to one product
+        return $this->belongsTo(Product::class, 'product_id', 'id');
+    }
 }

@@ -28,3 +28,16 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile/edit', [UserController::class, 'edit'])->name('profile.edit');
     Route::put('/profile/update', [UserController::class, 'update'])->name('profile.update');
 });
+
+// Checkout and Order routes (protected by auth middleware)
+Route::middleware('auth')->group(function () {
+    // Checkout routes
+    Route::prefix('checkout')->group(function () {
+        Route::get('/', [CartController::class, 'checkout'])->name('checkout');
+        Route::post('/place-order', [CartController::class, 'placeOrder'])->name('place.order');
+        Route::get('/success/{id}', [CartController::class, 'orderSuccess'])->name('checkout.success');
+    });
+
+    // Other checkout related routes can be added here
+    // Route::get('/my-orders', [OrderController::class, 'index'])->name('orders.index');
+});
