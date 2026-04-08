@@ -3,7 +3,9 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\Admin\ProductController as AdminProductController; // Rename to avoid conflict with public ProductController
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\Admin\DashboardController;
 use Illuminate\Support\Facades\Route;
 
 // 1. PUBLIC ROUTES (accessible to all users)
@@ -45,9 +47,7 @@ Route::middleware('auth')->group(function () {
 
     // ADMIN ROUTES (only for users with admin role)
     Route::middleware('can:admin')->prefix('admin')->as('admin.')->group(function () {
-        Route::get('/dashboard', function() {
-            return view('admin.dashboard');
-        })->name('dashboard'); // admin.dashboard
-        // Route::resource('products', ProductController::class)->except(['show']); // admin.products.index, admin.products.create, etc.
+        Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard'); // admin.dashboard
+        Route::resource('products', AdminProductController::class)->except(['show']); // admin.products.index, admin.products.create, etc.
     });
 });
