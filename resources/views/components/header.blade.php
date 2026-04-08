@@ -19,7 +19,7 @@
                         </a>
                     </form>
 
-                    <a href="{{ route('profile') }}" class="user-avatar">
+                    <a href="{{ route('profile.index') }}" class="user-avatar">
                         <img src="{{ Auth::user()->avatar_url ?? 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->name) }}"
                             alt="Avatar"
                             style="width: 35px; height: 35px; border-radius: 50%; object-fit: cover; border: 2px solid #555;">

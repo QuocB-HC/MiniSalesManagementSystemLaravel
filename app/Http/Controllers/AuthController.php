@@ -22,11 +22,16 @@ class AuthController extends Controller
             'password' => ['required'],
         ]);
 
-        // 2. Check credentials
+        // 2. Check credentials and attempt login
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate(); // Security: regenerate session to prevent fixation
 
-            return redirect()->intended('/')->with('success', 'Login successful!');
+            // Redirect to intended page or home with success message
+            if (Auth::user()->hasRole('admin')) {
+                return redirect()->route('admin.dashboard')->with('success', 'Login successful!');
+            } else {
+                return redirect()->intended('/')->with('success', 'Login successful!');
+            }
         }
 
         // 3. If credentials are incorrect
@@ -55,7 +60,7 @@ class AuthController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8|confirmed', // Cần input password_confirmation
+            'password' => 'required|string|min:8|confirmed', // Need input password_confirmation
         ]);
 
         // 2. Create a new user
@@ -68,6 +73,6 @@ class AuthController extends Controller
         // 3. Auto-login after registration
         Auth::login($user);
 
-        return redirect('/')->with('success', 'Tạo tài khoản thành công!');
+        return redirect()->route('home')->with('success', 'Registration successful!');
     }
 }
