@@ -57,7 +57,7 @@ class ProductController extends Controller
 
         Product::create($data);
 
-        return redirect()->route('admin.products.index')->with('success', 'Sản phẩm đã được tạo thành công!');
+        return redirect()->route('admin.products.index')->with('success', 'Product created successfully!');
     }
 
     public function edit(Product $product)
@@ -88,7 +88,7 @@ class ProductController extends Controller
         }
 
         if ($request->hasFile('image')) {
-            // Xóa ảnh cũ nếu tồn tại
+            // Delete the old image file if it exists
             if ($product->image_url) {
                 $oldPath = str_replace('/storage/', '', $product->image_url);
                 Storage::disk('public')->delete($oldPath);
@@ -101,12 +101,12 @@ class ProductController extends Controller
 
         $product->update($data);
 
-        return redirect()->route('admin.products.index')->with('success', 'Cập nhật sản phẩm thành công!');
+        return redirect()->route('admin.products.index')->with('success', 'Product updated successfully!');
     }
 
     public function destroy(Product $product)
     {
-        // Xóa file ảnh vật lý trước khi xóa record trong DB
+        // Delete the physical image file before deleting the record in the DB
         if ($product->image_url) {
             $path = str_replace('/storage/', '', $product->image_url);
             Storage::disk('public')->delete($path);
@@ -114,6 +114,6 @@ class ProductController extends Controller
 
         $product->delete();
 
-        return redirect()->route('admin.products.index')->with('success', 'Đã xóa sản phẩm!');
+        return redirect()->route('admin.products.index')->with('success', 'Product deleted successfully!');
     }
 }

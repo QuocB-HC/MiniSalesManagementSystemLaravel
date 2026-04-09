@@ -50,11 +50,20 @@ Route::middleware('auth')->group(function () {
 
     // ADMIN ROUTES (only for users with admin role)
     Route::middleware('can:admin')->prefix('admin')->as('admin.')->group(function () {
+        // Admin dashboard route
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard'); // admin.dashboard
+        
+        // Admin product routes
         Route::resource('products', AdminProductController::class)->except(['show']); // admin.products.index, admin.products.create, etc.
+        
+        // Admin category routes
         Route::resource('categories', AdminCategoryController::class)->except(['show']); // admin.categories.index, admin.categories.create, etc.
+        
+        // Admin user routes
         Route::get('/users', [AdminUserController::class, 'index'])->name('users.index'); // admin.users.index
         Route::put('/users/{user}', [AdminUserController::class, 'updateIsBanned'])->name('users.updateIsBanned'); // admin
+        
+        // Admin order routes
         Route::get('/orders', [AdminOrderController::class, 'index'])->name('orders.index'); // admin.orders.index
         Route::put('/orders/{order}', [AdminOrderController::class, 'updateStatus'])->name('orders.updateStatus'); // admin.orders
     });

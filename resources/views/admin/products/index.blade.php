@@ -71,8 +71,7 @@
                                     <span class="status {{ $product->status }}">{{ ucfirst($product->status) }}</span>
                                 </td>
                                 <td class="action-btns">
-                                    <a href="{{ route('admin.products.edit', $product->id) }}"
-                                        class="view-btn btn-edit">Edit</a>
+                                    <a href="{{ route('admin.products.edit', $product->id) }}" class="view-btn btn-edit">Edit</a>
                                     <form action="{{ route('admin.products.destroy', $product->id) }}" method="POST"
                                         onsubmit="return confirm('Are you sure you want to delete this product?')">
                                         @csrf
