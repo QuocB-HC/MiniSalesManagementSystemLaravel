@@ -52,7 +52,7 @@ php artisan migrate:fresh --seed
 # Start the Laravel development server
 php artisan serve
 ```
-Access the app at: `http://127.0.0.1:8000`
+Access the app at: `http://127.0.0.1:8000` <br />
 Admin Acount:
 - Email: admin@gmail.com
 - Password: 123456
