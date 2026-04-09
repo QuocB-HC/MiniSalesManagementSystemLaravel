@@ -32,9 +32,6 @@ cd mini-sales-laravel
 ```bash
 # Install PHP dependencies
 composer install
-
-# Install Frontend dependencies
-npm install
 ```
 
 ### 3. Environment Configuration
@@ -47,18 +44,18 @@ php artisan key:generate
 ### 4. Database Migration & Seeding
 ```bash
 # Run migrations and seed the database with sample data
-php artisan migrate --seed
+php artisan migrate:fresh --seed
 ```
 
 ### 5. Launch the Application
 ```bash
 # Start the Laravel development server
 php artisan serve
-
-# Build/Watch frontend assets
-npm run dev
 ```
-Access the app at: `http://127.0.0.1:8000`
+Access the app at: `http://127.0.0.1:8000` <br />
+Admin Acount:
+- Email: admin@gmail.com
+- Password: 123456
 
 ## Key Directory Structure
 - `app/Models`: Contains Eloquent models (Product, Order, Category).
