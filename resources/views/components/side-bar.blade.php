@@ -15,6 +15,8 @@
             </li>
             <li class="{{ request()->routeIs('admin.products.*') ? 'active' : '' }}"><a
                     href='{{ route('admin.products.index') }}'>Products</a></li>
+            <li class="{{ request()->routeIs('admin.discounts.*') ? 'active' : '' }}"><a
+                    href='{{ route('admin.discounts.index') }}'>Discounts</a></li>
             <li class="{{ request()->routeIs('admin.orders.*') ? 'active' : '' }}"><a
                     href='{{ route('admin.orders.index') }}'>Orders</a></li>
             <li class="{{ request()->routeIs('admin.users.*') ? 'active' : '' }}"><a

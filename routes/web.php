@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController; // Rename to avoid conflict with public CategoryController
 use App\Http\Controllers\Admin\UserController as AdminUserController; // Rename to avoid conflict with public UserController
 use App\Http\Controllers\Admin\OrderController as AdminOrderController; // Rename to avoid conflict with public OrderController
+use App\Http\Controllers\Admin\DiscountController as AdminDiscountController; // Rename to avoid conflict with public DiscountController
 use Illuminate\Support\Facades\Route;
 
 // 1. PUBLIC ROUTES (accessible to all users)
@@ -61,10 +62,13 @@ Route::middleware('auth')->group(function () {
         
         // Admin user routes
         Route::get('/users', [AdminUserController::class, 'index'])->name('users.index'); // admin.users.index
-        Route::put('/users/{user}', [AdminUserController::class, 'updateIsBanned'])->name('users.updateIsBanned'); // admin
+        Route::put('/users/{user}', [AdminUserController::class, 'updateIsBanned'])->name('users.updateIsBanned'); // admin.users.updateIsBanned
         
         // Admin order routes
         Route::get('/orders', [AdminOrderController::class, 'index'])->name('orders.index'); // admin.orders.index
-        Route::put('/orders/{order}', [AdminOrderController::class, 'updateStatus'])->name('orders.updateStatus'); // admin.orders
+        Route::put('/orders/{order}', [AdminOrderController::class, 'updateStatus'])->name('orders.updateStatus'); // admin.orders.updateStatus
+
+        // Admin discount routes
+        Route::resource('discounts', AdminDiscountController::class)->except(['show']); // admin.discounts.index, admin.discounts.create, etc.
     });
 });
