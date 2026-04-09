@@ -13,6 +13,8 @@ class Category extends Model
     /** @use HasFactory<CategoryFactory> */
     use HasFactory;
 
+    protected $fillable = ['name', 'slug', 'description'];
+
     // Relationship: One category has many products
     public function products()
     {

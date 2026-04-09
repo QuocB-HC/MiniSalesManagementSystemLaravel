@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use Database\Factories\DiscountFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Discount extends Model
 {
-    /** @use HasFactory<\Database\Factories\DiscountFactory> */
+    /** @use HasFactory<DiscountFactory> */
     use HasFactory;
 
     protected $fillable = [
@@ -21,13 +22,16 @@ class Discount extends Model
         'is_active',
     ];
 
-    protected $casts = [
-        'value' => 'decimal:2',
-        'min_order_value' => 'decimal:2',
-        'max_discount_amount' => 'decimal:2',
-        'usage_limit' => 'integer',
-        'used_count' => 'integer',
-        'expires_at' => 'datetime',
-        'is_active' => 'boolean',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'value' => 'decimal:2',
+            'min_order_value' => 'decimal:2',
+            'max_discount_amount' => 'decimal:2',
+            'usage_limit' => 'integer',
+            'used_count' => 'integer',
+            'expires_at' => 'datetime',
+            'is_active' => 'boolean',
+        ];
+    }
 }

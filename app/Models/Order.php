@@ -24,8 +24,15 @@ class Order extends Model
         'discount_id',
         'discount_code',
         'discount_value',
-        'updated_at',
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'total_price' => 'decimal:2',
+            'discount_value' => 'decimal:2',
+        ];
+    }
 
     public function items()
     {

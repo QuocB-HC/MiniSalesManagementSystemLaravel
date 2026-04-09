@@ -18,6 +18,16 @@ class OrderItem extends Model
         'price',
     ];
 
+    protected function casts(): array
+    {
+        return [
+            'order_id'   => 'integer',
+            'product_id' => 'integer',
+            'quantity'   => 'integer',
+            'price'      => 'decimal:2', 
+        ];
+    }
+
     public function product()
     {
         // One order item belongs to one product
