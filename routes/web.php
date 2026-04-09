@@ -46,6 +46,7 @@ Route::middleware('auth')->group(function () {
     Route::prefix('checkout')->as('checkout.')->group(function () {
         Route::get('/', [CartController::class, 'checkout'])->name('index'); // checkout.index
         Route::post('/place-order', [CartController::class, 'placeOrder'])->name('placeOrder'); // checkout.placeOrder
+        Route::post('/apply-discount', [CartController::class, 'applyDiscount'])->name('applyDiscount');
         Route::get('/success/{id}', [CartController::class, 'orderSuccess'])->name('success'); // checkout.success
     });
 

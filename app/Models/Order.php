@@ -21,6 +21,10 @@ class Order extends Model
         'receiver_address',
         'note',
         'status',
+        'discount_id',
+        'discount_code',
+        'discount_value',
+        'updated_at',
     ];
 
     public function items()

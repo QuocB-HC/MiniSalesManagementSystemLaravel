@@ -15,6 +15,7 @@
     <div class="payment-container">
         <form action="{{ route('checkout.placeOrder') }}" method="POST" class="payment-wrapper">
             @csrf
+            <input type="hidden" name="discount_id" id="applied_discount_id">
 
             <div class="shipping-info">
                 <h2><i class="fa-solid fa-truck"></i> Shipping Information</h2>
@@ -70,8 +71,18 @@
 
                     <div class="total-row">
                         <span>Subtotal</span>
-                        <span>{{ number_format($totalAmount, 0, ',', '.') }} VNĐ</span>
+                        <span id="subtotal_value"
+                            data-value="{{ $totalAmount }}">{{ number_format($totalAmount, 0, ',', '.') }} VNĐ</span>
                     </div>
+
+                    <div class="discount-input-row">
+                        <input type="text" id="discount_code" class="discount-input"
+                            placeholder="Enter discount code">
+                        <button type="button" class="btn-apply-discount" id="apply_discount">Apply</button>
+                        <div id="discount_message"
+                            style="margin-top: 5px; font-size: 0.85rem; display: block; width: 100%;"></div>
+                    </div>
+
                     <div class="total-row">
                         <span>Total Quantity</span>
                         <span>{{ array_sum(array_column($cartItems, 'quantity')) }}</span>
@@ -80,9 +91,18 @@
                         <span>Shipping Fee</span>
                         <span class="free">Free</span>
                     </div>
-                    <div class="total-row final">
+                    <div class="total-row">
                         <span>Total Pay</span>
-                        <span>{{ number_format($totalAmount, 0, ',', '.') }} VNĐ</span>
+                        <span class="free">{{ number_format($totalAmount, 0, ',', '.') }} VNĐ</span>
+                    </div>
+                    <div class="total-row discount-row" style="color: #d91e18;">
+                        <span>Discount</span>
+                        <span id="discount_amount">- 0 VNĐ</span>
+                    </div>
+                    <div class="total-row final">
+                        <span>Final Pay</span>
+                        <span id="final_pay_display" data-base="{{ $totalAmount }}">
+                            {{ number_format($totalAmount, 0, ',', '.') }} VNĐ</span>
                     </div>
 
                     <button type="submit" class="btn-confirm">Place Order Now</button>
@@ -99,6 +119,64 @@
             @endif
         </form>
     </div>
+
+    <script>
+        document.getElementById('apply_discount').addEventListener('click', function() {
+            const code = document.getElementById('discount_code').value;
+            const subtotal = parseFloat(document.getElementById('subtotal_value').dataset.value);
+            const messageDiv = document.getElementById('discount_message');
+            const discountAmountSpan = document.getElementById('discount_amount');
+            const finalPayDisplay = document.getElementById('final_pay_display');
+            const appliedDiscountIdInput = document.getElementById('applied_discount_id');
+
+            if (!code) {
+                messageDiv.style.color = 'red';
+                messageDiv.textContent = 'Vui lòng nhập mã giảm giá.';
+                return;
+            }
+
+            fetch('{{ route('checkout.applyDiscount') }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({
+                        code: code,
+                        subtotal: subtotal
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        messageDiv.style.color = 'green';
+                        messageDiv.textContent = data.message;
+
+                        const discountAmount = data.discount_amount;
+                        const finalTotal = subtotal - discountAmount;
+
+                        discountAmountSpan.textContent =
+                            `- ${new Intl.NumberFormat('vi-VN').format(discountAmount)} VNĐ`;
+                        finalPayDisplay.textContent =
+                            `${new Intl.NumberFormat('vi-VN').format(finalTotal)} VNĐ`;
+                        appliedDiscountIdInput.value = data.discount_id;
+                    } else {
+                        messageDiv.style.color = 'red';
+                        messageDiv.textContent = data.message;
+
+                        // Reset về - 0 VNĐ nếu mã không hợp lệ
+                        discountAmountSpan.textContent = `- 0 VNĐ`;
+                        finalPayDisplay.textContent = `${new Intl.NumberFormat('vi-VN').format(subtotal)} VNĐ`;
+                        appliedDiscountIdInput.value = '';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    messageDiv.style.color = 'red';
+                    messageDiv.textContent = 'Đã có lỗi xảy ra. Vui lòng thử lại.';
+                });
+        });
+    </script>
 </body>
 
 </html>

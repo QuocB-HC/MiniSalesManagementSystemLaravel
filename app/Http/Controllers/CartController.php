@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Discount;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
@@ -96,6 +97,49 @@ class CartController extends Controller
         return view('pages.payment', compact('cartItems', 'totalAmount', 'user'));
     }
 
+    public function applyDiscount(Request $request)
+    {
+        $code = $request->input('code');
+        $subtotal = $request->input('subtotal');
+
+        $discount = Discount::where('code', $code)
+            ->where('is_active', true)
+            ->where(function ($query) {
+                $query->whereNull('expires_at')
+                      ->orWhere('expires_at', '>', now());
+            })
+            ->first();
+
+        if (!$discount) {
+            return response()->json(['success' => false, 'message' => 'Mã giảm giá không tồn tại hoặc đã hết hạn.']);
+        }
+
+        if ($discount->usage_limit !== null && $discount->used_count >= $discount->usage_limit) {
+            return response()->json(['success' => false, 'message' => 'Mã giảm giá này đã hết lượt sử dụng.']);
+        }
+
+        if ($subtotal < $discount->min_order_value) {
+            return response()->json(['success' => false, 'message' => 'Đơn hàng tối thiểu ' . number_format($discount->min_order_value, 0, ',', '.') . ' VNĐ để sử dụng mã này.']);
+        }
+
+        $discountAmount = 0;
+        if ($discount->type === 'fixed') {
+            $discountAmount = (float)$discount->value;
+        } else {
+            $discountAmount = ($subtotal * (float)$discount->value) / 100;
+            if ($discount->max_discount_amount !== null && $discountAmount > $discount->max_discount_amount) {
+                $discountAmount = (float)$discount->max_discount_amount;
+            }
+        }
+
+        return response()->json([
+            'success' => true,
+            'discount_amount' => $discountAmount,
+            'discount_id' => $discount->id,
+            'message' => 'Áp dụng mã giảm giá thành công!'
+        ]);
+    }
+
     public function placeOrder(Request $request)
     {
         // 1. Take cart from Session
@@ -109,6 +153,7 @@ class CartController extends Controller
             'name' => 'required|string|max:255',
             'phone' => 'required|string|max:15',
             'address' => 'required|string|max:500',
+            'discount_id' => 'nullable|exists:discounts,id',
         ]);
 
         // 3. Use Database Transaction to ensure safety
@@ -124,11 +169,44 @@ class CartController extends Controller
                 $totalQuantity += $details['quantity'];
             }
 
+            $appliedDiscountId = null;
+            $appliedDiscountCode = null;
+            $appliedDiscountValue = 0;
+
+            // Check if there's a discount code applied and validate it again before saving to the database
+            if ($request->filled('discount_id')) {
+                $discount = Discount::find($request->discount_id);
+                
+                if ($discount && $discount->is_active && 
+                    ($discount->expires_at == null || $discount->expires_at > now()) &&
+                    ($totalPrice >= $discount->min_order_value)) {
+                    
+                    $discountAmount = 0;
+                    if ($discount->type === 'fixed') {
+                        $discountAmount = (float)$discount->value;
+                    } else {
+                        $discountAmount = ($totalPrice * (float)$discount->value) / 100;
+                        if ($discount->max_discount_amount !== null && $discountAmount > $discount->max_discount_amount) {
+                            $discountAmount = (float)$discount->max_discount_amount;
+                        }
+                    }
+                    
+                    $appliedDiscountId = $discount->id;
+                    $appliedDiscountCode = $discount->code;
+                    $appliedDiscountValue = $discountAmount;
+                    $totalPrice = max(0, $totalPrice - $discountAmount);
+                    $discount->increment('used_count');
+                }
+            }
+
             // 4. Save to 'orders' table
             $order = Order::create([
                 'user_id' => Auth::id(),
+                'discount_id' => $appliedDiscountId,
+                'discount_code' => $appliedDiscountCode,
+                'discount_value' => $appliedDiscountValue,
                 'total_quantity' => $totalQuantity,
-                'total_price' => $totalPrice,
+                'total_price' => $totalPrice, // Giá đã trừ discount
                 'receiver_name' => $request->name,
                 'receiver_phone' => $request->phone,
                 'receiver_address' => $request->address,
