@@ -12,18 +12,18 @@ class OrderController extends Controller
     {
         $search = $request->input('search');
 
-        if (!$request->filled('search')) {
+        if (! $request->filled('search')) {
             // Return empty result if search is empty to avoid loading all orders
             $orders = Order::whereRaw('1 = 0')->paginate(10);
         } else {
             // Search by ID, customer email, or receiver phone number
             $orders = Order::with('user')
-                ->where(function($query) use ($search) {
+                ->where(function ($query) use ($search) {
                     $query->where('id', $search)
-                          ->orWhere('receiver_phone', 'like', "%{$search}%")
-                          ->orWhereHas('user', function($q) use ($search) {
-                              $q->where('email', 'like', "%{$search}%");
-                          });
+                        ->orWhere('receiver_phone', 'like', "%{$search}%")
+                        ->orWhereHas('user', function ($q) use ($search) {
+                            $q->where('email', 'like', "%{$search}%");
+                        });
                 })
                 ->oldest()
                 ->paginate(10)
@@ -40,10 +40,10 @@ class OrderController extends Controller
         ]);
 
         $order->update([
-            'status' => $request->status
+            'status' => $request->status,
         ]);
 
         return redirect()->back()
-            ->with('success', 'Update order status #' . $order->id . ' successfully!');
+            ->with('success', 'Update order status #'.$order->id.' successfully!');
     }
 }

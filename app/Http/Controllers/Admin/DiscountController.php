@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Admin;   
- 
+namespace App\Http\Controllers\Admin;
+
 use App\Http\Controllers\Controller;
-use App\Models\Discount;
 use App\Http\Requests\StoreDiscountRequest;
 use App\Http\Requests\UpdateDiscountRequest;
-use Illuminate\Http\Request;
+use App\Models\Discount;
 use Illuminate\Support\Facades\Log;
 
 class DiscountController extends Controller
@@ -17,7 +16,7 @@ class DiscountController extends Controller
     public function index()
     {
         $discounts = Discount::oldest()->paginate(10); // Get discounts with pagination
- 
+
         return view('admin.discounts.index', compact('discounts'));
     }
 
@@ -36,10 +35,10 @@ class DiscountController extends Controller
     public function store(StoreDiscountRequest $request)
     {
         Discount::create($request->validated());
- 
+
         return redirect()->route('admin.discounts.index')
-                         ->with('success', 'Discount created successfully!');
- 
+            ->with('success', 'Discount created successfully!');
+
     }
 
     /**
@@ -58,15 +57,15 @@ class DiscountController extends Controller
     public function update(UpdateDiscountRequest $request, Discount $discount)
     {
         $data = $request->validated();
- 
+
         // Process the is_active field, if the checkbox is not submitted, default to false
         $data['is_active'] = $request->has('is_active');
- 
+
         $discount->update($data);
- 
+
         return redirect()->route('admin.discounts.index')
-                         ->with('success', 'Discount updated successfully!');
- 
+            ->with('success', 'Discount updated successfully!');
+
     }
 
     /**
@@ -76,12 +75,14 @@ class DiscountController extends Controller
     {
         try {
             $discount->delete();
+
             return redirect()->route('admin.discounts.index')
-                             ->with('success', 'Discount deleted successfully!');
+                ->with('success', 'Discount deleted successfully!');
         } catch (\Exception $e) {
-            Log::error('Error occurred while deleting discount: ' . $e->getMessage());
+            Log::error('Error occurred while deleting discount: '.$e->getMessage());
+
             return redirect()->route('admin.discounts.index')
-                             ->with('error', 'Cannot delete this discount. It might be in use by existing orders.');
+                ->with('error', 'Cannot delete this discount. It might be in use by existing orders.');
         }
     }
 }

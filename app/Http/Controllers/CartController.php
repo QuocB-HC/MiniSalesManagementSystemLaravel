@@ -106,11 +106,11 @@ class CartController extends Controller
             ->where('is_active', true)
             ->where(function ($query) {
                 $query->whereNull('expires_at')
-                      ->orWhere('expires_at', '>', now());
+                    ->orWhere('expires_at', '>', now());
             })
             ->first();
 
-        if (!$discount) {
+        if (! $discount) {
             return response()->json(['success' => false, 'message' => 'Mã giảm giá không tồn tại hoặc đã hết hạn.']);
         }
 
@@ -119,16 +119,16 @@ class CartController extends Controller
         }
 
         if ($subtotal < $discount->min_order_value) {
-            return response()->json(['success' => false, 'message' => 'Đơn hàng tối thiểu ' . number_format($discount->min_order_value, 0, ',', '.') . ' VNĐ để sử dụng mã này.']);
+            return response()->json(['success' => false, 'message' => 'Đơn hàng tối thiểu '.number_format($discount->min_order_value, 0, ',', '.').' VNĐ để sử dụng mã này.']);
         }
 
         $discountAmount = 0;
         if ($discount->type === 'fixed') {
-            $discountAmount = (float)$discount->value;
+            $discountAmount = (float) $discount->value;
         } else {
-            $discountAmount = ($subtotal * (float)$discount->value) / 100;
+            $discountAmount = ($subtotal * (float) $discount->value) / 100;
             if ($discount->max_discount_amount !== null && $discountAmount > $discount->max_discount_amount) {
-                $discountAmount = (float)$discount->max_discount_amount;
+                $discountAmount = (float) $discount->max_discount_amount;
             }
         }
 
@@ -136,7 +136,7 @@ class CartController extends Controller
             'success' => true,
             'discount_amount' => $discountAmount,
             'discount_id' => $discount->id,
-            'message' => 'Áp dụng mã giảm giá thành công!'
+            'message' => 'Áp dụng mã giảm giá thành công!',
         ]);
     }
 
@@ -176,21 +176,21 @@ class CartController extends Controller
             // Check if there's a discount code applied and validate it again before saving to the database
             if ($request->filled('discount_id')) {
                 $discount = Discount::find($request->discount_id);
-                
-                if ($discount && $discount->is_active && 
+
+                if ($discount && $discount->is_active &&
                     ($discount->expires_at == null || $discount->expires_at > now()) &&
                     ($totalPrice >= $discount->min_order_value)) {
-                    
+
                     $discountAmount = 0;
                     if ($discount->type === 'fixed') {
-                        $discountAmount = (float)$discount->value;
+                        $discountAmount = (float) $discount->value;
                     } else {
-                        $discountAmount = ($totalPrice * (float)$discount->value) / 100;
+                        $discountAmount = ($totalPrice * (float) $discount->value) / 100;
                         if ($discount->max_discount_amount !== null && $discountAmount > $discount->max_discount_amount) {
-                            $discountAmount = (float)$discount->max_discount_amount;
+                            $discountAmount = (float) $discount->max_discount_amount;
                         }
                     }
-                    
+
                     $appliedDiscountId = $discount->id;
                     $appliedDiscountCode = $discount->code;
                     $appliedDiscountValue = $discountAmount;
