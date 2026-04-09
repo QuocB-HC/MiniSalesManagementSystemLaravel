@@ -16,7 +16,7 @@ class DiscountController extends Controller
      */
     public function index()
     {
-        $discounts = Discount::latest()->paginate(10); // Get discounts with pagination
+        $discounts = Discount::oldest()->paginate(10); // Get discounts with pagination
  
         return view('admin.discounts.index', compact('discounts'));
     }
