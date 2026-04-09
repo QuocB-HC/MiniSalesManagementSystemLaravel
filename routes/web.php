@@ -3,9 +3,10 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\ProductController;
-use App\Http\Controllers\Admin\ProductController as AdminProductController; // Rename to avoid conflict with public ProductController
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\ProductController as AdminProductController; // Rename to avoid conflict with public ProductController
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController; // Rename to avoid conflict with public CategoryController
 use App\Http\Controllers\Admin\UserController as AdminUserController; // Rename to avoid conflict with public UserController
 use App\Http\Controllers\Admin\OrderController as AdminOrderController; // Rename to avoid conflict with public OrderController
@@ -48,6 +49,12 @@ Route::middleware('auth')->group(function () {
         Route::post('/place-order', [CartController::class, 'placeOrder'])->name('placeOrder'); // checkout.placeOrder
         Route::post('/apply-discount', [CartController::class, 'applyDiscount'])->name('applyDiscount');
         Route::get('/success/{id}', [CartController::class, 'orderSuccess'])->name('success'); // checkout.success
+    });
+
+    // Orders routes
+    Route::prefix('orders')->as('orders.')->group(function () {
+        Route::get('/', [OrderController::class, 'index'])->name('index'); // orders.index
+        Route::get('/{id}', [OrderController::class, 'show'])->name('detail'); // orders.detail
     });
 
     // ADMIN ROUTES (only for users with admin role)

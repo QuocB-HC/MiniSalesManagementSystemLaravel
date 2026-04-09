@@ -10,6 +10,15 @@ class OrderController extends Controller
 {
     public function index()
     {
-        $order = Order::all();
+        $orders = Order::oldest()->paginate(10);
+
+        return view('pages.order-history', compact('orders'));
+    }
+
+    public function show($id)
+    {
+        $order = Order::findOrFail($id);
+
+        return view('pages.order-detail', compact('order'));
     }
 }
