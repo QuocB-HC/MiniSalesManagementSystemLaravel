@@ -14,8 +14,12 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->unsignedBigInteger('discount_id')->nullable();
+            $table->foreign('discount_id')->references('id')->on('discounts')->onDelete('set null');
+            $table->string('discount_code')->nullable();
+            $table->decimal('discount_value', 12, 2)->default(0);
             $table->integer('total_quantity');
-            $table->decimal('total_price', 10, 2);
+            $table->decimal('total_price', 12, 2);
             $table->string('receiver_name');
             $table->string('receiver_phone');
             $table->string('receiver_address');
