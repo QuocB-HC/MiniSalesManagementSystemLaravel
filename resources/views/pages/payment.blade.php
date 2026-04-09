@@ -13,7 +13,7 @@
     <x-header />
 
     <div class="payment-container">
-        <form action="{{ route('place.order') }}" method="POST" class="payment-wrapper">
+        <form action="{{ route('checkout.placeOrder') }}" method="POST" class="payment-wrapper">
             @csrf
 
             <div class="shipping-info">

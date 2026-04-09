@@ -72,8 +72,8 @@
                             <span>{{ number_format($totalAmount, 0, ',', '.') }} VNĐ</span>
                         </div>
                         <div class="summary-actions">
-                            <a href="{{ route('checkout') }}" class="btn-checkout">Proceed to Checkout</a>
-                            <a href="/" class="continue-shopping">Continue Shopping</a>
+                            <a href="{{ route('checkout.index') }}" class="btn-checkout">Proceed to Checkout</a>
+                            <a href="{{ route('home') }}" class="continue-shopping">Continue Shopping</a>
                         </div>
                     </div>
                 </div>

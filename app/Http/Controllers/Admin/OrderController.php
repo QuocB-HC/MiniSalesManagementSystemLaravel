@@ -36,14 +36,14 @@ class OrderController extends Controller
     public function updateStatus(Request $request, Order $order)
     {
         $request->validate([
-            'status' => 'required|in:pending,processing,shipped,delivered,cancelled',
+            'status' => 'required|in:pending,processing,shipping,completed,cancelled',
         ]);
 
         $order->update([
             'status' => $request->status
         ]);
 
-        return redirect()->route('admin.orders.index')
+        return redirect()->back()
             ->with('success', 'Update order status #' . $order->id . ' successfully!');
     }
 }

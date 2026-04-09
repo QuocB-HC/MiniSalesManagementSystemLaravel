@@ -83,6 +83,10 @@ header {
     background: #ffeeba;
     color: #856404;
 }
+.status.processing {
+    background: #d4edda;
+    color: #155724;
+}
 .view-btn {
     color: #4e73df;
     text-decoration: none;

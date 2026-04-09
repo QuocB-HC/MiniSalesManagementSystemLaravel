@@ -44,11 +44,6 @@
                     <p>{{ $user->address ?? 'Chưa có địa chỉ giao hàng' }}</p>
                 </div>
 
-                <div class="info-group">
-                    <label><i class="fa-solid fa-shield-halved"></i> Account Status</label>
-                    <p class="status-active">Active</p>
-                </div>
-
                 <div class="profile-actions">
                     <a href="{{ route('profile.edit') }}" class="btn-edit">Edit Profile</a>
                 </div>

@@ -65,7 +65,7 @@ class CartController extends Controller
             session()->put('cart', $cart);
         }
 
-        return redirect()->back()->with('success', 'Đã cập nhật số lượng!');
+        return redirect()->back()->with('success', 'Quantity updated!');
     }
 
     public function removeFromCart($id)
@@ -143,6 +143,9 @@ class CartController extends Controller
                     'quantity' => $details['quantity'],
                     'price' => $details['price'],
                 ]);
+
+                // Update product stock in the 'products' table
+                Product::where('id', $id)->decrement('stock_quantity', $details['quantity']);
             }
 
             // 6. Delete the cart after successful order placement

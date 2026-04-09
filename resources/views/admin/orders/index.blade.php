@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Orders Management</title>
     <link rel="stylesheet" href="{{ asset('css/admin/orders/index.css') }}">
 </head>
+
 <body>
     <div class="main-container">
         <x-side-bar />
@@ -17,8 +19,8 @@
 
             <div class="search-box">
                 <form action="{{ route('admin.orders.index') }}" method="GET" class="search-form">
-                    <input type="text" name="search" value="{{ request('search') }}" 
-                           placeholder="Enter Order ID, Email or Phone number..." class="search-input">
+                    <input type="text" name="search" value="{{ request('search') }}"
+                        placeholder="Enter Order ID, Email or Phone number..." class="search-input">
                     <button type="submit" class="view-btn btn-search">Search Order</button>
                 </form>
             </div>
@@ -47,18 +49,30 @@
                                 <td>{{ $order->id }}</td>
                                 <td>{{ $order->user->name }}</td>
                                 <td>${{ number_format($order->total_price, 2) }}</td>
-                                <td>{{ ucfirst($order->status) }}</td>
+                                <td><span class="status {{ $order->status }}">{{ ucfirst($order->status) }}</span></td>
                                 <td>{{ $order->created_at->format('Y-m-d H:i') }}</td>
                                 <td>
                                     @if ($order->status !== 'cancelled')
-                                        <form action="{{ route('admin.orders.updateStatus', $order) }}" method="POST" class="update-status-form">
+                                        <form action="{{ route('admin.orders.updateStatus', $order) }}" method="POST"
+                                            class="update-status-form">
                                             @csrf
                                             @method('PUT')
                                             <select name="status" class="status-select">
-                                                <option value="pending" {{ $order->status === 'pending' ? 'selected' : '' }}>Pending</option>
-                                                <option value="processing" {{ $order->status === 'processing' ? 'selected' : '' }}>Processing</option>
-                                                <option value="completed" {{ $order->status === 'completed' ? 'selected' : '' }}>Completed</option>
-                                                <option value="cancelled" {{ $order->status === 'cancelled' ? 'selected' : '' }}>Cancelled</option>
+                                                <option value="pending"
+                                                    {{ $order->status === 'pending' ? 'selected' : '' }}>Pending
+                                                </option>
+                                                <option value="processing"
+                                                    {{ $order->status === 'processing' ? 'selected' : '' }}>Processing
+                                                </option>
+                                                <option value="shipping"
+                                                    {{ $order->status === 'shipping' ? 'selected' : '' }}>Shipping
+                                                </option>
+                                                <option value="completed"
+                                                    {{ $order->status === 'completed' ? 'selected' : '' }}>Completed
+                                                </option>
+                                                <option value="cancelled"
+                                                    {{ $order->status === 'cancelled' ? 'selected' : '' }}>Cancelled
+                                                </option>
                                             </select>
                                             <button type="submit" class="update-button">Update</button>
                                         </form>
@@ -84,4 +98,5 @@
         </main>
     </div>
 </body>
+
 </html>

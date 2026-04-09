@@ -45,7 +45,7 @@
             </div>
 
             <section class="recent-section">
-                <h2>Pending Orders</h2>
+                <h2>Orders to Process</h2>
                 <table class="admin-table">
                     <thead>
                         <tr>
@@ -61,7 +61,7 @@
                             <tr>
                                 <td>#{{ $order->id }}</td>
                                 <td>{{ $order->receiver_name ?? 'Guest' }}</td>
-                                <td><span class="status pending">{{ ucfirst($order->status) }}</span></td>
+                                <td><span class="status {{ $order->status }}">{{ ucfirst($order->status) }}</span></td>
                                 <td>{{ number_format($order->total_price, 0, ',', '.') }} VNĐ</td>
                                 <td>
                                     @if ($order->status !== 'cancelled')
@@ -71,6 +71,7 @@
                                             <select name="status" class="status-select">
                                                 <option value="pending" {{ $order->status === 'pending' ? 'selected' : '' }}>Pending</option>
                                                 <option value="processing" {{ $order->status === 'processing' ? 'selected' : '' }}>Processing</option>
+                                                <option value="shipping" {{ $order->status === 'shipping' ? 'selected' : '' }}>Shipping</option>
                                                 <option value="completed" {{ $order->status === 'completed' ? 'selected' : '' }}>Completed</option>
                                                 <option value="cancelled" {{ $order->status === 'cancelled' ? 'selected' : '' }}>Cancelled</option>
                                             </select>
@@ -83,7 +84,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="5" style="text-align: center;">No pending orders found.</td>
+                                <td colspan="5" style="text-align: center;">No active orders found.</td>
                             </tr>
                         @endforelse
                     </tbody>

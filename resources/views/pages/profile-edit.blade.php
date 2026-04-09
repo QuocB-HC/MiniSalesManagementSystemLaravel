@@ -41,7 +41,7 @@
 
                 <div class="profile-actions">
                     <button type="submit" class="btn-edit">Save Changes</button>
-                    <a href="{{ route('profile') }}" class="btn-logout-alt"
+                    <a href="{{ route('profile.index') }}" class="btn-logout-alt"
                         style="text-decoration:none; text-align:center;">Cancel</a>
                 </div>
             </form>
