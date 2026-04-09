@@ -64,7 +64,7 @@ header {
 }
 .admin-table th,
 .admin-table td {
-    text-align: left;
+    text-align: center;
     padding: 15px;
     border-bottom: 1px solid #eee;
 }
@@ -87,4 +87,45 @@ header {
     color: #4e73df;
     text-decoration: none;
     font-weight: bold;
+}
+
+.no-data {
+    text-align: center;
+    color: #999;
+    padding: 40px !important;
+}
+
+/* Update Status Form */
+.update-status-form {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    align-items: center;
+}
+
+.status-select {
+    padding: 6px 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 13px;
+    outline: none;
+}
+
+.update-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: background 0.2s;
+}
+
+.update-button:hover {
+    background-color: #0069d9;
+}
+
+.pagination-wrapper {
+    margin-top: 25px;
 }

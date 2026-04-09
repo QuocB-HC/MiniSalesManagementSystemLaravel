@@ -7,6 +7,8 @@ use App\Http\Controllers\Admin\ProductController as AdminProductController; // R
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController; // Rename to avoid conflict with public CategoryController
+use App\Http\Controllers\Admin\UserController as AdminUserController; // Rename to avoid conflict with public UserController
+use App\Http\Controllers\Admin\OrderController as AdminOrderController; // Rename to avoid conflict with public OrderController
 use Illuminate\Support\Facades\Route;
 
 // 1. PUBLIC ROUTES (accessible to all users)
@@ -51,5 +53,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard'); // admin.dashboard
         Route::resource('products', AdminProductController::class)->except(['show']); // admin.products.index, admin.products.create, etc.
         Route::resource('categories', AdminCategoryController::class)->except(['show']); // admin.categories.index, admin.categories.create, etc.
+        Route::get('/users', [AdminUserController::class, 'index'])->name('users.index'); // admin.users.index
+        Route::put('/users/{user}', [AdminUserController::class, 'updateIsBanned'])->name('users.updateIsBanned'); // admin
+        Route::get('/orders', [AdminOrderController::class, 'index'])->name('orders.index'); // admin.orders.index
+        Route::put('/orders/{order}', [AdminOrderController::class, 'updateStatus'])->name('orders.updateStatus'); // admin.orders
     });
 });

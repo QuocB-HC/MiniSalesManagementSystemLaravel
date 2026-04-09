@@ -26,6 +26,13 @@ class AuthController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate(); // Security: regenerate session to prevent fixation
 
+            if (Auth::user()->is_banned) {
+                Auth::logout();
+                return back()->withErrors([
+                    'email' => 'Your account has been banned. Please contact support.',
+                ])->onlyInput('email');
+            }
+
             // Redirect to intended page or home with success message
             if (Auth::user()->hasRole('admin')) {
                 return redirect()->route('admin.dashboard')->with('success', 'Login successful!');

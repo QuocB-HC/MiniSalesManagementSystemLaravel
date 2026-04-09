@@ -3,6 +3,10 @@
     background: #2e59d9;
     color: white;
     padding: 0 20px;
+    height: 100vh;
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0
 }
 .sidebar .logo {
     margin-bottom: 30px;

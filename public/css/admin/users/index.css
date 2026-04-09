@@ -45,37 +45,12 @@ header {
     transform: translateY(-1px);
 }
 
-.btn-edit {
-    background-color: #ffc107;
-    color: #212529;
-}
-.btn-edit:hover {
-    background-color: #e0a800;
-}
-
 .btn-delete {
     background-color: #dc3545;
     color: white;
 }
 .btn-delete:hover {
     background-color: #c82333;
-}
-
-/* Filters */
-.category-filters {
-    margin: 20px 0;
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-}
-
-.filter-btn {
-    background-color: #eee;
-    color: #333;
-}
-.filter-btn.active {
-    background-color: #333;
-    color: #fff;
 }
 
 /* Alerts */
@@ -88,7 +63,7 @@ header {
     border: 1px solid #c3e6cb;
 }
 
-/* Table */
+/* Table Base */
 .admin-table {
     width: 100%;
     border-collapse: collapse;
@@ -96,7 +71,7 @@ header {
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-    table-layout: fixed; /* Bắt buộc để các cột tuân thủ độ rộng cố định */
+    table-layout: fixed;
 }
 
 .admin-table th,
@@ -104,6 +79,7 @@ header {
     padding: 16px;
     text-align: center;
     border-bottom: 1px solid #f0f0f0;
+    vertical-align: middle;
 }
 
 .admin-table th {
@@ -112,55 +88,42 @@ header {
     font-size: 13px;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    text-align: center;
 }
 
-/* Định nghĩa độ rộng cụ thể cho từng cột */
+/* Tinh chỉnh độ rộng các cột cho bảng User */
 .admin-table th:nth-child(1) {
     width: 5%;
 } /* ID */
 .admin-table th:nth-child(2) {
-    width: 5%;
-} /* Image */
-.admin-table th:nth-child(3) {
-    width: 10%;
-} /* SKU */
-.admin-table th:nth-child(4) {
     width: auto;
-} /* Product Name (Let this column be flexible) */
+} /* Name */
+.admin-table th:nth-child(3) {
+    width: auto;
+} /* Email */
+.admin-table th:nth-child(4) {
+    width: 15%;
+} /* Phone */
 .admin-table th:nth-child(5) {
     width: 10%;
-} /* Price */
+} /* Joined Date */
 .admin-table th:nth-child(6) {
-    width: 5%;
-} /* Stock */
-.admin-table th:nth-child(7) {
-    width: 8%;
+    width: 7%;
 } /* Status */
-.admin-table th:nth-child(8) {
-    width: 15%;
+.admin-table th:nth-child(7) {
+    width: 10%;
 } /* Actions */
 
-.admin-table td {
-    vertical-align: middle;
-    word-wrap: break-word; /* Text can't overflow */
+.text-left {
+    text-align: left !important;
+}
+.text-center {
+    text-align: center !important;
+}
+.text-right {
+    text-align: right !important;
 }
 
-/* Handling cases where product names are too long. */
-.admin-table td strong {
-    display: block;
-    max-width: 100%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-.product-img {
-    width: 50px;
-    height: 50px;
-    object-fit: cover;
-    border-radius: 5px;
-}
+/* Trạng thái người dùng */
 .status {
     padding: 4px 12px;
     border-radius: 20px;
@@ -168,34 +131,30 @@ header {
     font-weight: bold;
 }
 
-/* Status Badges */
-.status.available {
+.status.active {
     background: #e6f4ea;
     color: #1e7e34;
 }
-.status.out_of_stock {
+
+.status.banned {
     background: #feecef;
     color: #d91e18;
 }
-.status.discontinued {
-    background: #f0f0f0;
-    color: #666;
+
+/* Tinh chỉnh nút bấm trong bảng User */
+.action-btns form {
+    width: 100%;
+    display: flex;
+    justify-content: center;
 }
 
-.action-btns {
-    display: flex;
-    gap: 10px;
-    justify-content: center;
-    align-items: center;
+.action-btns .view-btn {
+    width: 120px;
+    padding: 8px 0;
+    font-size: 13px;
+    text-align: center;
 }
-.action-btns form {
-    margin: 0;
-    display: flex;
-    align-items: center;
-}
-.pagination-wrapper {
-    margin-top: 25px;
-}
+
 .no-data {
     text-align: center;
     color: #999;

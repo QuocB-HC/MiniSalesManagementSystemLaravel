@@ -1,68 +1,54 @@
+<!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Admin Dashboard</title>
-    <link rel="stylesheet" href="{{ asset('css/admin/dashboard.css') }}">
+    <title>Orders Management</title>
+    <link rel="stylesheet" href="{{ asset('css/admin/orders/index.css') }}">
 </head>
-
 <body>
-    <div class="admin-container">
+    <div class="main-container">
         <x-side-bar />
 
         <main class="main-content">
             <header>
-                <h1>Overview</h1>
-                <div class="user-info">
-                    <span>Welcome, <strong>{{ auth()->user()->name }}</strong></span>
-                </div>
+                <h1>Orders Management</h1>
             </header>
 
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-icon"><i class="fa-solid fa-wallet"></i></div>
-                    <div class="stat-info">
-                        <h3>Total Revenue</h3>
-                        <p>{{ number_format($totalRevenue, 0, ',', '.') }} VNĐ</p>
-                    </div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon pink"><i class="fa-solid fa-bag-shopping"></i></div>
-                    <div class="stat-info">
-                        <h3>Total Orders</h3>
-                        <p>{{ number_format($totalOrders, 0, ',', '.') }}</p>
-                    </div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon blue"><i class="fa-solid fa-user"></i></div>
-                    <div class="stat-info">
-                        <h3>Customers</h3>
-                        <p>{{ number_format($totalUsers, 0, ',', '.') }}</p>
-                    </div>
-                </div>
+            <div class="search-box">
+                <form action="{{ route('admin.orders.index') }}" method="GET" class="search-form">
+                    <input type="text" name="search" value="{{ request('search') }}" 
+                           placeholder="Enter Order ID, Email or Phone number..." class="search-input">
+                    <button type="submit" class="view-btn btn-search">Search Order</button>
+                </form>
             </div>
 
-            <section class="recent-section">
-                <h2>Pending Orders</h2>
-                <table class="admin-table">
+            <section class="orders-section">
+                @if (session('success'))
+                    <div class="alert alert-success">
+                        {{ session('success') }}
+                    </div>
+                @endif
+
+                <table class="orders-table">
                     <thead>
                         <tr>
-                            <th>Order ID</th>
+                            <th>ID</th>
                             <th>Customer</th>
+                            <th>Total Amount</th>
                             <th>Status</th>
-                            <th>Total</th>
+                            <th>Created At</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse ($pendingOrders as $order)
+                        @forelse ($orders as $order)
                             <tr>
-                                <td>#{{ $order->id }}</td>
-                                <td>{{ $order->receiver_name ?? 'Guest' }}</td>
-                                <td><span class="status pending">{{ ucfirst($order->status) }}</span></td>
-                                <td>{{ number_format($order->total_price, 0, ',', '.') }} VNĐ</td>
+                                <td>{{ $order->id }}</td>
+                                <td>{{ $order->user->name }}</td>
+                                <td>${{ number_format($order->total_price, 2) }}</td>
+                                <td>{{ ucfirst($order->status) }}</td>
+                                <td>{{ $order->created_at->format('Y-m-d H:i') }}</td>
                                 <td>
                                     @if ($order->status !== 'cancelled')
                                         <form action="{{ route('admin.orders.updateStatus', $order) }}" method="POST" class="update-status-form">
@@ -83,14 +69,19 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="5" style="text-align: center;">No pending orders found.</td>
+                                <td colspan="6" class="no-data">
+                                    {{ request('search') ? 'No orders found matching your search.' : 'Please enter information to search for orders.' }}
+                                </td>
                             </tr>
                         @endforelse
                     </tbody>
                 </table>
+
+                <div class="pagination-wrapper">
+                    {{ $orders->links() }}
+                </div>
             </section>
         </main>
     </div>
 </body>
-
 </html>
