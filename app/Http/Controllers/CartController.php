@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\OrderNotification;
 use App\Models\Discount;
 use App\Models\Order;
 use App\Models\OrderItem;
@@ -9,6 +10,7 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class CartController extends Controller
 {
@@ -243,6 +245,12 @@ class CartController extends Controller
 
             // Confirm saving everything to the database
             DB::commit();
+
+            try {
+                Mail::to(Auth::user()->email)->send(new OrderNotification($order));
+            } catch (\Exception $e) {
+                \Log::error('Mail error: '.$e->getMessage());
+            }
 
             return redirect()->route('checkout.success', $order->id)
                 ->with('success', 'Order placed successfully!');
