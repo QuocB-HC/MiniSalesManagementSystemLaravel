@@ -38,9 +38,21 @@
                 <div class="stat-card">
                     <div class="stat-icon blue"><i class="fa-solid fa-user"></i></div>
                     <div class="stat-info">
-                        <h3>Customers</h3>
-                        <p>{{ number_format($totalUsers, 0, ',', '.') }}</p>
+                        <h3>New Customers / Total (Month)</h3>
+                        <p>{{ number_format($newUsersThisMonth, 0, ',', '.') }} / {{ number_format($totalUsers, 0, ',', '.') }}</p>
                     </div>
+                </div>
+            </div>
+
+            <div class="charts-grid" style="display: grid; grid-template-columns: 2fr 1fr; gap: 20px;">
+                <div class="chart-container">
+                    <h3>Revenue Last 7 Days</h3>
+                    <canvas id="revenueChart"></canvas>
+                </div>
+
+                <div class="chart-container">
+                    <h3>Order Status Distribution</h3>
+                    <canvas id="statusChart"></canvas>
                 </div>
             </div>
 
@@ -109,6 +121,76 @@
             </section>
         </main>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        //=========== Revenue Last 7 Days ===========//
+        const ctx = document.getElementById('revenueChart').getContext('2d');
+
+        // Transfer data from PHP to JS
+        const labels = {!! json_encode($revenueLast7Days->pluck('date')) !!};
+        const data = {!! json_encode($revenueLast7Days->pluck('total')) !!};
+
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Doanh thu (VNĐ)',
+                    data: data,
+                    borderColor: 'rgb(75, 192, 192)',
+                    tension: 0.1
+                }]
+            }
+        });
+
+        //=========== Order Status Stats ===========//
+        const statusCtx = document.getElementById('statusChart').getContext('2d');
+
+        // Transfer data from PHP to JS
+        const statusLabels = {!! json_encode($orderStatusStats->pluck('status')) !!};
+        const statusData = {!! json_encode($orderStatusStats->pluck('count')) !!};
+
+        // The function automatically assigns a color based on the state name
+        const getColor = (status) => {
+            switch (status) {
+                case 'completed':
+                    return '#28a745'; // Green
+                case 'pending':
+                    return '#ffc107'; // Yellow
+                case 'processing':
+                    return '#17a2b8'; // Ocean blue
+                case 'shipping':
+                    return '#007bff'; // Heavy blue
+                case 'cancelled':
+                    return '#dc3545'; // Red
+                default:
+                    return '#6c757d'; // Gray
+            }
+        };
+
+        const backgroundColors = statusLabels.map(label => getColor(label));
+
+        new Chart(statusCtx, {
+            type: 'doughnut', // Can change to 'pie' or 'bar'
+            data: {
+                labels: statusLabels.map(label => label.toUpperCase()),
+                datasets: [{
+                    data: statusData,
+                    backgroundColor: backgroundColors,
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom', // Put note to the bottom
+                    }
+                }
+            }
+        });
+    </script>
 </body>
 
 </html>

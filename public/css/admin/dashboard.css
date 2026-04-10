@@ -1,6 +1,6 @@
 body {
-    background-color: #f0f0f0;
-    font-family: "Arial", sans-serif;
+    background: #f0f0f0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
     padding: 0;
 }
@@ -48,6 +48,15 @@ header {
 }
 .stat-icon.blue {
     color: #36b9cc;
+}
+
+/* Chart Container */
+.chart-container {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 40px;
 }
 
 /* Table Section */
