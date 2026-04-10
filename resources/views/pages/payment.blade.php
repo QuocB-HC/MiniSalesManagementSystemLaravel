@@ -120,6 +120,8 @@
         </form>
     </div>
 
+    <x-footer />
+
     <script>
         document.getElementById('apply_discount').addEventListener('click', function() {
             const code = document.getElementById('discount_code').value;

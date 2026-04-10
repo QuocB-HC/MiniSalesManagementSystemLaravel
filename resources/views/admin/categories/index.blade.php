@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <title>Categories Management</title>
     <link rel="stylesheet" href="{{ asset('css/admin/categories/index.css') }}">
 </head>
+
 <body>
     <div class="main-container">
         <x-side-bar />
@@ -51,12 +53,14 @@
                                     {{ Str::limit($category->description, 50, '...') }}
                                 </td>
                                 <td>
-                                    <span class="product-count">{{ $category->products_count ?? $category->products()->count() }}</span>
+                                    <span
+                                        class="product-count">{{ $category->products_count ?? $category->products()->count() }}</span>
                                 </td>
                                 <td class="action-btns">
                                     <a href="{{ route('admin.categories.edit', $category->id) }}"
                                         class="view-btn btn-edit">Edit</a>
-                                    <form action="{{ route('admin.categories.destroy', $category->id) }}" method="POST"
+                                    <form action="{{ route('admin.categories.destroy', $category->id) }}"
+                                        method="POST"
                                         onsubmit="return confirm('Are you sure you want to delete this category?')">
                                         @csrf
                                         @method('DELETE')
@@ -81,4 +85,5 @@
         </main>
     </div>
 </body>
+
 </html>

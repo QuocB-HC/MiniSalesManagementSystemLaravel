@@ -58,10 +58,14 @@
                 @endforeach
             </div>
             <div class="pagination-wrapper">
-                {{ $orders->links() }}
+                <div class="pagination-container">
+                    {{ $orders->links() }}
+                </div>
             </div>
         @endif
     </div>
+
+    <x-footer />
 </body>
 
 </html>

@@ -92,7 +92,9 @@
                 </table>
 
                 <div class="pagination-wrapper">
-                    {{ $orders->links() }}
+                    <div class="pagination-container">
+                        {{ $orders->links() }}
+                    </div>
                 </div>
             </section>
         </main>

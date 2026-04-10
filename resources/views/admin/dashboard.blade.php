@@ -65,15 +65,26 @@
                                 <td>{{ number_format($order->total_price, 0, ',', '.') }} VNĐ</td>
                                 <td>
                                     @if ($order->status !== 'cancelled')
-                                        <form action="{{ route('admin.orders.updateStatus', $order) }}" method="POST" class="update-status-form">
+                                        <form action="{{ route('admin.orders.updateStatus', $order) }}" method="POST"
+                                            class="update-status-form">
                                             @csrf
                                             @method('PUT')
                                             <select name="status" class="status-select">
-                                                <option value="pending" {{ $order->status === 'pending' ? 'selected' : '' }}>Pending</option>
-                                                <option value="processing" {{ $order->status === 'processing' ? 'selected' : '' }}>Processing</option>
-                                                <option value="shipping" {{ $order->status === 'shipping' ? 'selected' : '' }}>Shipping</option>
-                                                <option value="completed" {{ $order->status === 'completed' ? 'selected' : '' }}>Completed</option>
-                                                <option value="cancelled" {{ $order->status === 'cancelled' ? 'selected' : '' }}>Cancelled</option>
+                                                <option value="pending"
+                                                    {{ $order->status === 'pending' ? 'selected' : '' }}>Pending
+                                                </option>
+                                                <option value="processing"
+                                                    {{ $order->status === 'processing' ? 'selected' : '' }}>Processing
+                                                </option>
+                                                <option value="shipping"
+                                                    {{ $order->status === 'shipping' ? 'selected' : '' }}>Shipping
+                                                </option>
+                                                <option value="completed"
+                                                    {{ $order->status === 'completed' ? 'selected' : '' }}>Completed
+                                                </option>
+                                                <option value="cancelled"
+                                                    {{ $order->status === 'cancelled' ? 'selected' : '' }}>Cancelled
+                                                </option>
                                             </select>
                                             <button type="submit" class="update-button">Update</button>
                                         </form>
@@ -89,6 +100,12 @@
                         @endforelse
                     </tbody>
                 </table>
+
+                <div class="pagination-wrapper">
+                    <div class="pagination-container">
+                        {{ $pendingOrders->links() }}
+                    </div>
+                </div>
             </section>
         </main>
     </div>

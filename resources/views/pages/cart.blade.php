@@ -82,10 +82,12 @@
             <div class="empty-cart">
                 <i class="fa-solid fa-cart-shopping"></i>
                 <p>Your cart is empty!</p>
-                <a href="/" class="btn-back">Go Shopping</a>
+                <a href="{{ route('products.index') }}" class="btn-back">Go Shopping</a>
             </div>
         @endif
     </div>
+
+    <x-footer />
 </body>
 
 </html>

@@ -1,46 +1,52 @@
-/* Container chính của Header */
+/* Main Container */
 .header-container {
     background: #333;
     color: white;
     padding: 0 2rem;
     display: flex;
-    justify-content: space-between;
     align-items: center;
     height: 15vh;
     position: sticky;
     top: 0;
     z-index: 1000;
 }
-
-.logo a {
+.header-list {
+    display: flex;
+    list-style: none;
+    width: 100%;
+    margin: 0;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0;
+    margin: 0 2%;
+}
+.header-list a {
+    color: white;
+    text-decoration: none;
+    transition: 0.3s;
+}
+.header-list a:hover {
+    color: #007bff;
+}
+.header-list .logo {
     font-size: 2rem;
     font-weight: bold;
     color: white;
     text-decoration: none;
 }
-
-.page-list {
+.header-list .page-list {
     display: flex;
-    list-style: none;
-    gap: 25px;
-    margin: 0;
-    align-items: center;
+    gap: 20px;
+    font-size: large;
 }
-
-.page-list a {
-    color: white;
-    text-decoration: none;
-    font-size: 1.1rem;
-    transition: 0.3s;
-}
-
-.page-list a:hover {
-    color: #007bff;
+.header-list .user-list {
+    display: flex;
+    gap: 5px;
 }
 
 /* --- CUSTOM DROPDOWN --- */
 .custom-dropdown {
-    position: relative; /* Gốc tọa độ cho menu con */
+    position: relative; /* Menu Root */
 }
 
 .dropdown-trigger {
@@ -62,12 +68,12 @@
     border-color: white;
 }
 
-/* Nội dung Menu thả xuống */
+/* Dropdown Content*/
 .dropdown-content {
-    display: none; /* Ẩn mặc định */
+    display: none; /* Default */
     position: absolute;
-    right: 0; /* Căn lề phải bằng với avatar */
-    top: calc(100% + 15px); /* Đẩy xuống dưới avatar */
+    right: 0;
+    top: calc(100% + 15px);
     background-color: white;
     min-width: 180px;
     border-radius: 8px;
@@ -81,7 +87,7 @@
     animation: slideDown 0.2s ease;
 }
 
-/* Header trong menu (tên user) */
+/* Menu Header (User Name) */
 .dropdown-header {
     padding: 12px 15px;
     background: #f8f9fa;
@@ -95,12 +101,12 @@
     display: block;
 }
 
-/* Các mục bên trong menu */
+/* Menu Items */
 .dropdown-item {
     display: block;
     width: 100%;
     padding: 10px 15px;
-    color: #333 !important; /* Luôn là màu đen trên nền trắng */
+    color: #333 !important; /* Always black color on white background */
     text-decoration: none;
     font-size: 0.95rem;
     border: none;
@@ -120,7 +126,7 @@
     border-top: 1px solid #eee;
 }
 
-/* Hiệu ứng trượt xuống */
+/* Slide Down Effect */
 @keyframes slideDown {
     from {
         opacity: 0;

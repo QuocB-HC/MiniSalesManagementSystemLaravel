@@ -3,13 +3,18 @@
 </header>
 
 <div class="header-container">
-    <div class="logo">
-        <a href="/">My Mini Store</a>
-    </div>
-    <nav>
-        <ul class="page-list">
-            <li><a href="/">Home</a></li>
-            <li><a href="/cart">Cart</a></li>
+    <ul class="header-list">
+        <div class="logo">
+            <a href="/">My Mini Store</a>
+        </div>
+
+        <div class="page-list">
+            <li><a href="{{ route('home') }}">Home</a></li>
+            <li><a href="{{ route('products.index') }}">Products</a></li>
+            <li><a href="{{ route('cart.index') }}">Cart</a></li>
+        </div>
+
+        <div class="user-list">
             @auth
                 <li class="custom-dropdown" id="userDropdown">
                     <div class="dropdown-trigger" onclick="toggleUserMenu(event)">
@@ -38,20 +43,21 @@
             @endauth
             @guest
                 <li><a href="{{ route('login') }}">Login</a></li>
+                <li>/</li>
                 <li><a href="{{ route('register') }}">Register</a></li>
             @endguest
-        </ul>
-    </nav>
+        </div>
+    </ul>
 </div>
 
 <script>
     function toggleUserMenu(event) {
-        event.stopPropagation(); // Ngăn sự kiện click lan ra ngoài
+        event.stopPropagation(); // Prevent event bubbling
         const menu = document.getElementById('dropdownMenu');
         menu.classList.toggle('show');
     }
 
-    // Đóng menu khi click bất kỳ đâu bên ngoài
+    // Close dropdown menu when clicking outside of it
     window.onclick = function(event) {
         const menu = document.getElementById('dropdownMenu');
         if (menu && menu.classList.contains('show')) {

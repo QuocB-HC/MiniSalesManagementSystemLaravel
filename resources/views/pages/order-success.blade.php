@@ -47,6 +47,8 @@
             </div>
         </div>
     </div>
+
+    <x-footer />
 </body>
 
 </html>

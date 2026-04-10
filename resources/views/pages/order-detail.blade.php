@@ -75,7 +75,7 @@
             </table>
         </div>
 
-        <!-- Tổng kết -->
+        <!-- Summary -->
         <div class="order-summary">
             <div class="summary-row">
                 <span>Tổng số lượng:</span>
@@ -93,6 +93,8 @@
             </div>
         </div>
     </div>
+
+    <x-footer />
 </body>
 
 </html>

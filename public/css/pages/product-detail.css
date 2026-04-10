@@ -1,0 +1,164 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #ffffff;
+    color: #333;
+}
+
+.product-container {
+    min-height: 60vh;
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.product-main {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Chia đôi màn hình */
+    gap: 50px;
+    margin-bottom: 60px;
+}
+
+/* Gallery */
+.main-image img {
+    width: 100%;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+/* Product Info */
+.breadcrumb {
+    font-size: 14px;
+    color: #888;
+    margin-bottom: 15px;
+}
+.breadcrumb a {
+    text-decoration: none;
+    color: #888;
+}
+
+.product-title {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.product-meta {
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+.stock {
+    margin-left: 15px;
+    font-weight: bold;
+}
+.in-stock {
+    color: #28a745;
+}
+.out-of-stock {
+    color: #dc3545;
+}
+
+.product-price {
+    margin-bottom: 25px;
+}
+.current-price {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #d91e18;
+}
+
+.short-description {
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 30px;
+}
+
+/* Mua hàng */
+.add-to-cart-form {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    margin-bottom: 40px;
+}
+
+.quantity-selector {
+    display: flex;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+}
+.quantity-selector button {
+    padding: 10px 15px;
+    border: none;
+    background: #f8f9fa;
+    cursor: pointer;
+}
+.quantity-selector input {
+    width: 50px;
+    text-align: center;
+    border: none;
+    font-weight: bold;
+}
+
+.btn-add-cart {
+    background: #333;
+    color: white;
+    padding: 15px 40px;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+.btn-add-cart:hover {
+    background: #000;
+    transform: translateY(-2px);
+}
+.btn-add-cart:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+}
+
+/* Badges */
+.product-trust-badges {
+    display: flex;
+    gap: 20px;
+    border-top: 1px solid #eee;
+    padding-top: 30px;
+}
+.badge-item {
+    font-size: 13px;
+    color: #555;
+}
+.badge-item i {
+    color: #28a745;
+    margin-right: 5px;
+}
+
+/* Tabs */
+.product-tabs {
+    border-top: 2px solid #eee;
+    padding-top: 40px;
+}
+.tab-header {
+    margin-bottom: 25px;
+    font-size: 1.5rem;
+    color: #333;
+    font-weight: bold;
+}
+.tab-btn.active {
+    border-bottom-color: #333;
+    font-weight: bold;
+}
+.tab-content {
+    line-height: 1.8;
+    color: #444;
+}
+
+/* Responsive */
+@media (max-width: 800px) {
+    .product-main {
+        grid-template-columns: 1fr;
+    }
+}

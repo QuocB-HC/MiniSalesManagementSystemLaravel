@@ -15,7 +15,15 @@ use Illuminate\Support\Facades\Route;
 
 // 1. PUBLIC ROUTES (accessible to all users)
 // Home page route
-Route::get('/', [ProductController::class, 'index'])->name('home');
+Route::get('/', [ProductController::class, 'homePage'])->name('home');
+
+// Product routes
+Route::prefix('products')->as('products.')->group(function () {
+    Route::get('/', [ProductController::class, 'index'])->name('index'); // products.index
+    Route::get('/category/{category}', [ProductController::class, 'showByCategory'])->name('byCategory'); // products.byCategory
+    Route::get('/detail/{id}', [ProductController::class, 'detail'])->name('detail'); // products.detail
+});
+
 
 // Cart routes
 Route::prefix('cart')->as('cart.')->group(function () {

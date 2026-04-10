@@ -16,7 +16,7 @@ class DashboardController extends Controller
         $totalRevenue = Order::where('status', 'completed')->sum('total_price');
 
         // 2. Get the list of pending orders for the table below
-        $pendingOrders = Order::whereIn('status', ['pending', 'processing'])->oldest()->get();
+        $pendingOrders = Order::whereIn('status', ['pending', 'processing'])->oldest()->paginate(5);
 
         // 3. Return the view with all the data
         return view('admin.dashboard', compact(

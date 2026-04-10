@@ -24,21 +24,33 @@ class CartController extends Controller
         return view('pages.cart', compact('cartItems', 'totalAmount'));
     }
 
-    public function addToCart($id)
+    public function addToCart($id, Request $request)
     {
         $product = Product::findOrFail($id);
 
+        $request->validate([
+            'quantity' => 'required|integer|min:1|max:'.$product->stock_quantity,
+        ]);
+
+        $quantity = (int) $request->input('quantity', 1);
         // Take current cart from session or initialize if not exists
         $cart = session()->get('cart', []);
 
         // If product already in cart, increase quantity
         if (isset($cart[$id])) {
-            $cart[$id]['quantity']++;
+            // Check max quanity
+            $newQuantity = $cart[$id]['quantity'] + $quantity;
+
+            if ($newQuantity > $product->stock_quantity) {
+                return redirect()->back()->with('error', 'Quantity exceeds stock!');
+            }
+
+            $cart[$id]['quantity'] = $newQuantity;
         } else {
             // If not exists, add new item to the array
             $cart[$id] = [
                 'name' => $product->name,
-                'quantity' => 1,
+                'quantity' => $quantity,
                 'price' => $product->price,
                 'image' => $product->image_url, // Ensure the column name matches your DB
             ];

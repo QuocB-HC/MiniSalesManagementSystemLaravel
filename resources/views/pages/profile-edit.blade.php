@@ -9,8 +9,6 @@
 </head>
 
 <body>
-    <x-header />
-
     <div class="profile-container">
         <div class="profile-card">
             <div class="profile-header">
