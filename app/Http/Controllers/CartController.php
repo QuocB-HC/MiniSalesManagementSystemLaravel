@@ -7,6 +7,7 @@ use App\Models\Discount;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
+use App\Services\VNPayService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -154,7 +155,7 @@ class CartController extends Controller
         ]);
     }
 
-    public function placeOrder(Request $request)
+    public function placeOrder(Request $request, VNPayService $vnpayService)
     {
         // 1. Take cart from Session
         $cart = session()->get('cart', []);
@@ -168,6 +169,7 @@ class CartController extends Controller
             'phone' => 'required|string|max:15',
             'address' => 'required|string|max:500',
             'discount_id' => 'nullable|exists:discounts,id',
+            'payment_method' => 'required|in:cod,vnpay',
         ]);
 
         // 3. Use Database Transaction to ensure safety
@@ -224,6 +226,8 @@ class CartController extends Controller
                 'receiver_name' => $request->name,
                 'receiver_phone' => $request->phone,
                 'receiver_address' => $request->address,
+                'note' => $request->note,
+                'payment_method' => $request->payment_method,
                 'status' => 'pending',
             ]);
 
@@ -235,32 +239,52 @@ class CartController extends Controller
                     'quantity' => $details['quantity'],
                     'price' => $details['price'],
                 ]);
-
-                // Update product stock in the 'products' table
-                Product::where('id', $id)->decrement('stock_quantity', $details['quantity']);
             }
 
-            // 6. Delete the cart after successful order placement
-            session()->forget('cart');
+            // 6. PAYMENT STREAMING
+            if ($request->payment_method == 'vnpay') {
+                // VNPAY CASE:
+                // - Do not deduct from storage immediately.
+                // - Commit to save order int DB and go to pay.
+                DB::commit();
 
-            // Confirm saving everything to the database
-            DB::commit();
+                $paymentUrl = $vnpayService->createVnpayPayment($order);
 
-            try {
-                Mail::to(Auth::user()->email)->send(new OrderNotification($order));
-            } catch (\Exception $e) {
-                \Log::error('Mail error: '.$e->getMessage());
+                return redirect()->away($paymentUrl);
+            } else {
+                // COD CASE:
+                // Update Order Status
+                $order->update(['status' => 'processing']);
+
+                // - Deduct from storage immediately.
+                foreach ($cart as $id => $details) {
+                    Product::where('id', $id)->decrement('stock_quantity', $details['quantity']);
+                }
+
+                session()->forget('cart');
+                DB::commit();
+
+                // Send mail to confirm for COD payment
+                try {
+                    Mail::to(Auth::user()->email)->send(new OrderNotification($order));
+                } catch (\Exception $e) {
+                    \Log::error('Mail error: '.$e->getMessage());
+                }
+
+                return redirect()->route('checkout.success', $order->id)
+                    ->with('success', 'Order placed successfully!');
             }
-
-            return redirect()->route('checkout.success', $order->id)
-                ->with('success', 'Order placed successfully!');
-
         } catch (\Exception $e) {
             // If any error occurs, rollback the transaction to prevent database clutter
             DB::rollBack();
 
             return redirect()->back()->with('error', 'System Error: '.$e->getMessage());
         }
+    }
+
+    public function vnpayReturn(Request $request, VNPayService $vnpayService)
+    {
+        return $vnpayService->vnpayReturn($request);
     }
 
     public function orderSuccess($id)

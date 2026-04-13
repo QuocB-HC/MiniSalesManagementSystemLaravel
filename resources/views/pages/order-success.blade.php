@@ -10,8 +10,6 @@
 </head>
 
 <body>
-    <x-header />
-
     <div class="success-container">
         <div class="success-card">
             <div class="icon-box">
@@ -32,7 +30,7 @@
                 </div>
                 <div class="detail-item">
                     <span>Payment Method:</span>
-                    <strong>Cash on Delivery (COD)</strong>
+                    <strong>{{ $order->payment_method == 'cod' ? 'Cash on Delivery (COD)' : 'Bank Transfer' }}</strong>
                 </div>
             </div>
 
@@ -47,8 +45,6 @@
             </div>
         </div>
     </div>
-
-    <x-footer />
 </body>
 
 </html>

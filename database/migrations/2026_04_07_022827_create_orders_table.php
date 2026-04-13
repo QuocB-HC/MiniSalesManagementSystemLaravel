@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('receiver_phone');
             $table->string('receiver_address');
             $table->string('note')->nullable();
+            $table->string('payment_method')->default('cod');
             $table->string('status')->default('pending');
             $table->timestamps();
         });

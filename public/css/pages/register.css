@@ -1,0 +1,96 @@
+body {
+    background: #f0f0f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.register-box {
+    background: #fff;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+.register-box h2 {
+    margin-bottom: 10px;
+    color: #333;
+}
+.register-box p {
+    color: #777;
+    margin-bottom: 30px;
+    font-size: 14px;
+}
+
+.form-group {
+    text-align: left;
+    margin-bottom: 20px;
+}
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #555;
+}
+.form-group input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    box-sizing: border-box; /* Important to prevent overflow */
+}
+.form-group .input-with-button {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+}
+.form-group .input-with-button input {
+    flex: 1;
+    margin: 0;
+}
+.form-group .input-with-button .send-code-btn {
+    background: none;
+    border: none;
+    color: #28a745;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 14px;
+    white-space: nowrap;
+    padding: 0;
+}
+.form-group .input-with-button .send-code-btn:hover {
+    color: #218838;
+    text-decoration: underline;
+}
+.form-group .input-with-button .send-code-btn:disabled {
+    color: #ccc;
+    cursor: not-allowed;
+}
+
+.btn-register {
+    width: 100%;
+    padding: 12px;
+    background: #28a745;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-register:hover {
+    background: #218838;
+}
+.error {
+    color: red;
+    font-size: 12px;
+    margin-top: 5px;
+}

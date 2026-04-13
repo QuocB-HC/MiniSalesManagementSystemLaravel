@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\VerifyCodeMail;
 use App\Models\User;
+use Illuminate\Auth\Events\Verified;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 
 class AuthController extends Controller
 {
@@ -62,6 +65,61 @@ class AuthController extends Controller
         return view('pages.register');
     }
 
+    public function sendVerificationCode(Request $request)
+    {
+        $request->validate(['email' => 'required|email']);
+
+        // Create random 6 numbers code
+        $code = rand(100000, 999999);
+
+        // Save into Session (lasts for 5 minutes)
+        session([
+            'verify_code' => $code,
+            'verify_email' => $request->email,
+            'verify_code_expires_at' => now()->addMinutes(5),
+        ]);
+
+        // Send verify code mail
+        Mail::to($request->email)->send(new VerifyCodeMail($code));
+
+        return response()->json(['success' => true, 'message' => 'Code sent successfully!']);
+    }
+
+    public function showCompleteRegister()
+    {
+        return view('pages.register-complete');
+    }
+
+    public function verifyEmail(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|string|email|max:255|unique:users',
+            'verify_email_code' => 'required',
+        ]);
+
+        $sessionCode = session('verify_code');
+        $sessionEmail = session('verify_email');
+        $expiresAt = session('verify_code_expires_at');
+
+        if (! $expiresAt || now()->gt($expiresAt)) {
+            session()->forget(['verify_code', 'verify_email', 'verify_code_expires_at']);
+
+            return back()->withErrors([
+                'verify_email_code' => 'The verification code has expired. Please resend a new code!',
+            ])->withInput();
+        }
+
+        if ($request->verify_email_code != $sessionCode || $request->email != $sessionEmail) {
+            return back()->withErrors([
+                'verify_email_code' => 'The verification code is incorrect or has expired.',
+            ])->withInput();
+        }
+
+        session()->forget(['verify_code']);
+
+        return redirect()->route('register.complete')->with('success', 'Verification successful!');
+    }
+
     public function register(Request $request)
     {
         // 1. Validate input
@@ -76,7 +134,12 @@ class AuthController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password), // Encrypt password
+            'email_verified_at' => now(),
         ]);
+
+        if ($user->markEmailAsVerified()) {
+            event(new Verified($user));
+        }
 
         // 3. Auto-login after registration
         Auth::login($user);

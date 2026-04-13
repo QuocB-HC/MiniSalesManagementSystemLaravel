@@ -36,6 +36,11 @@
                         <label>Shipping Address</label>
                         <textarea name="address" rows="3" required placeholder="Enter your full address">{{ $user->address }}</textarea>
                     </div>
+
+                    <div class="input-group">
+                        <label>Note</label>
+                        <textarea name="note" rows="10" placeholder="Enter your note"></textarea>
+                    </div>
                 </div>
 
                 <div class="payment-methods">
@@ -47,7 +52,7 @@
                             <i class="fa-solid fa-money-bill-wave"></i> Cash on Delivery (COD)
                         </label>
                         <label class="method-item">
-                            <input type="radio" name="payment_method" value="bank">
+                            <input type="radio" name="payment_method" value="vnpay">
                             <span class="checkmark"></span>
                             <i class="fa-solid fa-building-columns"></i> Bank Transfer
                         </label>

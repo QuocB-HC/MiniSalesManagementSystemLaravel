@@ -24,6 +24,7 @@ class Order extends Model
         'discount_id',
         'discount_code',
         'discount_value',
+        'payment_method'
     ];
 
     protected function casts(): array

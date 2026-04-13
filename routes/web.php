@@ -5,6 +5,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController; // Rename to avoid conflict with public ProductController
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController; // Rename to avoid conflict with public CategoryController
@@ -41,6 +42,9 @@ Route::post('/login', [AuthController::class, 'login'])->name('login.post');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
 Route::post('/register', [AuthController::class, 'register'])->name('register.post');
+Route::post('/send-code', [AuthController::class, 'sendVerificationCode'])->name('send.code');
+Route::post('/verify-email', [AuthController::class, 'verifyEmail'])->name('verify.email');
+Route::get('/register-complete', [AuthController::class, 'showCompleteRegister'])->name('register.complete');
 
 // 3. PROTECTED ROUTES (only for authenticated users)
 Route::middleware('auth')->group(function () {
@@ -58,6 +62,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/place-order', [CartController::class, 'placeOrder'])->name('placeOrder'); // checkout.placeOrder
         Route::post('/apply-discount', [CartController::class, 'applyDiscount'])->name('applyDiscount');
         Route::get('/success/{id}', [CartController::class, 'orderSuccess'])->name('success'); // checkout.success
+        Route::get('/vnpay-return', [CartController::class, 'vnpayReturn'])->name('vnpayReturn'); // checkout.returnVnpay
     });
 
     // Orders routes
@@ -65,6 +70,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/', [OrderController::class, 'index'])->name('index'); // orders.index
         Route::get('/{id}', [OrderController::class, 'show'])->name('detail'); // orders.detail
     });
+
+    Route::get('/return-vnpay', [CartController::class, 'vnpayReturn']);
 
     // ADMIN ROUTES (only for users with admin role)
     Route::middleware('can:admin')->prefix('admin')->as('admin.')->group(function () {
