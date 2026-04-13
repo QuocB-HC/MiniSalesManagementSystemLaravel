@@ -1,6 +1,5 @@
-<header>
-    <link rel="stylesheet" href="{{ asset('css/components/header.css') }}">
-</header>
+<link rel="stylesheet" href="{{ asset('css/components/header.css') }}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
 <div class="header-container">
     <ul class="header-list">
@@ -8,10 +7,21 @@
             <a href="/">My Mini Store</a>
         </div>
 
-        <div class="page-list">
-            <li><a href="{{ route('home') }}">Home</a></li>
-            <li><a href="{{ route('products.index') }}">Products</a></li>
-            <li><a href="{{ route('cart.index') }}">Cart</a></li>
+        <div class="menu-list">
+            <div class="page-list">
+                <li><a href="{{ route('home') }}">Home</a></li>
+                <li><a href="{{ route('products.index') }}">Products</a></li>
+                <li><a href="{{ route('cart.index') }}">Cart</a></li>
+            </div>
+
+            <div class="search-header">
+                <form action="{{ route('products.search') }}" method="GET" class="search-form">
+                    <input type="text" name="search" value="{{ request('search') }}"
+                        placeholder="Search products by name, SKU...">
+                    <button type="submit">
+                        <i class="fa-solid fa-magnifying-glass"></i> </button>
+                </form>
+            </div>
         </div>
 
         <div class="user-list">

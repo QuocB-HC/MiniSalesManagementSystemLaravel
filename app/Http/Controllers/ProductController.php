@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Product;
+use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
@@ -16,7 +17,29 @@ class ProductController extends Controller
         $products = Product::with('category')
             ->where('is_disabled', false)
             ->latest()
-            ->paginate(15); // Paginate with 12 products per page
+            ->paginate(15); // Paginate with 15 products per page
+        $categories = Category::all();
+
+        return view('pages.product-list', compact('products', 'categories'));
+    }
+
+    /**
+     * Display a listing of the search result.
+     */
+    public function search (Request $request) {
+        // Initialize the query but do not execute
+        $query = Product::query()->where('is_disabled', 0);
+
+        // Search by name or sku (Use 'search' key)
+        $query->when($request->search, function ($q, $search) {
+            $q->where(function ($sub) use ($search) {
+                $sub->where('name', 'like', "%{$search}%")
+                    ->orWhere('sku', 'like', "%{$search}%")
+                    ->orWhere('description', 'like', "%{$search}%");
+            });
+        });
+
+        $products = $query->paginate(15);
         $categories = Category::all();
 
         return view('pages.product-list', compact('products', 'categories'));

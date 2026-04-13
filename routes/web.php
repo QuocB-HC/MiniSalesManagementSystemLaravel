@@ -22,6 +22,7 @@ Route::prefix('products')->as('products.')->group(function () {
     Route::get('/', [ProductController::class, 'index'])->name('index'); // products.index
     Route::get('/category/{category}', [ProductController::class, 'showByCategory'])->name('byCategory'); // products.byCategory
     Route::get('/detail/{id}', [ProductController::class, 'detail'])->name('detail'); // products.detail
+    Route::get('/search', [ProductController::class, 'search'])->name('search'); // products.search
 });
 
 

@@ -13,7 +13,7 @@ class ProductController extends Controller
         $products = Product::all();
 
         if ($products->count() === 0) {
-            return response()->json(['message' => 'No products found'], 404);
+            return response()->json(['status' => 'fail', 'message' => 'No products found'], 404);
         }
 
         // Return JSON with status code 200 (Success)
@@ -24,11 +24,38 @@ class ProductController extends Controller
         ], 200);
     }
 
+    public function search(Request $request)
+    {
+        // Initialize the query but do not execute
+        $query = Product::query()->where('is_disabled', 0);
+
+        // Search by name or sku (Use 'search' key)
+        $query->when($request->search, function ($q, $search) {
+            $q->where(function ($sub) use ($search) {
+                $sub->where('name', 'like', "%{$search}%")
+                    ->orWhere('sku', 'like', "%{$search}%")
+                    ->orWhere('description', 'like', "%{$search}%");
+            });
+        });
+
+        $products = $query->paginate(15);
+
+        if ($products->count() === 0) {
+            return response()->json(['status' => 'fail', 'message' => 'No products found'], 404);
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'count' => $products->count(),
+            'data' => $products,
+        ]);
+    }
+
     public function show($id)
     {
         $product = Product::find($id);
         if (! $product) {
-            return response()->json(['message' => 'Product not found'], 404);
+            return response()->json(['status' => 'fail', 'message' => 'Product not found'], 404);
         }
 
         return response()->json(['status' => 'success', 'data' => $product], 200);

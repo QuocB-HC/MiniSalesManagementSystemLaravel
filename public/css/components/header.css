@@ -9,6 +9,7 @@
     position: sticky;
     top: 0;
     z-index: 1000;
+    padding: 20px;
 }
 .header-list {
     display: flex;
@@ -29,10 +30,19 @@
     color: #007bff;
 }
 .header-list .logo {
-    font-size: 2rem;
+    font-size: 2.5rem;
     font-weight: bold;
     color: white;
     text-decoration: none;
+    width: 20%;
+}
+.header-list .menu-list {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    align-items: center;
+    justify-content: center;
+    width: 60%;
 }
 .header-list .page-list {
     display: flex;
@@ -42,6 +52,9 @@
 .header-list .user-list {
     display: flex;
     gap: 5px;
+    width: 20%;
+    align-items: center;
+    justify-content: flex-end;
 }
 
 /* --- CUSTOM DROPDOWN --- */
@@ -136,4 +149,35 @@
         opacity: 1;
         transform: translateY(0);
     }
+}
+
+/* Search Bar */
+.search-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.search-form {
+    display: flex;
+}
+.search-form input {
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px 0 0 5px;
+    width: 300px;
+}
+.search-form button {
+    background: #27ae60;
+    color: white;
+    border: none;
+    padding: 0 15px;
+    cursor: pointer;
+    transition: background 0.2s;
+    border-radius: 0 5px 5px 0;
+}
+.search-form button:hover {
+    background: #219150;
+}
+.search-form button i {
+    font-size: 16px;
 }
