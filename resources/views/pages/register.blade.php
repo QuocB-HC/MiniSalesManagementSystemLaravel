@@ -29,7 +29,15 @@
 
                 <div class="form-group">
                     <label>Code</label>
-                    <input type="text" name="verify_email_code" required>
+                    <div class="otp-container">
+                        <input type="text" class="otp-input" maxlength="1" pattern="\d*" inputmode="numeric">
+                        <input type="text" class="otp-input" maxlength="1" pattern="\d*" inputmode="numeric">
+                        <input type="text" class="otp-input" maxlength="1" pattern="\d*" inputmode="numeric">
+                        <input type="text" class="otp-input" maxlength="1" pattern="\d*" inputmode="numeric">
+                        <input type="text" class="otp-input" maxlength="1" pattern="\d*" inputmode="numeric">
+                        <input type="text" class="otp-input" maxlength="1" pattern="\d*" inputmode="numeric">
+                    </div>
+                    <input type="hidden" name="verify_email_code" id="final_otp">
                     @error('verify_email_code')
                         <span class="error">{{ $message }}</span>
                     @enderror
@@ -99,6 +107,43 @@
                     btn.innerText = 'Send code';
                 });
         });
+
+        const inputs = document.querySelectorAll('.otp-input');
+        const finalInput = document.getElementById('final_otp');
+
+        inputs.forEach((input, index) => {
+            // 1. Enter number
+            input.addEventListener('input', (e) => {
+                if (e.target.value.length > 0 && index < inputs.length - 1) {
+                    inputs[index + 1].focus();
+                }
+                updateFinalCode();
+            });
+
+            // 2. Enter Backspace to delete
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Backspace' && e.target.value.length === 0 && index > 0) {
+                    inputs[index - 1].focus();
+                }
+            });
+
+            // 3. Handle situations where the user pastes entire codes
+            input.addEventListener('paste', (e) => {
+                const data = e.clipboardData.getData('text').slice(0, 6);
+                if (data.length === 6) {
+                    data.split('').forEach((char, i) => {
+                        inputs[i].value = char;
+                    });
+                    updateFinalCode();
+                }
+            });
+        });
+
+        function updateFinalCode() {
+            let code = "";
+            inputs.forEach(input => code += input.value);
+            finalInput.value = code; // Assign code to a hidden input to submit the form
+        }
     </script>
 </body>
 

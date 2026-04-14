@@ -33,7 +33,11 @@
             </form>
 
             <div class="login-footer">
-                <p>Don't have an account? <a href="/register">Create one</a></p>
+                <p>Don't have an account? <a href={{ route('register') }}>Create one</a></p>
+            </div>
+
+            <div class="login-footer">
+                <p>Forget password? <a href={{ route('forget.password') }}>Reset password</a></p>
             </div>
         </div>
     </div>

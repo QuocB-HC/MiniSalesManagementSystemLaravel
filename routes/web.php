@@ -45,6 +45,13 @@ Route::post('/register', [AuthController::class, 'register'])->name('register.po
 Route::post('/send-code', [AuthController::class, 'sendVerificationCode'])->name('send.code');
 Route::post('/verify-email', [AuthController::class, 'verifyEmail'])->name('verify.email');
 Route::get('/register-complete', [AuthController::class, 'showCompleteRegister'])->name('register.complete');
+Route::get('/forget-password', [AuthController::class, 'showForgetPassword'])->name('forget.password');
+
+Route::prefix('password')->as('password.')->group(function () {
+    Route::post('/send-otp', [AuthController::class, 'sendOtp'])->name('sendOtp'); // password.sendOtp
+    Route::post('/verify-otp', [AuthController::class, 'verifyOtp'])->name('verifyOtp'); // password.verifyOtp
+    Route::post('/update', [AuthController::class, 'updatePassword'])->name('update'); // password.update
+});
 
 // 3. PROTECTED ROUTES (only for authenticated users)
 Route::middleware('auth')->group(function () {
