@@ -180,3 +180,71 @@
 .search-form button i {
     font-size: 16px;
 }
+
+@media (max-width: 991px) {
+    .header-container {
+        height: 12vh;
+    }
+    .header-list .logo {
+        text-align: center;
+    }
+}
+
+@media (max-width: 767px) {
+    .header-container {
+        width: 100%;
+        padding: 0;
+        margin: 0;
+        height: 13vh;
+    }
+    .header-list {
+        position: relative;
+    }
+    .header-list .logo {
+        display: none;
+    }
+    .header-list .menu-list {
+        width: 60%;
+        display: flex;
+        flex-direction: column-reverse;
+        align-items: flex-start;
+        height: 100%;
+        padding-bottom: 10px;
+    }
+    .header-list .menu-list .page-list {
+        font-size: 15px;
+        padding-left: 10px;
+    }
+    .header-list .user-list {
+        width: 40%;
+        display: flex;
+        position: absolute;
+        right: 20px;
+        bottom: 0;
+        font-size: 15px;
+    }
+    .search-header {
+        flex: 1;
+        display: flex;
+        max-width: 800px;
+    }
+    .search-header input {
+        flex: 1;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 4px 0 0 4px;
+        outline: none;
+    }
+    .search-header button {
+        background-color: #28a745;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 0 4px 4px 0;
+        color: white;
+        cursor: pointer;
+    }
+    .user-list .avatar-img {
+        width: 40px;
+        height: 40px;
+    }
+}

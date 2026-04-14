@@ -157,7 +157,7 @@ body {
 }
 
 /* Responsive */
-@media (max-width: 800px) {
+@media (max-width: 991px) {
     .product-main {
         grid-template-columns: 1fr;
     }

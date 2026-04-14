@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Mail\VerifyCodeMail;
 use App\Mail\ResetPasswordMail;
+use App\Mail\VerifyCodeMail;
 use App\Models\User;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Http\Request;
@@ -69,7 +69,20 @@ class AuthController extends Controller
 
     public function sendVerificationCode(Request $request)
     {
-        $request->validate(['email' => 'required|email']);
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|string|email|max:255|unique:users',
+        ], [
+            'email.unique' => 'This email address is already registered.',
+            'email.required' => 'Please enter your email.',
+            'email.email' => 'Invalid email format.',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => $validator->errors()->first(),
+            ], 200);
+        }
 
         // Create random 6 numbers code
         $code = rand(100000, 999999);

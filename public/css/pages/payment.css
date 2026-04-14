@@ -134,7 +134,7 @@ h2 {
     transform: translateY(-2px);
 }
 
-@media (max-width: 850px) {
+@media (max-width: 991px) {
     .payment-wrapper {
         grid-template-columns: 1fr;
     }

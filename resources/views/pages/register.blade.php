@@ -96,13 +96,14 @@
                             }
                         }, 1000);
                     } else {
-                        alert('Error sending code!');
+                        alert(data.message);
                         btn.disabled = false;
                         btn.innerText = 'Send code';
                     }
                 })
                 .catch(error => {
-                    console.error('Error:', error);
+                    alert(data.message);
+                    console.error('Error:', data.message);
                     btn.disabled = false;
                     btn.innerText = 'Send code';
                 });

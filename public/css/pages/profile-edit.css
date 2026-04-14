@@ -10,7 +10,7 @@ body {
 .profile-container {
     display: flex;
     justify-content: center;
-    align-items: flex-start; /* Để cách top một khoảng */
+    align-items: center; /* Để cách top một khoảng */
     padding: 60px 20px;
     min-height: 80vh;
 }

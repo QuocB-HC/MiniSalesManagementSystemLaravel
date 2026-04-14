@@ -106,6 +106,9 @@ section {
     cursor: pointer;
     color: #333;
     text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .category-item:hover {
@@ -238,4 +241,14 @@ section {
 }
 .add-to-cart:hover {
     background: #464f48;
+}
+
+/* Tablet */
+@media (max-width: 991px) {
+    .container {
+        padding: 20px;
+    }
+    .category-item {
+        padding: 30px 0;
+    }
 }

@@ -15,60 +15,60 @@
     <div class="order-detail-container">
         <div class="header-actions">
             <a href="{{ route('orders.index') }}" class="btn-back">
-                <i class="fa-solid fa-chevron-left"></i> Quay lại lịch sử
+                <i class="fa-solid fa-chevron-left"></i> Back
             </a>
-            <h1>Chi tiết đơn hàng #{{ $order->id }}</h1>
+            <h1>Order Detail #{{ $order->id }}</h1>
         </div>
 
         <div class="order-info-grid">
-            <!-- Thông tin giao hàng -->
+            <!-- Delivery information -->
             <div class="info-card">
-                <h3><i class="fa-solid fa-location-dot"></i> Thông tin nhận hàng</h3>
-                <p><strong>Người nhận:</strong> {{ $order->receiver_name }}</p>
-                <p><strong>Điện thoại:</strong> {{ $order->receiver_phone }}</p>
-                <p><strong>Địa chỉ:</strong> {{ $order->receiver_address }}</p>
+                <h3><i class="fa-solid fa-location-dot"></i> Delivery information</h3>
+                <p><strong>Receiver:</strong> {{ $order->receiver_name }}</p>
+                <p><strong>Phone:</strong> {{ $order->receiver_phone }}</p>
+                <p><strong>Address:</strong> {{ $order->receiver_address }}</p>
                 @if ($order->note)
-                    <p><strong>Ghi chú:</strong> {{ $order->note }}</p>
+                    <p><strong>Note:</strong> {{ $order->note }}</p>
                 @endif
             </div>
 
-            <!-- Trạng thái đơn hàng -->
+            <!-- Order Status -->
             <div class="info-card">
-                <h3><i class="fa-solid fa-circle-info"></i> Thông tin đơn hàng</h3>
-                <p><strong>Ngày đặt:</strong> {{ $order->created_at->format('d/m/Y H:i') }}</p>
-                <p><strong>Trạng thái:</strong>
+                <h3><i class="fa-solid fa-circle-info"></i> Order Information</h3>
+                <p><strong>Date:</strong> {{ $order->created_at->format('d/m/Y H:i') }}</p>
+                <p><strong>Status:</strong>
                     <span class="status-badge status-{{ Str::slug($order->status) }}">
                         {{ ucfirst($order->status) }}
                     </span>
                 </p>
-                <p><strong>Hình thức:</strong> Thanh toán khi nhận hàng (COD)</p>
+                <p><strong>Payment Method:</strong> Cash on Delivery (COD)</p>
             </div>
         </div>
 
-        <!-- Danh sách sản phẩm -->
+        <!-- Product List -->
         <div class="items-section">
-            <h3><i class="fa-solid fa-basket-shopping"></i> Sản phẩm đã đặt</h3>
+            <h3><i class="fa-solid fa-basket-shopping"></i> Ordered Products</h3>
             <table class="order-items-table">
                 <thead>
                     <tr>
-                        <th>Sản phẩm</th>
-                        <th>Đơn giá</th>
-                        <th>Số lượng</th>
-                        <th>Thành tiền</th>
+                        <th>Product</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Total Price</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($order->items as $item)
                         <tr>
-                            <td>
+                            <td data-label="Product">
                                 <div class="product-info">
                                     <img src="{{ $item->product->image_url ?? asset('images/no-image.png') }}" alt="{{ $item->product->name }}">
                                     <span>{{ $item->product->name }}</span>
                                 </div>
                             </td>
-                            <td>{{ number_format($item->price, 0, ',', '.') }} VNĐ</td>
-                            <td>{{ $item->quantity }}</td>
-                            <td>{{ number_format($item->price * $item->quantity, 0, ',', '.') }} VNĐ</td>
+                            <td data-label="Price">{{ number_format($item->price, 0, ',', '.') }} VNĐ</td>
+                            <td data-label="Quantity">{{ $item->quantity }}</td>
+                            <td data-label="Total Price">{{ number_format($item->price * $item->quantity, 0, ',', '.') }} VNĐ</td>
                         </tr>
                     @endforeach
                 </tbody>
@@ -78,17 +78,17 @@
         <!-- Summary -->
         <div class="order-summary">
             <div class="summary-row">
-                <span>Tổng số lượng:</span>
+                <span>Total Quantity:</span>
                 <span>{{ $order->total_quantity }}</span>
             </div>
             @if ($order->discount_code)
                 <div class="summary-row">
-                    <span>Giảm giá ({{ $order->discount_code }}):</span>
+                    <span>Discount ({{ $order->discount_code }}):</span>
                     <span style="color: #27ae60;">- {{ number_format($order->discount_value, 0, ',', '.') }} VNĐ</span>
                 </div>
             @endif
             <div class="summary-row total">
-                <span>Tổng thanh toán:</span>
+                <span>Total Payment:</span>
                 <span>{{ number_format($order->total_price, 0, ',', '.') }} VNĐ</span>
             </div>
         </div>

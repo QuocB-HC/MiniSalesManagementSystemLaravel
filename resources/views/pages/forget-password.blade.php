@@ -17,12 +17,12 @@
                 <div class="step-number">1</div>
                 <div class="step-label">Account</div>
             </div>
-            <div class="step-line"></div>
+            <div class="step-line" id="step-line-1"></div>
             <div class="step" id="st-2">
                 <div class="step-number">2</div>
                 <div class="step-label">Security</div>
             </div>
-            <div class="step-line"></div>
+            <div class="step-line" id="step-line-2"></div>
             <div class="step" id="st-3">
                 <div class="step-number">3</div>
                 <div class="step-label">Reset</div>
@@ -86,7 +86,7 @@
                     el.classList.add('active');
                 }
             });
-
+            
             // 4. Update Stepper Connecting Lines
             const lines = document.querySelectorAll('.step-line');
             lines.forEach((line, idx) => {

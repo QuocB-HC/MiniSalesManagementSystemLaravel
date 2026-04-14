@@ -62,16 +62,16 @@
                 </form>
 
                 <div class="product-trust-badges">
-                    <div class="badge-item"><i class="fas fa-truck"></i> Giao hàng toàn quốc</div>
-                    <div class="badge-item"><i class="fas fa-undo"></i> 7 ngày đổi trả</div>
-                    <div class="badge-item"><i class="fas fa-shield-alt"></i> Bảo hành chính hãng</div>
+                    <div class="badge-item"><i class="fas fa-truck"></i> Nationwide delivery</div>
+                    <div class="badge-item"><i class="fas fa-undo"></i> 7-day return policy</div>
+                    <div class="badge-item"><i class="fas fa-shield-alt"></i> Manufacturer's warranty</div>
                 </div>
             </div>
         </div>
 
         <div class="product-tabs">
             <div class="tab-header">
-                Mô tả sản phẩm
+                Description
             </div>
             <div class="tab-content">
                 {!! nl2br(e($product->description)) !!}

@@ -3,6 +3,8 @@ body {
     background-color: #f0f0f0;
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
+    padding: 0;
+    height: 100vh;
 }
 
 .cart-container {
@@ -217,8 +219,21 @@ body {
 }
 
 /* Responsive */
-@media (max-width: 992px) {
+@media (max-width: 991px) {
+    .cart-container {
+        min-height: 71svh;
+    }
     .cart-wrapper {
         grid-template-columns: 1fr;
+    }
+}
+
+/* Mobile */
+@media (max-width: 767px) {
+    .item-price {
+        margin-bottom: 5px;
+    }
+    .item-total {
+        display: none;
     }
 }
