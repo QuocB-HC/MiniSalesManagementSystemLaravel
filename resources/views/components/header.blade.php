@@ -9,9 +9,18 @@
 
         <div class="menu-list">
             <div class="page-list">
-                <li><a href="{{ route('home') }}">Home</a></li>
-                <li><a href="{{ route('products.index') }}">Products</a></li>
-                <li><a href="{{ route('cart.index') }}">Cart</a></li>
+                <li><a href="{{ route('home') }}">
+                        <i class="fa-solid fa-house"></i> Home</a>
+                </li>
+                <li><a href="{{ route('products.index') }}">
+                        <i class="fa-solid fa-bag-shopping"></i> Products
+                    </a></li>
+                <li><a href="{{ route('cart.index') }}" class="nav-link">
+                        <i class="fa-solid fa-cart-shopping"></i> Cart
+                        @if ($cartCount > 0)
+                            <span class="cart-badge">{{ $cartCount }}</span>
+                        @endif
+                    </a></li>
             </div>
 
             <div class="search-header">
