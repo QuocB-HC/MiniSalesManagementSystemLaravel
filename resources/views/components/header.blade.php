@@ -25,11 +25,13 @@
 
             <div class="search-header">
                 <form action="{{ route('products.search') }}" method="GET" class="search-form">
-                    <input type="text" name="search" value="{{ request('search') }}"
-                        placeholder="Search products by name, SKU...">
+                    <input type="text" id="searchInput" name="search" value="{{ request('search') }}"
+                        placeholder="Search products by name, SKU..." autocomplete="off">
                     <button type="submit">
-                        <i class="fa-solid fa-magnifying-glass"></i> </button>
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </button>
                 </form>
+                <div id="search-results" class="search-results-container" style="display: none;"></div>
             </div>
         </div>
 
@@ -85,4 +87,45 @@
             }
         }
     }
+
+    document.getElementById('searchInput').addEventListener('input', function() {
+        let query = this.value;
+        let resultsBox = document.getElementById('search-results');
+
+        if (query.length >= 2) {
+            fetch("{{ route('products.searchAjax') }}?query=" + query)
+                .then(res => res.json())
+                .then(data => {
+                    resultsBox.innerHTML = '';
+                    if (data.length > 0) {
+                        data.forEach(product => {
+                            let detailUrl = "{{ route('products.detail', ['id' => ':id']) }}"
+                                .replace(':id', product.id);
+
+                            resultsBox.innerHTML += `
+                            <a href="${detailUrl}" class="search-item">
+                                <img src="${product.image_url}" width="40">
+                                <div class="info">
+                                    <span class="name">${product.name}</span>
+                                    <span class="price">${new Intl.NumberFormat('vi-VN').format(product.price)} VNĐ</span>
+                                </div>
+                            </a>
+                        `;
+                        });
+                        resultsBox.style.display = 'block';
+                    } else {
+                        resultsBox.innerHTML = '<div class="no-result">No products found</div>';
+                        resultsBox.style.display = 'block';
+                    }
+                });
+        } else {
+            resultsBox.style.display = 'none';
+        }
+    });
+
+    document.addEventListener('click', function(e) {
+        if (!document.querySelector('.search-header').contains(e.target)) {
+            document.getElementById('search-results').style.display = 'none';
+        }
+    });
 </script>

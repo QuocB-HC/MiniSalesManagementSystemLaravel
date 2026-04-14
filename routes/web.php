@@ -24,6 +24,7 @@ Route::prefix('products')->as('products.')->group(function () {
     Route::get('/category/{category}', [ProductController::class, 'showByCategory'])->name('byCategory'); // products.byCategory
     Route::get('/detail/{id}', [ProductController::class, 'detail'])->name('detail'); // products.detail
     Route::get('/search', [ProductController::class, 'search'])->name('search'); // products.search
+    Route::get('/search-ajax', [ProductController::class, 'searchAjax'])->name('searchAjax'); // products.searchAjax
 });
 
 

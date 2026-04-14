@@ -26,7 +26,8 @@ class ProductController extends Controller
     /**
      * Display a listing of the search result.
      */
-    public function search (Request $request) {
+    public function search(Request $request)
+    {
         // Initialize the query but do not execute
         $query = Product::query()->where('is_disabled', 0);
 
@@ -43,6 +44,17 @@ class ProductController extends Controller
         $categories = Category::all();
 
         return view('pages.product-list', compact('products', 'categories'));
+    }
+
+    public function searchAjax(Request $request)
+    {
+        $query = $request->get('query');
+        $products = Product::where('name', 'LIKE', "%{$query}%")
+            ->orWhere('sku', 'LIKE', "%{$query}%")
+            ->take(5)
+            ->get();
+
+        return response()->json($products);
     }
 
     public function homePage()
