@@ -66,9 +66,9 @@
                                     <span>{{ $item->product->name }}</span>
                                 </div>
                             </td>
-                            <td data-label="Price">{{ number_format($item->price, 0, ',', '.') }} VNĐ</td>
+                            <td data-label="Price">{{ number_format($item->price, 0, ',', '.') }} VND</td>
                             <td data-label="Quantity">{{ $item->quantity }}</td>
-                            <td data-label="Total Price">{{ number_format($item->price * $item->quantity, 0, ',', '.') }} VNĐ</td>
+                            <td data-label="Total Price">{{ number_format($item->price * $item->quantity, 0, ',', '.') }} VND</td>
                         </tr>
                     @endforeach
                 </tbody>
@@ -84,12 +84,12 @@
             @if ($order->discount_code)
                 <div class="summary-row">
                     <span>Discount ({{ $order->discount_code }}):</span>
-                    <span style="color: #27ae60;">- {{ number_format($order->discount_value, 0, ',', '.') }} VNĐ</span>
+                    <span style="color: #27ae60;">- {{ number_format($order->discount_value, 0, ',', '.') }} VND</span>
                 </div>
             @endif
             <div class="summary-row total">
                 <span>Total Payment:</span>
-                <span>{{ number_format($order->total_price, 0, ',', '.') }} VNĐ</span>
+                <span>{{ number_format($order->total_price, 0, ',', '.') }} VND</span>
             </div>
         </div>
     </div>

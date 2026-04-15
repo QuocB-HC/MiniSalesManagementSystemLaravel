@@ -10,8 +10,6 @@
 
 <body>
     <div class="main-container">
-        <x-side-bar />
-
         <main class="main-content">
             <header>
                 <h1>Add New Product</h1>
@@ -59,7 +57,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="price">Price (VNĐ)</label>
+                            <label for="price">Price (VND)</label>
                             <input type="number" name="price" id="price" value="{{ old('price') }}"
                                 step="0.01" required class="form-input">
                             @error('price')

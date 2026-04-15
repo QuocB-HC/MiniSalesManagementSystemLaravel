@@ -1,6 +1,6 @@
 body {
     background-color: #f0f0f0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
     padding: 0;
 }
@@ -103,9 +103,7 @@ header {
 .admin-table td {
     padding: 16px;
     text-align: center;
-    border-bottom: 1px solid #f0f0f0;
 }
-
 .admin-table th {
     background-color: #fcfcfc;
     color: #888;
@@ -113,6 +111,10 @@ header {
     text-transform: uppercase;
     letter-spacing: 0.5px;
     text-align: center;
+    border-bottom: 1px solid #dee2e6;
+}
+.admin-table tr {
+    border-bottom: 1px solid #dee2e6;
 }
 
 /* Định nghĩa độ rộng cụ thể cho từng cột */
@@ -135,7 +137,7 @@ header {
     width: 5%;
 } /* Stock */
 .admin-table th:nth-child(7) {
-    width: 8%;
+    width: 10%;
 } /* Status */
 .admin-table th:nth-child(8) {
     width: 15%;
@@ -257,4 +259,60 @@ header {
 .pagination-container span[aria-disabled="true"] svg {
     color: #ccc;
     cursor: not-allowed;
+}
+
+@media (max-width: 991px) {
+    .main-container {
+        padding-top: 20px;
+        width: 100%;
+    }
+
+    .main-content {
+        padding: 20px;
+        width: 100%;
+        box-sizing: border-box;
+        overflow-x: hidden;
+    }
+
+    .recent-section {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .admin-table {
+        table-layout: auto;
+        min-width: 800px;
+    }
+
+    header h1 {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 767px) {
+    header {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+        width: 100%;
+        box-sizing: border-box;
+        padding: 0;
+        padding-top: 10px;
+    }
+
+    header h1 {
+        width: 100%;
+        text-align: center;
+        margin: 0;
+    }
+
+    .view-btn.btn-add {
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        margin: 0 auto;
+        display: block;
+        text-align: center;
+    }
 }

@@ -125,7 +125,7 @@
                         <div class="order-row" style="margin-top: 15px;">
                             <span class="label" style="vertical-align: middle;">Total Price:</span>
                             <span class="value total-price">{{ number_format($order->total_price, 0, ',', '.') }}
-                                VNĐ</span>
+                                VND</span>
                         </div>
                     </div>
 

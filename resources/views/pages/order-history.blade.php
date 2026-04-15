@@ -39,7 +39,7 @@
                         </div>
                         <div class="order-body">
                             <p><strong>Total Items:</strong> {{ $order->total_quantity }}</p>
-                            <p><strong>Total Price:</strong> {{ number_format($order->total_price, 0, ',', '.') }} VNĐ
+                            <p><strong>Total Price:</strong> {{ number_format($order->total_price, 0, ',', '.') }} VND
                             </p>
                             <p><strong>Payment Method:</strong> {{ $order->payment_method == 'cod' ? 'Cash on Delivery (COD)' : 'Bank Transfer' }}</p>
                             <p><strong>Status:</strong> <span
@@ -47,7 +47,7 @@
                             </p>
                             @if ($order->discount_code)
                                 <p><strong>Discount Applied:</strong> {{ $order->discount_code }}
-                                    ({{ number_format($order->discount_value, 0, ',', '.') }} VNĐ)
+                                    ({{ number_format($order->discount_value, 0, ',', '.') }} VND)
                                 </p>
                             @endif
                         </div>

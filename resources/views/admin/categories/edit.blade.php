@@ -10,8 +10,6 @@
 
 <body>
     <div class="main-container">
-        <x-side-bar />
-
         <main class="main-content">
             <header>
                 <h1>Edit Category</h1>

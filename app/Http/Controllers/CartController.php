@@ -100,7 +100,7 @@ class CartController extends Controller
     {
         $cartItems = session()->get('cart', []);
         if (empty($cartItems)) {
-            return redirect()->route('cart.index')->with('error', 'Giỏ hàng của bạn đang trống!');
+            return redirect()->route('cart.index')->with('error', 'Your cart is empty!');
         }
 
         $user = auth()->user();
@@ -126,15 +126,15 @@ class CartController extends Controller
             ->first();
 
         if (! $discount) {
-            return response()->json(['success' => false, 'message' => 'Mã giảm giá không tồn tại hoặc đã hết hạn.']);
+            return response()->json(['success' => false, 'message' => 'This discount code does not exist or has expired.']);
         }
 
         if ($discount->usage_limit !== null && $discount->used_count >= $discount->usage_limit) {
-            return response()->json(['success' => false, 'message' => 'Mã giảm giá này đã hết lượt sử dụng.']);
+            return response()->json(['success' => false, 'message' => 'This discount code has reached its usage limit.']);
         }
 
         if ($subtotal < $discount->min_order_value) {
-            return response()->json(['success' => false, 'message' => 'Đơn hàng tối thiểu '.number_format($discount->min_order_value, 0, ',', '.').' VNĐ để sử dụng mã này.']);
+            return response()->json(['success' => false, 'message' => 'At least '.number_format($discount->min_order_value, 0, ',', '.').' VND is required to apply this discount code.']);
         }
 
         $discountAmount = 0;
@@ -151,7 +151,7 @@ class CartController extends Controller
             'success' => true,
             'discount_amount' => $discountAmount,
             'discount_id' => $discount->id,
-            'message' => 'Áp dụng mã giảm giá thành công!',
+            'message' => 'Applied discount successfully!',
         ]);
     }
 

@@ -26,7 +26,7 @@
                 </div>
                 <div class="detail-item">
                     <span>Total Amount:</span>
-                    <strong>{{ number_format($order->total_price, 0, ',', '.') }} VNĐ</strong>
+                    <strong>{{ number_format($order->total_price, 0, ',', '.') }} VND</strong>
                 </div>
                 <div class="detail-item">
                     <span>Payment Method:</span>

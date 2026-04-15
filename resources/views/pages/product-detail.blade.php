@@ -34,19 +34,15 @@
                 <div class="product-meta">
                     <span class="sku">SKU: PRO-{{ $product->id }}</span>
                     <span class="stock {{ $product->stock_quantity > 0 ? 'in-stock' : 'out-of-stock' }}">
-                        {{ $product->stock_quantity > 0 ? 'Còn hàng' : 'Hết hàng' }}
+                        {{ $product->stock_quantity > 0 ? 'In-Stock' : 'Out-Of-Stock' }}
                     </span>
                 </div>
 
                 <div class="product-price">
-                    <span class="current-price">{{ number_format($product->price, 0, ',', '.') }} VNĐ</span>
-                    {{-- <span class="old-price">1.200.000 VNĐ</span> --}}
+                    <span class="current-price">{{ number_format($product->price, 0, ',', '.') }} VND</span>
+                    {{-- <span class="old-price">1.200.000 VND</span> --}}
                 </div>
-
-                <p class="short-description">
-                    {{ Str::limit($product->description, 150) }}
-                </p>
-
+                
                 <form action="{{ route('cart.add', $product->id) }}" method="POST" class="add-to-cart-form">
                     @csrf
                     <div class="quantity-selector">

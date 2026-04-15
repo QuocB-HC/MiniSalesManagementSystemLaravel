@@ -25,7 +25,7 @@
                     <div class="stat-icon"><i class="fa-solid fa-wallet"></i></div>
                     <div class="stat-info">
                         <h3>Total Revenue</h3>
-                        <p>{{ number_format($totalRevenue, 0, ',', '.') }} VNĐ</p>
+                        <p>{{ number_format($totalRevenue, 0, ',', '.') }} VND</p>
                     </div>
                 </div>
                 <div class="stat-card">
@@ -39,7 +39,8 @@
                     <div class="stat-icon blue"><i class="fa-solid fa-user"></i></div>
                     <div class="stat-info">
                         <h3>New Customers / Total (Month)</h3>
-                        <p>{{ number_format($newUsersThisMonth, 0, ',', '.') }} / {{ number_format($totalUsers, 0, ',', '.') }}</p>
+                        <p>{{ number_format($newUsersThisMonth, 0, ',', '.') }} /
+                            {{ number_format($totalUsers, 0, ',', '.') }}</p>
                     </div>
                 </div>
             </div>
@@ -71,11 +72,12 @@
                     <tbody>
                         @forelse ($pendingOrders as $order)
                             <tr>
-                                <td>#{{ $order->id }}</td>
-                                <td>{{ $order->receiver_name ?? 'Guest' }}</td>
-                                <td><span class="status {{ $order->status }}">{{ ucfirst($order->status) }}</span></td>
-                                <td>{{ number_format($order->total_price, 0, ',', '.') }} VNĐ</td>
-                                <td>
+                                <td data-label="Order ID">#{{ $order->id }}</td>
+                                <td data-label="Customer">{{ $order->receiver_name ?? 'Guest' }}</td>
+                                <td data-label="Status"><span
+                                        class="status {{ $order->status }}">{{ ucfirst($order->status) }}</span></td>
+                                <td data-label="Total">{{ number_format($order->total_price, 0, ',', '.') }} VND</td>
+                                <td data-label="Actions">
                                     @if ($order->status !== 'cancelled')
                                         <form action="{{ route('admin.orders.updateStatus', $order) }}" method="POST"
                                             class="update-status-form">
@@ -119,6 +121,71 @@
                     </div>
                 </div>
             </section>
+
+            <section class="recent-section">
+                <h2>Shipping Orders</h2>
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Customer</th>
+                            <th>Status</th>
+                            <th>Total</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse ($shippingOrders as $order)
+                            <tr>
+                                <td data-label="Order ID">#{{ $order->id }}</td>
+                                <td data-label="Customer">{{ $order->receiver_name ?? 'Guest' }}</td>
+                                <td data-label="Status"><span
+                                        class="status shipping">{{ ucfirst($order->status) }}</span></td>
+                                <td data-label="Total">{{ number_format($order->total_price, 0, ',', '.') }} VND</td>
+                                <td data-label="Actions">
+                                    @if ($order->status !== 'cancelled')
+                                        <form action="{{ route('admin.orders.updateStatus', $order) }}" method="POST"
+                                            class="update-status-form">
+                                            @csrf
+                                            @method('PUT')
+                                            <select name="status" class="status-select">
+                                                <option value="pending"
+                                                    {{ $order->status === 'pending' ? 'selected' : '' }}>Pending
+                                                </option>
+                                                <option value="processing"
+                                                    {{ $order->status === 'processing' ? 'selected' : '' }}>Processing
+                                                </option>
+                                                <option value="shipping"
+                                                    {{ $order->status === 'shipping' ? 'selected' : '' }}>Shipping
+                                                </option>
+                                                <option value="completed"
+                                                    {{ $order->status === 'completed' ? 'selected' : '' }}>Completed
+                                                </option>
+                                                <option value="cancelled"
+                                                    {{ $order->status === 'cancelled' ? 'selected' : '' }}>Cancelled
+                                                </option>
+                                            </select>
+                                            <button type="submit" class="update-button">Update</button>
+                                        </form>
+                                    @else
+                                        N/A
+                                    @endif
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="5" style="text-align: center;">No active orders found.</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+
+                <div class="pagination-wrapper">
+                    <div class="pagination-container">
+                        {{ $shippingOrders->links() }}
+                    </div>
+                </div>
+            </section>
         </main>
     </div>
 
@@ -136,7 +203,7 @@
             data: {
                 labels: labels,
                 datasets: [{
-                    label: 'Doanh thu (VNĐ)',
+                    label: 'Revenue (VND)',
                     data: data,
                     borderColor: 'rgb(75, 192, 192)',
                     tension: 0.1

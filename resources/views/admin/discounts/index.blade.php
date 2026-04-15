@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <title>Discounts Management</title>
     <link rel="stylesheet" href="{{ asset('css/admin/discounts/index.css') }}">
 </head>
+
 <body>
     <div class="main-container">
         <x-side-bar />
@@ -53,9 +55,11 @@
                                 <td>
                                     {{ $discount->type === 'percentage' ? number_format($discount->value, 0) . '%' : number_format($discount->value, 0) . ' VND' }}
                                 </td>
-                                <td>{{ $discount->min_order_value ? number_format($discount->min_order_value, 0) . ' VND' : '-' }}</td>
+                                <td>{{ $discount->min_order_value ? number_format($discount->min_order_value, 0) . ' VND' : '-' }}
+                                </td>
                                 <td>{{ $discount->used_count }} / {{ $discount->usage_limit ?? '∞' }}</td>
-                                <td>{{ $discount->expires_at ? \Carbon\Carbon::parse($discount->expires_at)->format('Y-m-d') : 'No Expiry' }}</td>
+                                <td>{{ $discount->expires_at ? \Carbon\Carbon::parse($discount->expires_at)->format('Y-m-d') : 'No Expiry' }}
+                                </td>
                                 <td>
                                     <span class="status {{ $discount->is_active ? 'available' : 'out_of_stock' }}">
                                         {{ $discount->is_active ? 'Active' : 'Inactive' }}
@@ -79,14 +83,15 @@
                         @endforelse
                     </tbody>
                 </table>
-
-                <div class="pagination-wrapper">
-                    <div class="pagination-container">
-                        {{ $discounts->links() }}
-                    </div>
-                </div>
             </section>
+
+            <div class="pagination-wrapper">
+                <div class="pagination-container">
+                    {{ $discounts->links() }}
+                </div>
+            </div>
         </main>
     </div>
 </body>
+
 </html>

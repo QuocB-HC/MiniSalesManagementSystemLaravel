@@ -107,7 +107,7 @@
                                 <img src="${product.image_url}" width="40">
                                 <div class="info">
                                     <span class="name">${product.name}</span>
-                                    <span class="price">${new Intl.NumberFormat('vi-VN').format(product.price)} VNĐ</span>
+                                    <span class="price">${new Intl.NumberFormat('vi-VN').format(product.price)} VND</span>
                                 </div>
                             </a>
                         `;

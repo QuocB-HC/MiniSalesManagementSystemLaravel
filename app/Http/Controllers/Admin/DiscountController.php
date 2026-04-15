@@ -59,13 +59,12 @@ class DiscountController extends Controller
         $data = $request->validated();
 
         // Process the is_active field, if the checkbox is not submitted, default to false
-        $data['is_active'] = $request->has('is_active');
+        $data['is_active'] = $request->boolean('is_active');
 
         $discount->update($data);
 
         return redirect()->route('admin.discounts.index')
             ->with('success', 'Discount updated successfully!');
-
     }
 
     /**

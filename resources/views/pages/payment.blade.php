@@ -67,7 +67,7 @@
                         @foreach ($cartItems as $item)
                             <div class="summary-item">
                                 <span>{{ $item['name'] }} (x{{ $item['quantity'] }})</span>
-                                <span>{{ number_format($item['price'] * $item['quantity'], 0, ',', '.') }} VNĐ</span>
+                                <span>{{ number_format($item['price'] * $item['quantity'], 0, ',', '.') }} VND</span>
                             </div>
                         @endforeach
                     </div>
@@ -77,7 +77,7 @@
                     <div class="total-row">
                         <span>Subtotal</span>
                         <span id="subtotal_value"
-                            data-value="{{ $totalAmount }}">{{ number_format($totalAmount, 0, ',', '.') }} VNĐ</span>
+                            data-value="{{ $totalAmount }}">{{ number_format($totalAmount, 0, ',', '.') }} VND</span>
                     </div>
 
                     <div class="discount-input-row">
@@ -98,16 +98,16 @@
                     </div>
                     <div class="total-row">
                         <span>Total Pay</span>
-                        <span class="free">{{ number_format($totalAmount, 0, ',', '.') }} VNĐ</span>
+                        <span class="free">{{ number_format($totalAmount, 0, ',', '.') }} VND</span>
                     </div>
                     <div class="total-row discount-row" style="color: #d91e18;">
                         <span>Discount</span>
-                        <span id="discount_amount">- 0 VNĐ</span>
+                        <span id="discount_amount">- 0 VND</span>
                     </div>
                     <div class="total-row final">
                         <span>Final Pay</span>
                         <span id="final_pay_display" data-base="{{ $totalAmount }}">
-                            {{ number_format($totalAmount, 0, ',', '.') }} VNĐ</span>
+                            {{ number_format($totalAmount, 0, ',', '.') }} VND</span>
                     </div>
 
                     <button type="submit" class="btn-confirm">Place Order Now</button>
@@ -163,17 +163,17 @@
                         const finalTotal = subtotal - discountAmount;
 
                         discountAmountSpan.textContent =
-                            `- ${new Intl.NumberFormat('vi-VN').format(discountAmount)} VNĐ`;
+                            `- ${new Intl.NumberFormat('vi-VN').format(discountAmount)} VND`;
                         finalPayDisplay.textContent =
-                            `${new Intl.NumberFormat('vi-VN').format(finalTotal)} VNĐ`;
+                            `${new Intl.NumberFormat('vi-VN').format(finalTotal)} VND`;
                         appliedDiscountIdInput.value = data.discount_id;
                     } else {
                         messageDiv.style.color = 'red';
                         messageDiv.textContent = data.message;
 
-                        // Reset về - 0 VNĐ nếu mã không hợp lệ
-                        discountAmountSpan.textContent = `- 0 VNĐ`;
-                        finalPayDisplay.textContent = `${new Intl.NumberFormat('vi-VN').format(subtotal)} VNĐ`;
+                        // Reset về - 0 VND nếu mã không hợp lệ
+                        discountAmountSpan.textContent = `- 0 VND`;
+                        finalPayDisplay.textContent = `${new Intl.NumberFormat('vi-VN').format(subtotal)} VND`;
                         appliedDiscountIdInput.value = '';
                     }
                 })

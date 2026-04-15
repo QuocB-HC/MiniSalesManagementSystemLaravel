@@ -92,7 +92,7 @@ class OrderController extends Controller
                     }
 
                     if ($totalPrice < $discount->min_order_value) {
-                        throw new \Exception('Order value must be at least'.number_format($discount->min_order_value).' VNĐ to use this discount.');
+                        throw new \Exception('Order value must be at least'.number_format($discount->min_order_value).' VND to use this discount.');
                     }
 
                     $discountId = $discount->id;

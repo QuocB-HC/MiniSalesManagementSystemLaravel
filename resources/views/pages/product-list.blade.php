@@ -51,7 +51,7 @@
 
                             <div class="product-price-container">
                                 <p class="product-price">
-                                    {{ number_format($product->price, 0, ',', '.') }} VNĐ
+                                    {{ number_format($product->price, 0, ',', '.') }} VND
                                 </p>
                                 <form action="{{ route('cart.add', $product->id) }}" method="POST">
                                     @csrf

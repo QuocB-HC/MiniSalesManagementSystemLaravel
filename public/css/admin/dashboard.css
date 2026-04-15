@@ -65,6 +65,7 @@ header {
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 40px;
 }
 .admin-table {
     width: 100%;
@@ -95,6 +96,10 @@ header {
 .status.processing {
     background: #d4edda;
     color: #155724;
+}
+.status.shipping {
+    background: #cce5ff;
+    color: #004085;
 }
 .view-btn {
     color: #4e73df;
@@ -194,4 +199,104 @@ header {
 .pagination-container span[aria-disabled="true"] svg {
     color: #ccc;
     cursor: not-allowed;
+}
+
+/* Tablet (Max 991px) */
+@media (max-width: 991px) {
+    .admin-container {
+        flex-direction: column;
+    }
+
+    .main-content {
+        padding: 20px;
+    }
+
+    .charts-grid {
+        grid-template-columns: 1fr !important; 
+        gap: 20px;
+    }
+
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Mobile (Max 767px) */
+@media (max-width: 767px) {
+    .main-content {
+        padding-top: 30px;
+    }
+    
+    header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    header h1 {
+        font-size: 1.5rem;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .stat-card {
+        padding: 15px;
+    }
+
+    .admin-table thead {
+        display: none;
+    }
+
+    .admin-table, 
+    .admin-table tbody, 
+    .admin-table tr, 
+    .admin-table td {
+        display: block;
+        width: 100%;
+    }
+
+    .admin-table tr {
+        margin-bottom: 20px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 15px;
+        background: #fff;
+        display: block;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .admin-table td {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        text-align: right;
+        padding: 12px 5px;
+        border-bottom: 1px dashed #eee;
+    }
+    .admin-table td:last-child {
+        align-items: center; 
+        border-bottom: none;
+    }
+
+    .admin-table td::before {
+        content: attr(data-label);
+        font-weight: bold;
+        text-align: left;
+        color: #666;
+    }
+
+    .update-status-form {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin: 0;
+        justify-content: flex-end;
+    }
+
+    .status-select {
+        flex: 1;
+        max-width: 150px;
+    }
 }

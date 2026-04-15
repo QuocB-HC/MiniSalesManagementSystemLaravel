@@ -80,6 +80,7 @@ header {
     cursor: pointer;
     font-size: 14px;
     transition: all 0.2s;
+    text-align: center;
 }
 
 .btn-save {
@@ -97,4 +98,64 @@ header {
     background-color: #f8f9fa;
     border: 1px solid #ddd;
     color: #333;
+}
+
+@media (max-width: 991px) {
+    .main-content {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        padding: 20px;
+        align-items: center;
+    }
+
+    header {
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+        margin: 10px 20px;
+    }
+
+    .form-container {
+        padding: 20px;
+        width: 80%;
+    }
+    .form-grid {
+        gap: 15px;
+    }
+}
+
+@media (max-width: 767px) {
+    header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+        width: 100%;
+        box-sizing: border-box;
+        padding: 0;
+        padding-top: 10px;
+    }
+    header h1 {
+        font-size: 1.5rem;
+    }
+
+    .btn-back {
+        width: 20%;
+        text-align: center;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+    .form-group.full-width {
+        grid-column: span 1;
+    }
+    .form-actions {
+        flex-direction: column;
+        gap: 10px;
+    }
+    .form-actions button {
+        width: 100%;
+    }
 }

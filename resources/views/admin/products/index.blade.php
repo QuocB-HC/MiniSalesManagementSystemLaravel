@@ -20,13 +20,13 @@
 
             <!-- Category Filter Tabs -->
             <div class="category-filters">
-                <a href="{{ route('admin.products.index') }}" 
-                   class="view-btn filter-btn {{ !request('category_id') ? 'active' : '' }}">
+                <a href="{{ route('admin.products.index') }}"
+                    class="view-btn filter-btn {{ !request('category_id') ? 'active' : '' }}">
                     All
                 </a>
                 @foreach ($categories as $cat)
-                    <a href="{{ route('admin.products.index', ['category_id' => $cat->id]) }}" 
-                       class="view-btn filter-btn {{ request('category_id') == $cat->id ? 'active' : '' }}">
+                    <a href="{{ route('admin.products.index', ['category_id' => $cat->id]) }}"
+                        class="view-btn filter-btn {{ request('category_id') == $cat->id ? 'active' : '' }}">
                         {{ $cat->name }}
                     </a>
                 @endforeach
@@ -60,18 +60,18 @@
                                 <td>#{{ $product->id }}</td>
                                 <td>
                                     <img src="{{ $product->image_url ?? asset('images/default-product.png') }}"
-                                        alt="{{ $product->name }}"
-                                        class="product-img">
+                                        alt="{{ $product->name }}" class="product-img">
                                 </td>
                                 <td><small>{{ $product->sku }}</small></td>
                                 <td><strong>{{ $product->name }}</strong></td>
-                                <td>{{ number_format($product->price, 0, ',', '.') }} VNĐ</td>
+                                <td>{{ number_format($product->price, 0, ',', '.') }} VND</td>
                                 <td>{{ $product->stock_quantity }}</td>
                                 <td>
                                     <span class="status {{ $product->status }}">{{ ucfirst($product->status) }}</span>
                                 </td>
                                 <td class="action-btns">
-                                    <a href="{{ route('admin.products.edit', $product->id) }}" class="view-btn btn-edit">Edit</a>
+                                    <a href="{{ route('admin.products.edit', $product->id) }}"
+                                        class="view-btn btn-edit">Edit</a>
                                     <form action="{{ route('admin.products.destroy', $product->id) }}" method="POST"
                                         onsubmit="return confirm('Are you sure you want to delete this product?')">
                                         @csrf
@@ -87,13 +87,13 @@
                         @endforelse
                     </tbody>
                 </table>
-
-                <div class="pagination-wrapper">
-                    <div class="pagination-container">
-                        {{ $products->links() }}
-                    </div>
-                </div>
             </section>
+
+            <div class="pagination-wrapper">
+                <div class="pagination-container">
+                    {{ $products->links() }}
+                </div>
+            </div>
         </main>
     </div>
 </body>

@@ -23,7 +23,7 @@ class VNPayService
             'vnp_CurrCode' => 'VND',
             'vnp_IpAddr' => request()->ip(),
             'vnp_Locale' => 'vn',
-            'vnp_OrderInfo' => 'Thanh toán đơn hàng #'.$order->id,
+            'vnp_OrderInfo' => 'Pay the order #'.$order->id,
             'vnp_OrderType' => 'other',
             'vnp_ReturnUrl' => $vnp_Config['vnp_Returnurl'],
             'vnp_TxnRef' => $order->id, // Use Order ID used as a reference code

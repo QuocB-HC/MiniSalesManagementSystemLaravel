@@ -38,6 +38,7 @@ class DashboardController extends Controller
 
         // 2. Get the list of pending orders for the table below
         $pendingOrders = Order::whereIn('status', ['pending', 'processing'])->oldest()->paginate(5);
+        $shippingOrders = Order::whereIn('status', ['shipping'])->oldest()->paginate(5);
 
         // 3. Return the view with all the data
         return view('admin.dashboard', compact(
@@ -45,6 +46,7 @@ class DashboardController extends Controller
             'totalOrders',
             'totalRevenue',
             'pendingOrders',
+            'shippingOrders',
             'newUsersThisMonth',
             'revenueLast7Days',
             'orderStatusStats',

@@ -26,7 +26,7 @@
                             </div>
                             <div class="item-info">
                                 <h3>{{ $details['name'] }}</h3>
-                                <p class="item-price">{{ number_format($details['price'], 0, ',', '.') }} VNĐ</p>
+                                <p class="item-price">{{ number_format($details['price'], 0, ',', '.') }} VND</p>
                                 <div class="item-qty">
                                     <form action="{{ route('cart.update', $id) }}" method="POST" class="qty-form">
                                         @csrf
@@ -42,7 +42,7 @@
                                 </div>
                             </div>
                             <div class="item-total">
-                                {{ number_format($details['price'] * $details['quantity'], 0, ',', '.') }} VNĐ
+                                {{ number_format($details['price'] * $details['quantity'], 0, ',', '.') }} VND
                             </div>
                             <div class="item-remove">
                                 <form action="{{ route('cart.remove', $id) }}" method="POST">
@@ -60,7 +60,7 @@
                         <h3>Order Summary</h3>
                         <div class="summary-item">
                             <span>Subtotal</span>
-                            <span>{{ number_format($totalAmount, 0, ',', '.') }} VNĐ</span>
+                            <span>{{ number_format($totalAmount, 0, ',', '.') }} VND</span>
                         </div>
                         <div class="summary-item">
                             <span>Shipping</span>
@@ -69,7 +69,7 @@
                         <hr>
                         <div class="summary-total">
                             <span>Total</span>
-                            <span>{{ number_format($totalAmount, 0, ',', '.') }} VNĐ</span>
+                            <span>{{ number_format($totalAmount, 0, ',', '.') }} VND</span>
                         </div>
                         <div class="summary-actions">
                             <a href="{{ route('checkout.index') }}" class="btn-checkout">Proceed to Checkout</a>

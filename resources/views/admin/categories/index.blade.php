@@ -46,17 +46,17 @@
                     <tbody>
                         @forelse ($categories as $category)
                             <tr>
-                                <td>#{{ $category->id }}</td>
-                                <td><strong>{{ $category->name }}</strong></td>
-                                <td><small>{{ $category->slug }}</small></td>
-                                <td class="text-left">
+                                <td data-label="ID">#{{ $category->id }}</td>
+                                <td data-label="Name"><strong>{{ $category->name }}</strong></td>
+                                <td data-label="Slug"><small>{{ $category->slug }}</small></td>
+                                <td data-label="Description" class="text-left">
                                     {{ Str::limit($category->description, 50, '...') }}
                                 </td>
-                                <td>
+                                <td data-label="Products">
                                     <span
                                         class="product-count">{{ $category->products_count ?? $category->products()->count() }}</span>
                                 </td>
-                                <td class="action-btns">
+                                <td data-label="Actions" class="action-btns">
                                     <a href="{{ route('admin.categories.edit', $category->id) }}"
                                         class="view-btn btn-edit">Edit</a>
                                     <form action="{{ route('admin.categories.destroy', $category->id) }}"
@@ -75,13 +75,13 @@
                         @endforelse
                     </tbody>
                 </table>
-
-                <div class="pagination-wrapper">
-                    <div class="pagination-container">
-                        {{ $categories->links() }}
-                    </div>
-                </div>
             </section>
+
+            <div class="pagination-wrapper">
+                <div class="pagination-container">
+                    {{ $categories->links() }}
+                </div>
+            </div>
         </main>
     </div>
 </body>
