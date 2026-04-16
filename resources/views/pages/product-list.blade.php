@@ -1,17 +1,12 @@
-<html lang="en">
+@extends('layouts.user')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Product List</title>
+@section('title', 'Product List')
+
+@push('styles')
     <link rel="stylesheet" href="{{ asset('css/pages/product-list.css') }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-</head>
+@endpush
 
-<body>
-    <x-header />
-
+@section('content')
     <div class="main-container">
         <div class="category-slider-container">
             <button class="nav-btn prev" onclick="scrollSlider(-1)">
@@ -44,8 +39,7 @@
                         </div>
 
                         <div class="product-bottom">
-                            <p class="product-stock"
-                                style="color: {{ $product->stock_quantity > 0 ? 'green' : 'red' }}">
+                            <p class="product-stock" style="color: {{ $product->stock_quantity > 0 ? 'green' : 'red' }}">
                                 Kho: {{ $product->stock_quantity }} | SKU: {{ $product->sku }}
                             </p>
 
@@ -75,13 +69,12 @@
             </div>
         </div>
     </div>
+@endsection
 
-    <x-footer />
-
+@push('scripts')
     <script>
         function scrollSlider(direction) {
             const slider = document.getElementById('categorySlider');
-            // Tính toán khoảng cách cuộn (khoảng 2 item mỗi lần nhấp)
             const scrollAmount = 360;
 
             if (direction === -1) {
@@ -91,6 +84,4 @@
             }
         }
     </script>
-</body>
-
-</html>
+@endpush

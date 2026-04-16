@@ -1,14 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+@extends('layouts.user', ['hideHeaderFooter' => true])
+
+@section('title', 'Login')
+
+@push('styles')
     <link rel="stylesheet" href="{{ asset('css/pages/login.css') }}">
-</head>
+@endpush
 
-<body>
+@section('content')
     <div class="login-container">
         <div class="login-box">
             <h2>Welcome Back</h2>
@@ -18,15 +17,15 @@
                 @csrf
                 <div class="form-group">
                     <label>Email Address</label>
-                    <input type="email" name="email" value="{{ old('email') }}" required autofocus>
-                    @error('email')
+                    <input type="email" name="email" value="{{ old('email') }}">
+                    {{-- @error('email')
                         <span class="error">{{ $message }}</span>
-                    @enderror
+                    @enderror --}}
                 </div>
 
                 <div class="form-group">
                     <label>Password</label>
-                    <input type="password" name="password" required>
+                    <input type="password" name="password">
                 </div>
 
                 <button type="submit" class="btn-login">Sign In</button>
@@ -41,6 +40,4 @@
             </div>
         </div>
     </div>
-</body>
-
-</html>
+@endsection

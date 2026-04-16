@@ -1,73 +1,75 @@
-<html lang="en">
+@extends('layouts.user', ['hideHeaderFooter' => true])
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Forget Password</title>
+@section('title', 'Forget Password')
+
+@push('styles')
     <link rel="stylesheet" href="{{ asset('css/pages/forget-password.css') }}">
-</head>
+@endpush
 
-<body>
-    <div class="forgot-password-card">
-        <h1 class="title">Forgot Password</h1>
+@section('content')
+    <div class="main-container">
+        <div class="forgot-password-card">
+            <h1 class="title">Forgot Password</h1>
 
-        <div class="stepper">
-            <div class="step active" id="st-1">
-                <div class="step-number">1</div>
-                <div class="step-label">Account</div>
+            <div class="stepper">
+                <div class="step active" id="st-1">
+                    <div class="step-number">1</div>
+                    <div class="step-label">Account</div>
+                </div>
+                <div class="step-line" id="step-line-1"></div>
+                <div class="step" id="st-2">
+                    <div class="step-number">2</div>
+                    <div class="step-label">Security</div>
+                </div>
+                <div class="step-line" id="step-line-2"></div>
+                <div class="step" id="st-3">
+                    <div class="step-number">3</div>
+                    <div class="step-label">Reset</div>
+                </div>
             </div>
-            <div class="step-line" id="step-line-1"></div>
-            <div class="step" id="st-2">
-                <div class="step-number">2</div>
-                <div class="step-label">Security</div>
-            </div>
-            <div class="step-line" id="step-line-2"></div>
-            <div class="step" id="st-3">
-                <div class="step-number">3</div>
-                <div class="step-label">Reset</div>
-            </div>
-        </div>
 
-        <div id="step-1" class="step-content">
-            <p class="instruction">Enter your email address to recover your account</p>
-            <div class="input-group">
-                <label>Email Address</label>
-                <input type="email" id="email" placeholder="example@gmail.com">
-                <span class="error-msg" id="error-1"></span>
+            <div id="step-1" class="step-content">
+                <p class="instruction">Enter your email address to recover your account</p>
+                <div class="input-group">
+                    <label>Email Address</label>
+                    <input type="email" id="email" placeholder="example@gmail.com">
+                    <span class="error-msg" id="error-1"></span>
+                </div>
+                <button type="submit" class="btn-submit active" onclick="handleStep1(event)">Continue</button>
             </div>
-            <button type="submit" class="btn-submit active" onclick="handleStep1(event)">Continue</button>
-        </div>
 
-        <div id="step-2" class="step-content" style="display: none;">
-            <p class="instruction">A 6-digit code has been sent to your email</p>
-            <div class="otp-container">
-                @for ($i = 0; $i < 6; $i++)
-                    <input type="text" class="otp-input" maxlength="1" inputmode="numeric">
-                @endfor
+            <div id="step-2" class="step-content" style="display: none;">
+                <p class="instruction">A 6-digit code has been sent to your email</p>
+                <div class="otp-container">
+                    @for ($i = 0; $i < 6; $i++)
+                        <input type="text" class="otp-input" maxlength="1" inputmode="numeric">
+                    @endfor
+                </div>
+                <input type="hidden" name="verify_email_code" id="final_otp">
+                <span class="error-msg" id="error-2"></span>
+                <button type="submit" class="btn-submit active" onclick="handleStep2(event)">Verify Code</button>
             </div>
-            <input type="hidden" name="verify_email_code" id="final_otp">
-            <span class="error-msg" id="error-2"></span>
-            <button type="submit" class="btn-submit active" onclick="handleStep2(event)">Verify Code</button>
-        </div>
 
-        <div id="step-3" class="step-content" style="display: none;">
-            <p class="instruction">Set a strong new password for your account</p>
-            <div class="input-group">
-                <label>New Password</label>
-                <input type="password" id="new_password" placeholder="Min. 8 characters">
-                <span class="toggle-password" onclick="togglePassword('new_password', this)">👁️</span>
+            <div id="step-3" class="step-content" style="display: none;">
+                <p class="instruction">Set a strong new password for your account</p>
+                <div class="input-group">
+                    <label>New Password</label>
+                    <input type="password" id="new_password" placeholder="Min. 8 characters">
+                    <span class="toggle-password" onclick="togglePassword('new_password', this)">👁️</span>
+                </div>
+                <div class="input-group">
+                    <label>Confirm Password</label>
+                    <input type="password" id="confirm_password" placeholder="Repeat password">
+                    <span class="toggle-password" onclick="togglePassword('confirm_password', this)">👁️</span>
+                </div>
+                <span class="error-msg" id="error-3"></span>
+                <button type="submit" class="btn-submit active" onclick="handleStep3(event)">Update Password</button>
             </div>
-            <div class="input-group">
-                <label>Confirm Password</label>
-                <input type="password" id="confirm_password" placeholder="Repeat password">
-                <span class="toggle-password" onclick="togglePassword('confirm_password', this)">👁️</span>
-            </div>
-            <span class="error-msg" id="error-3"></span>
-            <button type="submit" class="btn-submit active" onclick="handleStep3(event)">Update Password</button>
         </div>
     </div>
+@endsection
 
+@push('scripts')
     <script>
         /**
          * Handles UI transitions between reset steps
@@ -86,7 +88,7 @@
                     el.classList.add('active');
                 }
             });
-            
+
             // 4. Update Stepper Connecting Lines
             const lines = document.querySelectorAll('.step-line');
             lines.forEach((line, idx) => {
@@ -102,10 +104,14 @@
         function handleStep1(event) {
             const btn = event.currentTarget;
             let email = document.getElementById('email').value;
-            const errorMsg = document.getElementById('error-1');
 
             if (!email) {
-                errorMsg.innerText = 'Please enter your email address.';
+                if (typeof showToast === "function") {
+                    showToast("warning", "Please enter your email address.");
+                } else {
+                    alert("Please enter your email address.");
+                }
+
                 return;
             }
 
@@ -113,7 +119,6 @@
             btn.disabled = true;
             const originalText = btn.innerText;
             btn.innerText = 'Sending...';
-            errorMsg.innerText = '';
 
             fetch("{{ route('password.sendOtp') }}", {
                     method: "POST",
@@ -128,7 +133,11 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        alert('Verification code sent!');
+                        if (typeof showToast === "function") {
+                            showToast("success", "Verification code sent!");
+                        } else {
+                            alert("Verification code sent!");
+                        }
 
                         // Count down timer
                         let seconds = 60;
@@ -147,13 +156,23 @@
 
                         goToStep(2); // Proceed to OTP verification
                     } else {
-                        errorMsg.innerText = data.message || 'Error sending code!';
+                        if (typeof showToast === "function") {
+                            showToast("warning", data.message || "Error sending code!");
+                        } else {
+                            alert(data.message || "Error sending code!");
+                        }
+
                         btn.disabled = false;
                         btn.innerText = 'Send code';
                     }
                 })
                 .catch(error => {
-                    console.error('Error:', error);
+                    if (typeof showToast === "function") {
+                        showToast("error", error.message);
+                    } else {
+                        alert(error.message);
+                    }
+
                     btn.disabled = false;
                     btn.innerText = 'Send code';
                 });
@@ -212,14 +231,18 @@
          */
         function handleStep2(event) {
             const btn = event.currentTarget;
-            const errorMsg = document.getElementById('error-2');
 
             // Get OTP from inputs
             let otp = "";
             document.querySelectorAll('.otp-input').forEach(input => otp += input.value);
 
             if (otp.length < 6) {
-                errorMsg.innerText = 'Please enter the full 6-digit code.';
+                if (typeof showToast === "function") {
+                    showToast("warning", "Please enter the full 6-digit code.");
+                } else {
+                    alert("Please enter the full 6-digit code.");
+                }
+
                 return;
             }
 
@@ -227,7 +250,6 @@
             btn.disabled = true;
             const originalText = btn.innerText;
             btn.innerText = 'Verifying...';
-            errorMsg.innerText = '';
 
             fetch("{{ route('password.verifyOtp') }}", {
                     method: "POST",
@@ -243,17 +265,31 @@
                 .then(res => res.json())
                 .then(data => {
                     if (data.success) {
-                        alert('Verify OTP successfully!');
+                        if (typeof showToast === "function") {
+                            showToast("success", "Verify OTP successful!");
+                        } else {
+                            alert("Verify OTP successful!");
+                        }
 
                         goToStep(3); // Proceed to password reset
                     } else {
-                        errorMsg.innerText = data.message || 'Invalid or expired OTP.';
+                        if (typeof showToast === "function") {
+                            showToast("warning", data.message || "Invalid or expired OTP.");
+                        } else {
+                            alert(data.message || "Invalid or expired OTP.");
+                        }
+
                         btn.disabled = false;
                         btn.innerText = originalText;
                     }
                 })
-                .catch(err => {
-                    errorMsg.innerText = 'Connection lost. Please try again.';
+                .catch(error => {
+                    if (typeof showToast === "function") {
+                        showToast("error", error.message || "Connection lost. Please try again.");
+                    } else {
+                        alert(error.message || "Connection lost. Please try again.");
+                    }
+
                     btn.disabled = false;
                     btn.innerText = originalText;
                 });
@@ -272,6 +308,18 @@
             }
         }
 
+        // Reset Stepper
+        function clearStepper() {
+            // Reset step circle (steps)
+            document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
+
+            // Reset step line (lines)
+            document.querySelectorAll('.step-line').forEach(el => el.classList.remove('active'));
+
+            // Reset step 1 to the default active setting
+            document.getElementById('st-1').classList.add('active');
+        }
+
         /**
          * STEP 3: Submit New Password
          */
@@ -283,11 +331,21 @@
 
             // Client-side validation
             if (password.length < 8) {
-                errorMsg.innerText = 'Password must be at least 8 characters long.';
+                if (typeof showToast === "function") {
+                    showToast("warning", "Password must be at least 8 characters long.");
+                } else {
+                    alert("Password must be at least 8 characters long.");
+                }
+
                 return;
             }
             if (password !== confirm) {
-                errorMsg.innerText = 'Passwords do not match.';
+                if (typeof showToast === "function") {
+                    showToast("warning", "Passwords do not match.");
+                } else {
+                    alert("Passwords do not match.");
+                }
+
                 return;
             }
 
@@ -295,7 +353,6 @@
             btn.disabled = true;
             const originalText = btn.innerText;
             btn.innerText = 'Updating...';
-            errorMsg.innerText = '';
 
             fetch("{{ route('password.update') }}", {
                     method: "POST",
@@ -312,21 +369,40 @@
                 .then(res => res.json())
                 .then(data => {
                     if (data.success) {
-                        alert("Success! Your password has been updated.");
+                        if (typeof showToast === "function") {
+                            showToast("success", "Your password has been updated.");
+                        } else {
+                            alert("Your password has been updated.");
+                        }
+
                         window.location.href = "{{ route('login') }}";
                     } else {
-                        errorMsg.innerText = data.message || 'Update failed. Please try again.';
+                        if (typeof showToast === "function") {
+                            showToast("warning", data.message || 'Update failed. Please try again.');
+                        } else {
+                            alert(data.message || 'Update failed. Please try again.');
+                        }
+
                         btn.disabled = false;
                         btn.innerText = originalText;
+
+                        clearStepper();
+                        goToStep(1);
                     }
                 })
-                .catch(err => {
-                    errorMsg.innerText = 'System error. Contact support if this persists.';
+                .catch(error => {
+                    if (typeof showToast === "function") {
+                        showToast("error", error.message || 'System error. Contact support if this persists.');
+                    } else {
+                        alert(error.message || 'System error. Contact support if this persists.');
+                    }
+
                     btn.disabled = false;
                     btn.innerText = originalText;
+
+                    clearStepper();
+                    goToStep(1);
                 });
         }
     </script>
-</body>
-
-</html>
+@endpush

@@ -1,17 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('layouts.user')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Order Details #{{ $order->id }} - My Mini Store</title>
+@section('title', 'Order Detail #' . $order->id)
+
+@push('styles')
     <link rel="stylesheet" href="{{ asset('css/pages/order-detail.css') }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-</head>
+@endpush
 
-<body>
-    <x-header />
-
+@section('content')
     <div class="order-detail-container">
         <div class="header-actions">
             <a href="{{ route('orders.index') }}" class="btn-back">
@@ -62,13 +57,15 @@
                         <tr>
                             <td data-label="Product">
                                 <div class="product-info">
-                                    <img src="{{ $item->product->image_url ?? asset('images/no-image.png') }}" alt="{{ $item->product->name }}">
+                                    <img src="{{ $item->product->image_url ?? asset('images/no-image.png') }}"
+                                        alt="{{ $item->product->name }}">
                                     <span>{{ $item->product->name }}</span>
                                 </div>
                             </td>
                             <td data-label="Price">{{ number_format($item->price, 0, ',', '.') }} VND</td>
                             <td data-label="Quantity">{{ $item->quantity }}</td>
-                            <td data-label="Total Price">{{ number_format($item->price * $item->quantity, 0, ',', '.') }} VND</td>
+                            <td data-label="Total Price">{{ number_format($item->price * $item->quantity, 0, ',', '.') }}
+                                VND</td>
                         </tr>
                     @endforeach
                 </tbody>
@@ -93,8 +90,4 @@
             </div>
         </div>
     </div>
-
-    <x-footer />
-</body>
-
-</html>
+@endsection

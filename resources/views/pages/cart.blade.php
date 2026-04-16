@@ -1,17 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('layouts.user')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shopping Cart</title>
+@section('title', 'Shopping Cart')
+
+@push('styles')
     <link rel="stylesheet" href="{{ asset('css/pages/cart.css') }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-</head>
+@endpush
 
-<body>
-    <x-header />
-
+@section('content')
     <div class="cart-container">
         <h1 class="cart-title">Shopping Cart</h1>
 
@@ -25,19 +20,17 @@
                                     alt="{{ $details['name'] }}">
                             </div>
                             <div class="item-info">
-                                <h3>{{ $details['name'] }}</h3>
+                                <a href="{{ route('products.detail', $id) }}"
+                                    class="item-name">{{ $details['name'] }}</a>
                                 <p class="item-price">{{ number_format($details['price'], 0, ',', '.') }} VND</p>
                                 <div class="item-qty">
                                     <form action="{{ route('cart.update', $id) }}" method="POST" class="qty-form">
                                         @csrf
-                                        <button type="submit" name="action" value="decrease"
-                                            class="qty-btn">-</button>
+                                        <button type="submit" name="action" value="decrease" class="qty-btn">-</button>
 
-                                        <input type="text" class="qty-input" value="{{ $details['quantity'] }}"
-                                            readonly>
+                                        <input type="text" class="qty-input" value="{{ $details['quantity'] }}" readonly>
 
-                                        <button type="submit" name="action" value="increase"
-                                            class="qty-btn">+</button>
+                                        <button type="submit" name="action" value="increase" class="qty-btn">+</button>
                                     </form>
                                 </div>
                             </div>
@@ -45,10 +38,12 @@
                                 {{ number_format($details['price'] * $details['quantity'], 0, ',', '.') }} VND
                             </div>
                             <div class="item-remove">
-                                <form action="{{ route('cart.remove', $id) }}" method="POST">
+                                <form
+                                    onsubmit="confirmModal(event, 'Remove Product', 'Are you sure you want to remove this product from your cart?', ' ')"
+                                    action="{{ route('cart.remove', $id) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit"><i class="fa-regular fa-trash-can"></i></button>
+                                    <button type="submit" id="remove-btn"><i class="fa-regular fa-trash-can"></i></button>
                                 </form>
                             </div>
                         </div>
@@ -72,7 +67,8 @@
                             <span>{{ number_format($totalAmount, 0, ',', '.') }} VND</span>
                         </div>
                         <div class="summary-actions">
-                            <a href="{{ route('checkout.index') }}" class="btn-checkout">Proceed to Checkout</a>
+                            <a href="{{ route('checkout.index') }}" id="btn-checkout" class="btn-checkout">Proceed to
+                                Checkout</a>
                             <a href="{{ route('home') }}" class="continue-shopping">Continue Shopping</a>
                         </div>
                     </div>
@@ -86,8 +82,34 @@
             </div>
         @endif
     </div>
+@endsection
 
-    <x-footer />
-</body>
+@push('scripts')
+    <script>
+        // Check authentication từ Server
+        const isLoggedIn = {{ auth()->check() ? 'true' : 'false' }};
 
-</html>
+        const btnCheckout = document.getElementById('btn-checkout');
+
+        if (btnCheckout) {
+            btnCheckout.addEventListener('click', function(event) {
+                event.preventDefault();
+                const targetUrl = this.href;
+
+                if (!isLoggedIn) {
+                    if (typeof showToast === "function") {
+                        showToast("warning", "Please log in to checkout!");
+                    } else {
+                        alert("You need to log in to checkout!");
+                    }
+                } else {
+                    if (typeof confirmModal === "function") {
+                        confirmModal(event, 'Checkout', 'Are you sure you want to checkout?');
+                    } else {
+                        window.location.href = targetUrl;
+                    }
+                }
+            });
+        }
+    </script>
+@endpush

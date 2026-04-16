@@ -1,15 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('layouts.user', ['hideHeaderFooter' => true])
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Order Success</title>
+@section('title', 'Order Success')
+
+@push('styles')
     <link rel="stylesheet" href="{{ asset('css/pages/order-success.css') }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-</head>
+@endpush
 
-<body>
+@section('content')
     <div class="success-container">
         <div class="success-card">
             <div class="icon-box">
@@ -45,6 +42,4 @@
             </div>
         </div>
     </div>
-</body>
-
-</html>
+@endsection

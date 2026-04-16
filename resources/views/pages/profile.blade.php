@@ -1,17 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('layouts.user')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Profile</title>
+@section('title', 'My Profile')
+
+@push('styles')
     <link rel="stylesheet" href="{{ asset('css/pages/profile.css') }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-</head>
+@endpush
 
-<body>
-    <x-header />
-
+@section('content')
     <div class="profile-container">
         <div class="profile-card">
             <div class="profile-header">
@@ -50,8 +45,4 @@
             </div>
         </div>
     </div>
-
-    <x-footer />
-</body>
-
-</html>
+@endsection

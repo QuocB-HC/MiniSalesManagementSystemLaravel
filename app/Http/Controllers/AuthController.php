@@ -22,10 +22,23 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         // 1. Validate input
-        $credentials = $request->validate([
-            'email' => ['required', 'email'],
-            'password' => ['required'],
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|string|email|exists:users,email',
+            'password' => 'required',
+        ], [
+            'email.required' => 'Please enter your email.',
+            'email.email' => 'Invalid email format.',
+            'email.exists' => 'This email address is not registered.',
+            'password.required' => 'Please enter your password.',
         ]);
+
+        if ($validator->fails()) {
+            return back()
+                ->with('error', $validator->errors()->first())
+                ->onlyInput('email');
+        }
+
+        $credentials = $request->only('email', 'password');
 
         // 2. Check credentials and attempt login
         if (Auth::attempt($credentials)) {
@@ -34,9 +47,7 @@ class AuthController extends Controller
             if (Auth::user()->is_banned) {
                 Auth::logout();
 
-                return back()->withErrors([
-                    'email' => 'Your account has been banned. Please contact support.',
-                ])->onlyInput('email');
+                return back()->with('error', 'Your account has been banned. Please contact support.')->onlyInput('email');
             }
 
             // Redirect to intended page or home with success message
@@ -48,18 +59,16 @@ class AuthController extends Controller
         }
 
         // 3. If credentials are incorrect
-        return back()->withErrors([
-            'email' => 'The provided credentials do not match our records.',
-        ])->onlyInput('email');
+        return back()->with('error', 'The password is incorrect.')->onlyInput('email');
     }
 
     public function logout(Request $request)
     {
         Auth::logout();
-        $request->session()->invalidate();
+        // $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        return redirect()->route('home')->with('success', 'Logout successful!');
     }
 
     public function showRegister()
@@ -119,15 +128,11 @@ class AuthController extends Controller
         if (! $expiresAt || now()->gt($expiresAt)) {
             session()->forget(['verify_code', 'verify_email', 'verify_code_expires_at']);
 
-            return back()->withErrors([
-                'verify_email_code' => 'The verification code has expired. Please resend a new code!',
-            ])->withInput();
+            return back()->with('error', 'The verification code has expired. Please resend a new code!')->onlyInput('email');
         }
 
         if ($request->verify_email_code != $sessionCode || $request->email != $sessionEmail) {
-            return back()->withErrors([
-                'verify_email_code' => 'The verification code is incorrect or has expired.',
-            ])->withInput();
+            return back()->withErrors('error', 'The verification code or email is incorrect.')->onlyInput('email');
         }
 
         session()->forget(['verify_code']);
@@ -138,11 +143,26 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         // 1. Validate input
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8|confirmed', // Need input password_confirmation
+            'password' => 'required|string|min:8|confirmed',
+            'password_confirmation' => 'required',
+        ], [
+            'name.required' => 'Please enter your name.',
+            'name.max' => 'Name must be less than 255 characters.',
+            'email.required' => 'Please enter your email.',
+            'email.email' => 'Invalid email format.',
+            'email.exists' => 'This email address is not registered.',
+            'password.required' => 'Please enter your password.',
+            'password_confirmation' => 'Password confirmation does not match.',
         ]);
+
+        if ($validator->fails()) {
+            return back()
+                ->with('error', $validator->errors()->first())
+                ->onlyInput('name');
+        }
 
         // 2. Create a new user
         $user = User::create([
@@ -169,11 +189,20 @@ class AuthController extends Controller
 
     public function sendOtp(Request $request)
     {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'email' => 'required|email|exists:users,email',
         ], [
-            'exists' => 'This email address does not exist in our system.',
+            'email.required' => 'Please enter your email.',
+            'email.email' => 'Invalid email format.',
+            'email.exists' => 'This email address is not registered.',
         ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => $validator->errors()->first(),
+            ], 200);
+        }
 
         // Create random 6 numbers code
         $code = rand(100000, 999999);
@@ -229,7 +258,7 @@ class AuthController extends Controller
         $email = session('verify_email');
         $otpVerified = session('otp_verified');
 
-        if (! $otpVerified) {
+        if (! $otpVerified || ! $email) {
             return response()->json([
                 'success' => false,
                 'message' => 'The session has expired or has not been validated. Please try again from the beginning.',
@@ -258,7 +287,11 @@ class AuthController extends Controller
 
             session()->forget(['otp_verified', 'verify_email']);
 
-            return response()->json(['success' => true, 'message' => 'Password updated successfully!']);
+            return response()->json([
+                'success' => true,
+                'message' => 'Password updated successfully!',
+                'redirect_to' => route('login'),
+            ]);
         }
 
         return response()->json(['success' => false, 'message' => 'User not found.'], 404);

@@ -1,4 +1,4 @@
-/* Main Container */
+/*========== Default ==========*/
 .header-container {
     background: #333;
     color: white;
@@ -241,6 +241,7 @@
     font-weight: bold;
 }
 
+/*========== Tablet ==========*/
 @media (max-width: 991px) {
     .header-container {
         height: 12vh;
@@ -252,6 +253,7 @@
     }
 }
 
+/*========== Mobile ==========*/
 @media (max-width: 767px) {
     .header-container {
         width: 100%;

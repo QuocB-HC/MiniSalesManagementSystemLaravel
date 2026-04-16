@@ -1,19 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('layouts.user')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Checkout - My Mini Store</title>
+@section('title', 'Payment Information')
+
+@push('styles')
     <link rel="stylesheet" href="{{ asset('css/pages/payment.css') }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-</head>
+@endpush
 
-<body>
-    <x-header />
-
+@section('content')
     <div class="payment-container">
-        <form action="{{ route('checkout.placeOrder') }}" method="POST" class="payment-wrapper">
+        <form onsubmit="confirmModal(event, 'Place Order Confirm', 'Are you sure to place order now?')"
+            action="{{ route('checkout.placeOrder') }}" method="POST" class="payment-wrapper">
             @csrf
             <input type="hidden" name="discount_id" id="applied_discount_id">
 
@@ -28,8 +24,8 @@
 
                     <div class="input-group">
                         <label>Phone Number</label>
-                        <input type="text" name="phone" value="{{ $user->phone }}"
-                            placeholder="Enter phone number" required>
+                        <input type="text" name="phone" value="{{ $user->phone }}" placeholder="Enter phone number"
+                            required>
                     </div>
 
                     <div class="input-group">
@@ -81,11 +77,8 @@
                     </div>
 
                     <div class="discount-input-row">
-                        <input type="text" id="discount_code" class="discount-input"
-                            placeholder="Enter discount code">
+                        <input type="text" id="discount_code" class="discount-input" placeholder="Enter discount code">
                         <button type="button" class="btn-apply-discount" id="apply_discount">Apply</button>
-                        <div id="discount_message"
-                            style="margin-top: 5px; font-size: 0.85rem; display: block; width: 100%;"></div>
                     </div>
 
                     <div class="total-row">
@@ -124,9 +117,9 @@
             @endif
         </form>
     </div>
+@endsection
 
-    <x-footer />
-
+@push('scripts')
     <script>
         document.getElementById('apply_discount').addEventListener('click', function() {
             const code = document.getElementById('discount_code').value;
@@ -136,9 +129,12 @@
             const finalPayDisplay = document.getElementById('final_pay_display');
             const appliedDiscountIdInput = document.getElementById('applied_discount_id');
 
-            if (!code) {
-                messageDiv.style.color = 'red';
-                messageDiv.textContent = 'Vui lòng nhập mã giảm giá.';
+            if (!code || code.trim() === "") {
+                if (typeof showToast === "function") {
+                    showToast("error", "Please enter discount code first!");
+                } else {
+                    alert("Please enter discount code first!");
+                }
                 return;
             }
 
@@ -156,8 +152,11 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        messageDiv.style.color = 'green';
-                        messageDiv.textContent = data.message;
+                        if (typeof showToast === "function") {
+                            showToast("success", data.message);
+                        } else {
+                            alert(data.message);
+                        }
 
                         const discountAmount = data.discount_amount;
                         const finalTotal = subtotal - discountAmount;
@@ -168,10 +167,13 @@
                             `${new Intl.NumberFormat('vi-VN').format(finalTotal)} VND`;
                         appliedDiscountIdInput.value = data.discount_id;
                     } else {
-                        messageDiv.style.color = 'red';
-                        messageDiv.textContent = data.message;
+                        if (typeof showToast === "function") {
+                            showToast("error", data.message);
+                        } else {
+                            alert(data.message);
+                        }
 
-                        // Reset về - 0 VND nếu mã không hợp lệ
+                        // Reset tp - 0 VND if discount code is invalid
                         discountAmountSpan.textContent = `- 0 VND`;
                         finalPayDisplay.textContent = `${new Intl.NumberFormat('vi-VN').format(subtotal)} VND`;
                         appliedDiscountIdInput.value = '';
@@ -179,11 +181,12 @@
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    messageDiv.style.color = 'red';
-                    messageDiv.textContent = 'Đã có lỗi xảy ra. Vui lòng thử lại.';
+                    if (typeof showToast === "function") {
+                        showToast("error", "Error. Please try again!");
+                    } else {
+                        alert("Error. Please try again!");
+                    }
                 });
         });
     </script>
-</body>
-
-</html>
+@endpush

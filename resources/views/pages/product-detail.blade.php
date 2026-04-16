@@ -1,17 +1,12 @@
-<html lang="en">
+@extends('layouts.user')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>{{ $product->name }} Detail</title>
+@section('title', $product->name . 'Detail')
+
+@push('styles')
     <link rel="stylesheet" href="{{ asset('css/pages/product-detail.css') }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-</head>
+@endpush
 
-<body>
-    <x-header />
-
+@section('content')
     <div class="product-container">
         <div class="product-main">
             <div class="product-gallery">
@@ -42,7 +37,7 @@
                     <span class="current-price">{{ number_format($product->price, 0, ',', '.') }} VND</span>
                     {{-- <span class="old-price">1.200.000 VND</span> --}}
                 </div>
-                
+
                 <form action="{{ route('cart.add', $product->id) }}" method="POST" class="add-to-cart-form">
                     @csrf
                     <div class="quantity-selector">
@@ -74,10 +69,9 @@
             </div>
         </div>
     </div>
+@endsection
 
-    <x-footer />
-
-
+@push('scripts')
     <script>
         function changeQty(amount) {
             const qtyInput = document.getElementById('quantity');
@@ -91,6 +85,4 @@
             qtyInput.value = currentQty;
         }
     </script>
-</body>
-
-</html>
+@endpush

@@ -1,14 +1,12 @@
-<html lang="en">
+@extends('layouts.user', ['hideHeaderFooter' => true])
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Register</title>
+@section('title', 'Register')
+
+@push('styles')
     <link rel="stylesheet" href="{{ asset('css/pages/register.css') }}">
-</head>
+@endpush
 
-<body>
+@section('content')
     <div class="register-container">
         <div class="register-box">
             <h2>Create Account</h2>
@@ -20,29 +18,27 @@
 
                 <div class="form-group">
                     <label>Full Name</label>
-                    <input type="text" name="name" value="{{ old('name') }}" required>
-                    @error('name')
+                    <input type="text" name="name" value="{{ old('name') }}">
+                    {{-- @error('name')
                         <span class="error">{{ $message }}</span>
-                    @enderror
+                    @enderror --}}
                 </div>
 
                 <div class="form-group">
                     <label>Password</label>
-                    <input type="password" name="password" required>
-                    @error('password')
+                    <input type="password" name="password">
+                    {{-- @error('password')
                         <span class="error">{{ $message }}</span>
-                    @enderror
+                    @enderror --}}
                 </div>
 
                 <div class="form-group">
                     <label>Confirm Password</label>
-                    <input type="password" name="password_confirmation" required>
+                    <input type="password" name="password_confirmation">
                 </div>
 
                 <button type="submit" class="btn-register">Complete registration</button>
             </form>
         </div>
     </div>
-</body>
-
-</html>
+@endsection

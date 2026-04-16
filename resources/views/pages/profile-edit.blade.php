@@ -1,14 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('layouts.user', ['hideHeaderFooter' => true])
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Profile</title>
+@section('title', 'Profile Edit')
+
+@push('styles')
     <link rel="stylesheet" href="{{ asset('css/pages/profile-edit.css') }}">
-</head>
+@endpush
 
-<body>
+@section('content')
     <div class="profile-container">
         <div class="profile-card">
             <div class="profile-header">
@@ -45,6 +43,4 @@
             </form>
         </div>
     </div>
-</body>
-
-</html>
+@endsection

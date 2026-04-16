@@ -1,14 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('layouts.user', ['hideHeaderFooter' => true])
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register</title>
+@section('title', 'Register')
+
+@push('styles')
     <link rel="stylesheet" href="{{ asset('css/pages/register.css') }}">
-</head>
+@endpush
 
-<body>
+@section('content')
     <div class="register-container">
         <div class="register-box">
             <h2>Create Account</h2>
@@ -22,9 +20,9 @@
                         <input type="email" name="email" value="{{ old('email') }}" required>
                         <button type="button" class="send-code-btn" id="btnSendCode">Send code</button>
                     </div>
-                    @error('email')
+                    {{-- @error('email')
                         <span class="error">{{ $message }}</span>
-                    @enderror
+                    @enderror --}}
                 </div>
 
                 <div class="form-group">
@@ -38,9 +36,9 @@
                         <input type="text" class="otp-input" maxlength="1" pattern="\d*" inputmode="numeric">
                     </div>
                     <input type="hidden" name="verify_email_code" id="final_otp">
-                    @error('verify_email_code')
+                    {{-- @error('verify_email_code')
                         <span class="error">{{ $message }}</span>
-                    @enderror
+                    @enderror --}}
                 </div>
 
                 <button type="submit" class="btn-register">Sign Up</button>
@@ -51,14 +49,20 @@
             </div>
         </div>
     </div>
+@endsection
 
+@push('scripts')
     <script>
         document.getElementById('btnSendCode').addEventListener('click', function() {
             let btn = this;
             let email = document.querySelector('input[name="email"]').value;
 
-            if (!email) {
-                alert('Please enter email first!');
+            if (!email | email.trim() === "") {
+                if (typeof showToast === "function") {
+                    showToast("warning", "Please enter email first!");
+                } else {
+                    alert('Please enter email first!');
+                }
                 return;
             }
 
@@ -79,7 +83,11 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        alert('Verification code sent!');
+                        if (typeof showToast === "function") {
+                            showToast("success", data.message);
+                        } else {
+                            alert('Verification code sent!');
+                        }
 
                         // 2. Count down timer
                         let seconds = 60;
@@ -96,13 +104,23 @@
                             }
                         }, 1000);
                     } else {
-                        alert(data.message);
+                        if (typeof showToast === "function") {
+                            showToast("warning", data.message);
+                        } else {
+                            alert(data.message);
+                        }
+
                         btn.disabled = false;
                         btn.innerText = 'Send code';
                     }
                 })
                 .catch(error => {
-                    alert(data.message);
+                    if (typeof showToast === "function") {
+                        showToast("error", data.message);
+                    } else {
+                        alert(data.message);
+                    }
+
                     console.error('Error:', data.message);
                     btn.disabled = false;
                     btn.innerText = 'Send code';
@@ -146,6 +164,4 @@
             finalInput.value = code; // Assign code to a hidden input to submit the form
         }
     </script>
-</body>
-
-</html>
+@endpush
