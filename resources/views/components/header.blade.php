@@ -53,7 +53,8 @@
                         <a href="{{ route('orders.index') }}" class="dropdown-item">
                             Orders
                         </a>
-                        <form action="{{ route('logout') }}" method="POST" style="margin: 0;">
+                        <form onsubmit="confirmModal(event, 'Logout', 'Are you sure to log out?')"
+                            action="{{ route('logout') }}" method="POST" style="margin: 0;">
                             @csrf
                             <button type="submit" class="dropdown-item logout-btn">
                                 Logout

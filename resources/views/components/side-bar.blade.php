@@ -29,7 +29,8 @@
             <li class="{{ request()->routeIs('admin.users.*') ? 'active' : '' }}"><a
                     href='{{ route('admin.users.index') }}'>Users</a></li>
             <li>
-                <form action="{{ route('logout') }}" method="POST">
+                <form onsubmit="confirmModal(event, 'Logout', 'Are you sure to log out?')"
+                    action="{{ route('logout') }}" method="POST">
                     @csrf
                     <button type="submit" class="logout-btn">Logout</button>
                 </form>

@@ -300,7 +300,7 @@
         padding: 10px 15px;
         border-radius: 10px;
         outline: none;
-        width: 95svw;
+        width: 300px;
     }
     .search-header button {
         display: none;

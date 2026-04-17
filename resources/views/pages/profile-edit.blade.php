@@ -13,18 +13,21 @@
                 <h2>Edit Your Profile</h2>
             </div>
 
-            <form action="{{ route('profile.update') }}" method="POST" class="profile-body">
+            <form onsubmit="confirmModal(event, 'Edit Profile', 'Are you sure to confirm the edit?')"
+                action="{{ route('profile.update') }}" method="POST" class="profile-body">
                 @csrf
                 @method('PUT')
 
                 <div class="info-group">
                     <label>Full Name</label>
-                    <input type="text" name="name" value="{{ old('name', $user->name) }}" placeholder="Enter your full name">
+                    <input type="text" name="name" value="{{ old('name', $user->name) }}"
+                        placeholder="Enter your full name">
                 </div>
 
                 <div class="info-group">
                     <label>Phone Number</label>
-                    <input type="text" name="phone" value="{{ old('phone', $user->phone) }}" placeholder="Enter your phone">
+                    <input type="text" name="phone" value="{{ old('phone', $user->phone) }}"
+                        placeholder="Enter your phone">
                 </div>
 
                 <div class="info-group">
