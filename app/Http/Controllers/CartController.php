@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Validator;
 
 class CartController extends Controller
 {
@@ -31,12 +32,23 @@ class CartController extends Controller
     {
         $product = Product::findOrFail($id);
 
-        $request->validate([
+        if (! $product) {
+            return response()->json(['success' => false, 'message' => 'Product not found!'], 404);
+        }
+
+        // Validate input
+        $validator = Validator::make($request->all(), [
             'quantity' => 'required|integer|min:1|max:'.$product->stock_quantity,
         ]);
 
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Invalid quantity or exceeds stock limit!',
+            ], 200);
+        }
+
         $quantity = (int) $request->input('quantity', 1);
-        // Take current cart from session or initialize if not exists
         $cart = session()->get('cart', []);
 
         // If product already in cart, increase quantity
@@ -45,7 +57,10 @@ class CartController extends Controller
             $newQuantity = $cart[$id]['quantity'] + $quantity;
 
             if ($newQuantity > $product->stock_quantity) {
-                return redirect()->back()->with('error', 'Quantity exceeds stock!');
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Total quantity in cart exceeds stock!',
+                ]);
             }
 
             $cart[$id]['quantity'] = $newQuantity;
@@ -62,7 +77,15 @@ class CartController extends Controller
         // Save the updated cart to the session
         session()->put('cart', $cart);
 
-        return redirect()->back()->with('success', 'Item added to cart!');
+        $totalQty = array_reduce($cart, function ($carry, $item) {
+            return $carry + ($item['quantity'] ?? 0);
+        }, 0);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Item added to cart!',
+            'cart_count' => $totalQty,
+        ]);
     }
 
     public function updateQuantity(Request $request, $id)

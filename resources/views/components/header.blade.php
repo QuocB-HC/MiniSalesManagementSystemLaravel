@@ -17,9 +17,9 @@
                     </a></li>
                 <li><a href="{{ route('cart.index') }}" class="nav-link">
                         <i class="fa-solid fa-cart-shopping"></i> Cart
-                        @if ($cartCount > 0)
-                            <span class="cart-badge">{{ $cartCount }}</span>
-                        @endif
+                        <span id="cart-count" class="cart-badge {{ $cartCount > 0 ? '' : 'd-none' }}">
+                            {{ $cartCount }}
+                        </span>
                     </a></li>
             </div>
 

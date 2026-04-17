@@ -181,19 +181,19 @@ section {
     font-size: 0.9rem;
     color: #666;
     margin: 10px 0;
-    
+
     /* Set line limit */
     display: -webkit-box;
     -webkit-line-clamp: 2; /* The number of lines to display before the ... */
     line-clamp: 2; /* The number of lines to display before the ... */
     -webkit-box-orient: vertical;
-    
+
     /* Very important to active the ... */
     overflow: hidden;
     text-overflow: ellipsis; /* Make sure the browser understands that you need to add ... */
-    
+
     /* Keep the frame fixed for the cards */
-    min-height: 2.8em; 
+    min-height: 2.8em;
     line-height: 1.4em; /* Set line-height to let min-height more accurate */
 }
 .product-top {
@@ -207,15 +207,16 @@ section {
     padding-top: 15px;
     border-top: 1px solid #f9f9f9;
 }
-.product-bottom form {
-    margin: 0;
-    display: flex;
-}
 .price {
     font-weight: 700;
     color: #28a745;
     font-size: 1.3rem;
     white-space: nowrap;
+}
+
+.product-bottom form {
+    margin: 0;
+    display: flex;
 }
 
 .add-to-cart {

@@ -18,8 +18,7 @@
             <div class="product-info">
                 <nav class="breadcrumb">
                     <a href="/">Home</a> >
-                    <a
-                        href="{{ route('products.byCategory', $product->category->id) }}">{{ $product->category->name }}</a>
+                    <a href="{{ route('products.byCategory', $product->category->id) }}">{{ $product->category->name }}</a>
                     >
                     <a>{{ $product->name }}</a>
                 </nav>
@@ -84,5 +83,62 @@
 
             qtyInput.value = currentQty;
         }
+
+        document.querySelectorAll('.add-to-cart-form').forEach(form => {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                const url = this.getAttribute('action');
+                const formData = new FormData(this);
+                const dataObject = {};
+                formData.forEach((value, key) => dataObject[key] = value);
+
+                fetch(url, {
+                        method: 'POST',
+                        headers: {
+                            "Content-Type": "application/json",
+                            "X-CSRF-TOKEN": "{{ csrf_token() }}",
+                            "Accept": "application/json"
+                        },
+                        body: JSON.stringify(dataObject)
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.success) {
+                            if (typeof showToast === "function") {
+                                showToast('success', data.message);
+                            } else {
+                                alert(data.message);
+                            }
+
+                            const cartCountEl = document.getElementById('cart-count');
+                            if (cartCountEl) {
+                                // Update new value from Controller return
+                                cartCountEl.innerText = data.cart_count;
+
+                                // If value > 0 then show badge, hide otherwise
+                                if (data.cart_count > 0) {
+                                    cartCountEl.classList.remove('d-none');
+                                } else {
+                                    cartCountEl.classList.add('d-none');
+                                }
+                            }
+                        } else {
+                            if (typeof showToast === "function") {
+                                showToast('error', data.message);
+                            } else {
+                                alert(data.message);
+                            }
+                        }
+                    })
+                    .catch(error => {
+                        if (typeof showToast === "function") {
+                            showToast("error", error.message);
+                        } else {
+                            alert(error.message);
+                        }
+                    });
+            });
+        });
     </script>
 @endpush
