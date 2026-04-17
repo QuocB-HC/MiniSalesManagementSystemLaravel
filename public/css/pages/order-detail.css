@@ -82,6 +82,12 @@
     border-radius: 4px;
     background: #f9f9f9;
 }
+.product-info a {
+    text-decoration: none;
+    color: #333;
+    font-weight: 600;
+    cursor: pointer;
+}
 .order-summary {
     background: #fff;
     padding: 20px;

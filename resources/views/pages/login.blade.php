@@ -1,4 +1,3 @@
-
 @extends('layouts.user', ['hideHeaderFooter' => true])
 
 @section('title', 'Login')

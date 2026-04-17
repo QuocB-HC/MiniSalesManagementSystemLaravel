@@ -59,7 +59,7 @@
                                 <div class="product-info">
                                     <img src="{{ $item->product->image_url ?? asset('images/no-image.png') }}"
                                         alt="{{ $item->product->name }}">
-                                    <span>{{ $item->product->name }}</span>
+                                    <a href="{{ route('products.detail', $item->product->id) }}">{{ $item->product->name }}</a>
                                 </div>
                             </td>
                             <td data-label="Price">{{ number_format($item->price, 0, ',', '.') }} VND</td>
