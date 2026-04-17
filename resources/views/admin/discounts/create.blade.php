@@ -136,7 +136,7 @@
                     // Has value case
                     if (isFormDirty) {
                         e.preventDefault();
-                        confirmModal(e, 'Back', 'Are you sure to clear all input and back to list?');
+                        confirmModal(e, 'Unsaved Changes', 'You have unsaved data in the form. Are you sure you want to go back?');
                     }
                 });
             }

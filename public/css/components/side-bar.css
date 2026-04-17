@@ -1,3 +1,4 @@
+/*========== Default ==========*/
 .sidebar {
     width: 18vw;
     background: #2e59d9;
@@ -47,12 +48,13 @@
     display: none;
 }
 
+/*========== Tablet ==========*/
 @media (max-width: 991px) {
     .sidebar {
         position: fixed;
         left: -100%;
         top: 0;
-        width: 280px;
+        width: 40%;
         z-index: 9999;
         transition: 0.4s ease-in-out;
         box-shadow: 10px 0 15px rgba(0,0,0,0.1);
@@ -107,8 +109,9 @@
     }
 }
 
+/*========== Mobile ==========*/
 @media (max-width: 767px) {
     .sidebar {
-        width: 80%;
+        width: 60%;
     }
 }

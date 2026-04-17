@@ -251,13 +251,8 @@ header {
 /*========== Tablet ==========*/
 @media (max-width: 991px) {
     .main-container {
-        padding-top: 20px;
         width: 100%;
-    }
-
-    .main-content {
         padding: 20px;
-        width: 100%;
         box-sizing: border-box;
         overflow-x: hidden;
     }

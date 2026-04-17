@@ -213,11 +213,7 @@ header {
 @media (max-width: 991px) {
     .main-container {
         width: 100%;
-    }
-
-    .main-content {
         padding: 20px;
-        width: 100%;
         box-sizing: border-box;
         overflow-x: hidden;
         margin: 0;

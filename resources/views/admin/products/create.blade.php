@@ -11,7 +11,7 @@
         <div class="main-content">
             <header>
                 <h1>Add New Product</h1>
-                <a href="{{ route('admin.products.index') }}" class="view-btn btn-back">Back to List</a>
+                <a href="{{ route('admin.products.index') }}" id="btn-back" class="view-btn btn-back">Back to List</a>
             </header>
 
             <div class="form-container">
@@ -90,3 +90,40 @@
         </div>
     </div>
 @endsection
+
+@push('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const btnBack = document.getElementById('btn-back');
+
+        if (btnBack) {
+            btnBack.addEventListener('click', function(e) {
+                const fieldIds = [
+                    'name', 'sku', 'category_id', 'price', 
+                    'stock_quantity', 'description'
+                ];
+
+                const isFormDirty = fieldIds.some(id => {
+                    const input = document.getElementById(id);
+                    if (!input) return false;
+
+                    if (id === 'stock_quantity') {
+                        return input.value !== "0" && input.value.trim() !== "";
+                    }
+                    
+                    return input.value.trim() !== "";
+                });
+
+                const statusInput = document.getElementById('status');
+                const isStatusChanged = statusInput && statusInput.value !== 'available';
+
+                if (isFormDirty || isStatusChanged) {
+                    e.preventDefault();
+                    
+                    confirmModal(e, 'Unsaved Changes', 'You have unsaved data in the form. Are you sure you want to go back?');
+                }
+            });
+        }
+    });
+</script>
+@endpush
