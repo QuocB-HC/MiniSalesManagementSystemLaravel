@@ -20,9 +20,6 @@
                         <input type="email" name="email" value="{{ old('email') }}" required>
                         <button type="button" class="send-code-btn" id="btnSendCode">Send code</button>
                     </div>
-                    {{-- @error('email')
-                        <span class="error">{{ $message }}</span>
-                    @enderror --}}
                 </div>
 
                 <div class="form-group">
@@ -36,9 +33,6 @@
                         <input type="text" class="otp-input" maxlength="1" pattern="\d*" inputmode="numeric">
                     </div>
                     <input type="hidden" name="verify_email_code" id="final_otp">
-                    {{-- @error('verify_email_code')
-                        <span class="error">{{ $message }}</span>
-                    @enderror --}}
                 </div>
 
                 <button type="submit" class="btn-register">Sign Up</button>

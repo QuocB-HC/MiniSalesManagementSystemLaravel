@@ -1,19 +1,8 @@
-body {
-    background-color: #f0f0f0;
-    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-    margin: 0;
-    padding: 0;
-}
-
+/*========== Default ==========*/
 .main-container {
-    display: flex;
-    min-height: 100vh;
-    background-color: #f8f9fa;
-}
-
-.main-content {
     flex: 1;
     padding: 30px;
+    background-color: #f0f0f0;
 }
 
 header {
@@ -72,20 +61,16 @@ header {
 .filter-btn {
     background-color: #eee;
     color: #333;
+    border: 1px solid black;
+    justify-self: center;
+}
+.filter-btn:hover {
+    background-color: #333;
+    color: white;
 }
 .filter-btn.active {
     background-color: #333;
     color: #fff;
-}
-
-/* Alerts */
-.alert-container {
-    background: #d4edda;
-    color: #155724;
-    padding: 15px;
-    border-radius: 8px;
-    margin-bottom: 20px;
-    border: 1px solid #c3e6cb;
 }
 
 /* Table */
@@ -96,17 +81,18 @@ header {
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-    table-layout: fixed; /* Bắt buộc để các cột tuân thủ độ rộng cố định */
+    table-layout: fixed;
 }
 
 .admin-table th,
 .admin-table td {
     padding: 16px;
     text-align: center;
+    vertical-align: middle;
 }
 .admin-table th {
-    background-color: #fcfcfc;
-    color: #888;
+    background-color: #212529;
+    color: white;
     font-size: 13px;
     text-transform: uppercase;
     letter-spacing: 0.5px;
@@ -117,7 +103,10 @@ header {
     border-bottom: 1px solid #dee2e6;
 }
 
-/* Định nghĩa độ rộng cụ thể cho từng cột */
+.admin-table tbody tr:hover {
+    background-color: #f5f5f5;
+}
+
 .admin-table th:nth-child(1) {
     width: 5%;
 } /* ID */
@@ -195,9 +184,7 @@ header {
     display: flex;
     align-items: center;
 }
-.pagination-wrapper {
-    margin-top: 25px;
-}
+
 .no-data {
     text-align: center;
     color: #999;
@@ -261,6 +248,7 @@ header {
     cursor: not-allowed;
 }
 
+/*========== Tablet ==========*/
 @media (max-width: 991px) {
     .main-container {
         padding-top: 20px;
@@ -289,6 +277,7 @@ header {
     }
 }
 
+/*========== Mobile ==========*/
 @media (max-width: 767px) {
     header {
         display: flex;

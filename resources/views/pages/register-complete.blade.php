@@ -19,17 +19,11 @@
                 <div class="form-group">
                     <label>Full Name</label>
                     <input type="text" name="name" value="{{ old('name') }}">
-                    {{-- @error('name')
-                        <span class="error">{{ $message }}</span>
-                    @enderror --}}
                 </div>
 
                 <div class="form-group">
                     <label>Password</label>
                     <input type="password" name="password">
-                    {{-- @error('password')
-                        <span class="error">{{ $message }}</span>
-                    @enderror --}}
                 </div>
 
                 <div class="form-group">

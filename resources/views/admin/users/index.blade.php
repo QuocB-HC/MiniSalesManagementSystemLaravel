@@ -1,28 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('layouts.admin')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Users Management</title>
+@section('title', 'Users Management')
+
+@push('styles')
     <link rel="stylesheet" href="{{ asset('css/admin/users/index.css') }}">
-</head>
+@endpush
 
-<body>
+@section('content')
     <div class="main-container">
-        <x-side-bar />
-
         <main class="main-content">
             <header>
                 <h1>Users Management</h1>
             </header>
-
-            @if (session('success'))
-                <div class="alert-container alert-success">
-                    {{ session('success') }}
-                </div>
-            @endif
 
             <section class="recent-section">
                 <table class="admin-table">
@@ -51,8 +40,9 @@
                                     </span>
                                 </td>
                                 <td class="action-btns">
-                                    <form action="{{ route('admin.users.updateIsBanned', $user->id) }}" method="POST"
-                                        onsubmit="return confirm('Are you sure you want to {{ $user->is_banned ? 'unban' : 'ban' }} this user?')">
+                                    <form
+                                        onsubmit="confirmModal(event, 'Ban User', 'Are you sure you want to {{ $user->is_banned ? 'unban' : 'ban' }} this user?', 'delete')"
+                                        action="{{ route('admin.users.updateIsBanned', $user->id) }}" method="POST">
                                         @csrf
                                         @method('PUT')
                                         <input type="hidden" name="is_banned" value="{{ $user->is_banned ? 0 : 1 }}">
@@ -79,6 +69,4 @@
             </section>
         </main>
     </div>
-</body>
-
-</html>
+@endsection

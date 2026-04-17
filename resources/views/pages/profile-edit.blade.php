@@ -20,9 +20,6 @@
                 <div class="info-group">
                     <label>Full Name</label>
                     <input type="text" name="name" value="{{ old('name', $user->name) }}" placeholder="Enter your full name">
-                    @error('name')
-                        <span class="error">{{ $message }}</span>
-                    @enderror
                 </div>
 
                 <div class="info-group">

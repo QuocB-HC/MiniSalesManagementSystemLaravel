@@ -17,9 +17,6 @@
                 <div class="form-group">
                     <label>Email Address</label>
                     <input type="email" name="email" value="{{ old('email') }}">
-                    {{-- @error('email')
-                        <span class="error">{{ $message }}</span>
-                    @enderror --}}
                 </div>
 
                 <div class="form-group">

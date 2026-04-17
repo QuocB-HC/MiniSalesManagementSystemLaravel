@@ -1,16 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('layouts.admin', ['hideSideBar' => true])
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add New Product</title>
+@section('title', 'Add New Product')
+
+@push('styles')
     <link rel="stylesheet" href="{{ asset('css/admin/products/create.css') }}">
-</head>
+@endpush
 
-<body>
+@section('content')
     <div class="main-container">
-        <main class="main-content">
+        <div class="main-content">
             <header>
                 <h1>Add New Product</h1>
                 <a href="{{ route('admin.products.index') }}" class="view-btn btn-back">Back to List</a>
@@ -26,18 +24,12 @@
                             <label for="name">Product Name</label>
                             <input type="text" name="name" id="name" value="{{ old('name') }}" required
                                 class="form-input">
-                            @error('name')
-                                <span class="error">{{ $message }}</span>
-                            @enderror
                         </div>
 
                         <div class="form-group">
                             <label for="sku">SKU</label>
                             <input type="text" name="sku" id="sku" value="{{ old('sku') }}" required
                                 class="form-input">
-                            @error('sku')
-                                <span class="error">{{ $message }}</span>
-                            @enderror
                         </div>
 
                         <div class="form-group">
@@ -51,27 +43,18 @@
                                     </option>
                                 @endforeach
                             </select>
-                            @error('category_id')
-                                <span class="error">{{ $message }}</span>
-                            @enderror
                         </div>
 
                         <div class="form-group">
                             <label for="price">Price (VND)</label>
                             <input type="number" name="price" id="price" value="{{ old('price') }}"
                                 step="0.01" required class="form-input">
-                            @error('price')
-                                <span class="error">{{ $message }}</span>
-                            @enderror
                         </div>
 
                         <div class="form-group">
                             <label for="stock_quantity">Stock Quantity</label>
                             <input type="number" name="stock_quantity" id="stock_quantity"
                                 value="{{ old('stock_quantity', 0) }}" required class="form-input">
-                            @error('stock_quantity')
-                                <span class="error">{{ $message }}</span>
-                            @enderror
                         </div>
 
                         <div class="form-group">
@@ -84,9 +67,6 @@
                                 <option value="discontinued" {{ old('status') == 'discontinued' ? 'selected' : '' }}>
                                     Discontinued</option>
                             </select>
-                            @error('status')
-                                <span class="error">{{ $message }}</span>
-                            @enderror
                         </div>
                     </div>
 
@@ -107,8 +87,6 @@
                     </div>
                 </form>
             </div>
-        </main>
+        </div>
     </div>
-</body>
-
-</html>
+@endsection

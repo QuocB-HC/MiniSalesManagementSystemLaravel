@@ -1,19 +1,6 @@
-body {
-    background: #f0f0f0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin: 0;
-    padding: 0;
-}
-
-.admin-container {
-    display: flex;
-    min-height: 100vh;
-}
-
 /* Main Content */
-.main-content {
-    flex: 1;
-    padding: 30px;
+.main-container {
+    padding: 0 30px;
 }
 header {
     display: flex;
@@ -212,7 +199,7 @@ header {
     }
 
     .charts-grid {
-        grid-template-columns: 1fr !important; 
+        grid-template-columns: 1fr !important;
         gap: 20px;
     }
 
@@ -226,7 +213,7 @@ header {
     .main-content {
         padding-top: 30px;
     }
-    
+
     header {
         flex-direction: column;
         align-items: flex-start;
@@ -248,9 +235,9 @@ header {
         display: none;
     }
 
-    .admin-table, 
-    .admin-table tbody, 
-    .admin-table tr, 
+    .admin-table,
+    .admin-table tbody,
+    .admin-table tr,
     .admin-table td {
         display: block;
         width: 100%;
@@ -276,7 +263,7 @@ header {
         border-bottom: 1px dashed #eee;
     }
     .admin-table td:last-child {
-        align-items: center; 
+        align-items: center;
         border-bottom: none;
     }
 

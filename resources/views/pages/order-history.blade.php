@@ -10,18 +10,6 @@
     <div class="order-history-container">
         <h1><i class="fa-solid fa-clock-rotate-left"></i> Your Order History</h1>
 
-        @if (session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
-            </div>
-        @endif
-
-        @if (session('error'))
-            <div class="alert alert-danger">
-                {{ session('error') }}
-            </div>
-        @endif
-
         @if ($orders->isEmpty())
             <p class="no-orders">You haven't placed any orders yet.</p>
         @else

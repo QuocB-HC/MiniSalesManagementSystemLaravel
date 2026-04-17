@@ -1,104 +1,92 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('layouts.admin')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Orders Management</title>
+@section('title', 'Orders Management')
+
+@push('styles')
     <link rel="stylesheet" href="{{ asset('css/admin/orders/index.css') }}">
-</head>
+@endpush
 
-<body>
+@section('content')
     <div class="main-container">
-        <x-side-bar />
+        <header>
+            <h1>Orders Management</h1>
+        </header>
 
-        <main class="main-content">
-            <header>
-                <h1>Orders Management</h1>
-            </header>
+        <div class="search-box">
+            <form action="{{ route('admin.orders.index') }}" method="GET" class="search-form">
+                <input type="text" name="search" value="{{ request('search') }}"
+                    placeholder="Enter Order ID, Email or Phone number..." class="search-input">
+                <button type="submit" class="view-btn btn-search">Search Order</button>
+            </form>
+        </div>
 
-            <div class="search-box">
-                <form action="{{ route('admin.orders.index') }}" method="GET" class="search-form">
-                    <input type="text" name="search" value="{{ request('search') }}"
-                        placeholder="Enter Order ID, Email or Phone number..." class="search-input">
-                    <button type="submit" class="view-btn btn-search">Search Order</button>
-                </form>
-            </div>
-
-            <section class="orders-section">
-                @if (session('success'))
-                    <div class="alert alert-success">
-                        {{ session('success') }}
-                    </div>
-                @endif
-
-                <table class="orders-table">
-                    <thead>
+        <section class="orders-section">
+            <table class="orders-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Customer</th>
+                        <th>Total Amount</th>
+                        <th>Status</th>
+                        <th>Created At</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse ($orders as $order)
                         <tr>
-                            <th>ID</th>
-                            <th>Customer</th>
-                            <th>Total Amount</th>
-                            <th>Status</th>
-                            <th>Created At</th>
-                            <th>Actions</th>
+                            <td>{{ $order->id }}</td>
+                            <td>{{ $order->user->name }}</td>
+                            <td>${{ number_format($order->total_price, 2) }}</td>
+                            <td><span class="status {{ $order->status }}">{{ ucfirst($order->status) }}</span></td>
+                            <td>{{ $order->created_at->format('Y-m-d H:i') }}</td>
+                            <td>
+                                @if ($order->status !== 'cancelled')
+                                    <form
+                                        onsubmit="confirmModal(event, 'Chage Order Status', 'Are you sure to change status of this order?')"
+                                        action="{{ route('admin.orders.updateStatus', $order) }}" method="POST"
+                                        class="update-status-form">
+                                        @csrf
+                                        @method('PUT')
+                                        <select name="status" class="status-select">
+                                            <option value="pending" {{ $order->status === 'pending' ? 'selected' : '' }}>
+                                                Pending
+                                            </option>
+                                            <option value="processing"
+                                                {{ $order->status === 'processing' ? 'selected' : '' }}>Processing
+                                            </option>
+                                            <option value="shipping" {{ $order->status === 'shipping' ? 'selected' : '' }}>
+                                                Shipping
+                                            </option>
+                                            <option value="completed"
+                                                {{ $order->status === 'completed' ? 'selected' : '' }}>Completed
+                                            </option>
+                                            <option value="cancelled"
+                                                {{ $order->status === 'cancelled' ? 'selected' : '' }}>Cancelled
+                                            </option>
+                                        </select>
+                                        <button type="submit" class="update-button">Update</button>
+                                    </form>
+                                @else
+                                    N/A
+                                @endif
+                            </td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        @forelse ($orders as $order)
-                            <tr>
-                                <td>{{ $order->id }}</td>
-                                <td>{{ $order->user->name }}</td>
-                                <td>${{ number_format($order->total_price, 2) }}</td>
-                                <td><span class="status {{ $order->status }}">{{ ucfirst($order->status) }}</span></td>
-                                <td>{{ $order->created_at->format('Y-m-d H:i') }}</td>
-                                <td>
-                                    @if ($order->status !== 'cancelled')
-                                        <form action="{{ route('admin.orders.updateStatus', $order) }}" method="POST"
-                                            class="update-status-form">
-                                            @csrf
-                                            @method('PUT')
-                                            <select name="status" class="status-select">
-                                                <option value="pending"
-                                                    {{ $order->status === 'pending' ? 'selected' : '' }}>Pending
-                                                </option>
-                                                <option value="processing"
-                                                    {{ $order->status === 'processing' ? 'selected' : '' }}>Processing
-                                                </option>
-                                                <option value="shipping"
-                                                    {{ $order->status === 'shipping' ? 'selected' : '' }}>Shipping
-                                                </option>
-                                                <option value="completed"
-                                                    {{ $order->status === 'completed' ? 'selected' : '' }}>Completed
-                                                </option>
-                                                <option value="cancelled"
-                                                    {{ $order->status === 'cancelled' ? 'selected' : '' }}>Cancelled
-                                                </option>
-                                            </select>
-                                            <button type="submit" class="update-button">Update</button>
-                                        </form>
-                                    @else
-                                        N/A
-                                    @endif
-                                </td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="6" class="no-data">
-                                    {{ request('search') ? 'No orders found matching your search.' : 'Please enter information to search for orders.' }}
-                                </td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
+                    @empty
+                        <tr>
+                            <td colspan="6" class="no-data">
+                                {{ request('search') ? 'No orders found matching your search.' : 'Please enter information to search for orders.' }}
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
 
-                <div class="pagination-wrapper">
-                    <div class="pagination-container">
-                        {{ $orders->links() }}
-                    </div>
+            <div class="pagination-wrapper">
+                <div class="pagination-container">
+                    {{ $orders->links() }}
                 </div>
-            </section>
-        </main>
+            </div>
+        </section>
     </div>
-</body>
-
-</html>
+@endsection

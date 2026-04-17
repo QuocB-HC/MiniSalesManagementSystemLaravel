@@ -1,17 +1,6 @@
-body {
-    background-color: #f0f0f0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin: 0;
-    padding: 0;
-}
-
+/*========== Default ==========*/
 .main-container {
-    display: flex;
-    min-height: 100vh;
-    background-color: #f8f9fa;
-}
-
-.main-content {
+    background-color: #f0f0f0;
     flex: 1;
     padding: 30px;
 }
@@ -53,16 +42,6 @@ header {
     background-color: #c82333;
 }
 
-/* Alerts */
-.alert-container {
-    background: #d4edda;
-    color: #155724;
-    padding: 15px;
-    border-radius: 8px;
-    margin-bottom: 20px;
-    border: 1px solid #c3e6cb;
-}
-
 /* Table Base */
 .admin-table {
     width: 100%;
@@ -81,8 +60,8 @@ header {
     vertical-align: middle;
 }
 .admin-table th {
-    background-color: #fcfcfc;
-    color: #888;
+    background-color: #212529;
+    color: white;
     font-size: 13px;
     text-transform: uppercase;
     letter-spacing: 0.5px;
@@ -91,8 +70,10 @@ header {
 .admin-table tr {
     border-bottom: 1px solid #dee2e6;
 }
+.admin-table tbody tr:hover {
+    background-color: #f5f5f5;
+}
 
-/* Tinh chỉnh độ rộng các cột cho bảng User */
 .admin-table th:nth-child(1) {
     width: 5%;
 } /* ID */
@@ -125,7 +106,7 @@ header {
     text-align: right !important;
 }
 
-/* Trạng thái người dùng */
+/* Status badge */
 .status {
     padding: 4px 12px;
     border-radius: 20px;
@@ -143,7 +124,6 @@ header {
     color: #d91e18;
 }
 
-/* Tinh chỉnh nút bấm trong bảng User */
 .action-btns form {
     width: 100%;
     display: flex;
@@ -220,6 +200,7 @@ header {
     cursor: not-allowed;
 }
 
+/*========== Tablet ==========*/
 @media (max-width: 991px) {
     .main-container {
         width: 100%;
@@ -248,6 +229,7 @@ header {
     }
 }
 
+/*========== Mobile ==========*/
 @media (max-width: 767px) {
     header {
         display: flex;

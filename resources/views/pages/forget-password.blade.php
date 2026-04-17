@@ -33,7 +33,6 @@
                 <div class="input-group">
                     <label>Email Address</label>
                     <input type="email" id="email" placeholder="example@gmail.com">
-                    <span class="error-msg" id="error-1"></span>
                 </div>
                 <button type="submit" class="btn-submit active" onclick="handleStep1(event)">Continue</button>
             </div>
@@ -46,7 +45,6 @@
                     @endfor
                 </div>
                 <input type="hidden" name="verify_email_code" id="final_otp">
-                <span class="error-msg" id="error-2"></span>
                 <button type="submit" class="btn-submit active" onclick="handleStep2(event)">Verify Code</button>
             </div>
 
@@ -62,7 +60,6 @@
                     <input type="password" id="confirm_password" placeholder="Repeat password">
                     <span class="toggle-password" onclick="togglePassword('confirm_password', this)">👁️</span>
                 </div>
-                <span class="error-msg" id="error-3"></span>
                 <button type="submit" class="btn-submit active" onclick="handleStep3(event)">Update Password</button>
             </div>
         </div>
