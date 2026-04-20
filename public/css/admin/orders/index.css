@@ -1,18 +1,5 @@
 /*========== Default ==========*/
-.main-container {
-    background-color: #f0f0f0;
-    flex: 1;
-    padding: 30px;
-}
-
-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 25px;
-}
-
-/* Search Box Styling */
+/* Search Box Customization */
 .search-box {
     background: white;
     padding: 20px;
@@ -20,12 +7,10 @@ header {
     margin-bottom: 25px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
-
 .search-form {
     display: flex;
     gap: 10px;
 }
-
 .search-input {
     flex: 1;
     padding: 10px 15px;
@@ -34,24 +19,11 @@ header {
     outline: none;
     font-size: 14px;
 }
-
 .search-input:focus {
     border-color: #28a745;
 }
 
-/* Buttons */
-.view-btn {
-    padding: 10px 20px;
-    border-radius: 6px;
-    text-decoration: none;
-    font-weight: 500;
-    transition: all 0.2s ease;
-    display: inline-block;
-    border: none;
-    cursor: pointer;
-    font-size: 14px;
-}
-
+/* Search Buttons Customization */
 .btn-search {
     background-color: #28a745;
     color: white;
@@ -61,74 +33,27 @@ header {
     transform: translateY(-1px);
 }
 
-/* Table */
-.orders-table {
-    width: 100%;
-    border-collapse: collapse;
-    background: white;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-    table-layout: fixed;
-}
-
-.orders-table th,
-.orders-table td {
-    padding: 16px;
-    text-align: center;
-    vertical-align: middle;
-}
-.orders-table th {
-    background-color: #212529;
-    color: white;
-    font-size: 13px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    border-bottom: 1px solid #dee2e6;
-}
-.orders-table tr {
-    border-bottom: 1px solid #dee2e6;
-}
-.orders-table tbody tr:hover {
-    background-color: #f5f5f5;
-}
-
-.orders-table td {
-    vertical-align: middle;
-    word-wrap: break-word;
-}
-
-/* Over long text */
-.orders-table td strong {
-    display: block;
-    max-width: 100%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-/* Table custom */
-.orders-table th:nth-child(1) {
+.admin-table th:nth-child(1) {
     width: 5%;
 } /* ID */
-.orders-table th:nth-child(2) {
+.admin-table th:nth-child(2) {
     width: auto;
     text-align: left;
 } /* Customer */
-.orders-table th:nth-child(3) {
+.admin-table th:nth-child(3) {
     width: 12%;
 } /* Total Amount */
-.orders-table th:nth-child(4) {
+.admin-table th:nth-child(4) {
     width: 10%;
 } /* Status */
-.orders-table th:nth-child(5) {
+.admin-table th:nth-child(5) {
     width: 15%;
 } /* Created At */
-.orders-table th:nth-child(6) {
+.admin-table th:nth-child(6) {
     width: 20%;
 } /* Actions */
 
-.orders-table td:nth-child(2) {
+.admin-table td:nth-child(2) {
     text-align: left;
 }
 
@@ -160,20 +85,7 @@ header {
     color: #721c24;
 }
 
-.no-data {
-    text-align: center;
-    color: #999;
-    padding: 40px !important;
-}
-
 /* Update Status Form */
-.update-status-form {
-    display: flex;
-    gap: 8px;
-    justify-content: center;
-    align-items: center;
-}
-
 .status-select {
     padding: 6px 10px;
     border: 1px solid #ddd;
@@ -181,7 +93,6 @@ header {
     font-size: 13px;
     outline: none;
 }
-
 .update-button {
     background-color: #007bff;
     color: white;
@@ -192,70 +103,8 @@ header {
     font-size: 13px;
     transition: background 0.2s;
 }
-
 .update-button:hover {
     background-color: #0069d9;
-}
-
-.pagination-wrapper {
-    margin-top: 25px;
-}
-
-/* Pagination */
-.pagination-container {
-    margin-top: 20px;
-    padding: 20px;
-    text-align: center;
-}
-
-.pagination-container nav div:first-child {
-    display: none !important;
-}
-
-.pagination-container nav div:last-child {
-    display: flex !important;
-    justify-content: center;
-    align-items: center;
-}
-
-.pagination-container a {
-    text-decoration: none;
-    margin: 0 5px;
-    color: #333;
-}
-
-.pagination-container span {
-    display: flex !important;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.25rem !important;
-    line-height: 1 !important;
-}
-
-.pagination-container span[aria-current="page"] {
-    background-color: #28a745 !important;
-    color: white !important;
-    border-color: #28a745 !important;
-    font-weight: bold !important;
-    padding: 3px 5px;
-    border-radius: 5px;
-}
-
-.pagination-container svg {
-    width: 1.5rem;
-    height: 1.5rem;
-    color: #333;
-}
-
-.pagination-container a:hover svg {
-    fill: #218838;
-    transform: scale(1.2);
-    transition: 0.3s;
-}
-
-.pagination-container span[aria-disabled="true"] svg {
-    color: #ccc;
-    cursor: not-allowed;
 }
 
 /*========== Tablet ==========*/
@@ -268,12 +117,12 @@ header {
         margin: 0;
     }
 
-    .orders-section {
+    .recent-section {
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
     }
 
-    .orders-table {
+    .admin-table {
         table-layout: auto;
         min-width: 800px;
     }

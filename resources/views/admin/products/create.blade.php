@@ -7,9 +7,8 @@
 @endpush
 
 @section('content')
-    <div class="main-container">
-        <div class="main-content">
-            <header>
+    <div class="main-container create-container">
+            <header class="form-header">
                 <h1>Add New Product</h1>
                 <a href="{{ route('admin.products.index') }}" id="btn-back" class="view-btn btn-back">Back to List</a>
             </header>
@@ -87,7 +86,6 @@
                     </div>
                 </form>
             </div>
-        </div>
     </div>
 @endsection
 

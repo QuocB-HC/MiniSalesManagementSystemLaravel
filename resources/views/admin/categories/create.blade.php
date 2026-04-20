@@ -7,8 +7,8 @@
 @endpush
 
 @section('content')
-    <div class="main-container">
-        <header>
+    <div class="main-container create-container">
+        <header  class="form-header">
             <h1>Add New Category</h1>
             <a id="btn-back" href="{{ route('admin.categories.index') }}" class="view-btn btn-back">Back to List</a>
         </header>

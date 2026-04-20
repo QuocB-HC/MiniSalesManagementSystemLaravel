@@ -1,14 +1,4 @@
-/* Main Content */
-.main-container {
-    padding: 0 30px;
-}
-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 30px;
-}
-
+/*========== Default ==========*/
 /* Stats Grid */
 .stats-grid {
     display: grid;
@@ -54,20 +44,6 @@ header {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     margin-bottom: 40px;
 }
-.admin-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-}
-.admin-table th,
-.admin-table td {
-    text-align: center;
-    padding: 15px;
-    border-bottom: 1px solid #eee;
-}
-.admin-table th {
-    background: #fdfdfd;
-}
 
 /* Status Badges */
 .status {
@@ -88,26 +64,8 @@ header {
     background: #cce5ff;
     color: #004085;
 }
-.view-btn {
-    color: #4e73df;
-    text-decoration: none;
-    font-weight: bold;
-}
-
-.no-data {
-    text-align: center;
-    color: #999;
-    padding: 40px !important;
-}
 
 /* Update Status Form */
-.update-status-form {
-    display: flex;
-    gap: 8px;
-    justify-content: center;
-    align-items: center;
-}
-
 .status-select {
     padding: 6px 10px;
     border: 1px solid #ddd;
@@ -115,7 +73,6 @@ header {
     font-size: 13px;
     outline: none;
 }
-
 .update-button {
     background-color: #007bff;
     color: white;
@@ -126,69 +83,11 @@ header {
     font-size: 13px;
     transition: background 0.2s;
 }
-
 .update-button:hover {
     background-color: #0069d9;
 }
 
-/* Pagination */
-.pagination-container {
-    margin-top: 20px;
-    padding: 20px;
-    text-align: center;
-}
-
-.pagination-container nav div:first-child {
-    display: none !important;
-}
-
-.pagination-container nav div:last-child {
-    display: flex !important;
-    justify-content: center;
-    align-items: center;
-}
-
-.pagination-container a {
-    text-decoration: none;
-    margin: 0 5px;
-    color: #333;
-}
-
-.pagination-container span {
-    display: flex !important;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.25rem !important;
-    line-height: 1 !important;
-}
-
-.pagination-container span[aria-current="page"] {
-    background-color: #28a745 !important;
-    color: white !important;
-    border-color: #28a745 !important;
-    font-weight: bold !important;
-    padding: 3px 5px;
-    border-radius: 5px;
-}
-
-.pagination-container svg {
-    width: 1.5rem;
-    height: 1.5rem;
-    color: #333;
-}
-
-.pagination-container a:hover svg {
-    fill: #218838;
-    transform: scale(1.2);
-    transition: 0.3s;
-}
-
-.pagination-container span[aria-disabled="true"] svg {
-    color: #ccc;
-    cursor: not-allowed;
-}
-
-/* Tablet (Max 991px) */
+/*========== Tablet ==========*/
 @media (max-width: 991px) {
     .admin-container {
         flex-direction: column;
@@ -208,7 +107,7 @@ header {
     }
 }
 
-/* Mobile (Max 767px) */
+/*========== Mobile ==========*/
 @media (max-width: 767px) {
     .main-content {
         padding-top: 30px;

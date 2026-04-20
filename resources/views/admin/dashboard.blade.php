@@ -77,7 +77,7 @@
                                     <form
                                         onsubmit="confirmModal(event, 'Chage Order Status', 'Are you sure to change status of this order?')"
                                         action="{{ route('admin.orders.updateStatus', $order) }}" method="POST"
-                                        class="update-status-form">
+                                        class="action-btns">
                                         @csrf
                                         @method('PUT')
                                         <select name="status" class="status-select">
