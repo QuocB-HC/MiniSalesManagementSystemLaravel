@@ -52,8 +52,9 @@
 }
 
 .category-item:hover {
-    background: #aaa8a8;
-    color: black;
+    background: #ffffff;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.08);
+    transform: translateY(-8px);
 }
 
 /* Navigation Buttons */
