@@ -28,9 +28,9 @@
                     <div class="form-group">
                         <label for="type">Discount Type <span class="required">*</span></label>
                         <select name="type" id="type" class="form-input" required>
-                            <option value="fixed" {{ old('type', $discount->type) == 'fixed' ? 'selected' : '' }}>Fixed
+                            <option value="fixed" {{ old('type', $discount->type->value) == 'fixed' ? 'selected' : '' }}>Fixed
                                 Amount</option>
-                            <option value="percentage" {{ old('type', $discount->type) == 'percentage' ? 'selected' : '' }}>
+                            <option value="percentage" {{ old('type', $discount->type->value) == 'percentage' ? 'selected' : '' }}>
                                 Percentage
                             </option>
                         </select>

@@ -24,8 +24,8 @@ return new class extends Migration
             $table->string('receiver_phone');
             $table->string('receiver_address');
             $table->string('note')->nullable();
-            $table->string('payment_method')->default('cod');
-            $table->string('status')->default('pending');
+            $table->enum('payment_method', ['cod', 'vnpay'])->default('cod');
+            $table->enum('status', ['pending', 'processing', 'shipping', 'completed', 'cancelled'])->default('pending');
             $table->timestamps();
         });
     }

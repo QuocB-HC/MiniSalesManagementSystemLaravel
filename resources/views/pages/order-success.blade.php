@@ -27,7 +27,7 @@
                 </div>
                 <div class="detail-item">
                     <span>Payment Method:</span>
-                    <strong>{{ $order->payment_method == 'cod' ? 'Cash on Delivery (COD)' : 'Bank Transfer' }}</strong>
+                    <strong>{{ $order->payment_method->value === 'cod' ? 'Cash on Delivery (COD)' : 'Bank Transfer' }}</strong>
                 </div>
             </div>
 

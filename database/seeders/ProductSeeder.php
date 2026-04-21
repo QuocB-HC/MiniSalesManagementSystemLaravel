@@ -3,6 +3,9 @@
 namespace Database\Seeders;
 
 use App\Models\Category;
+use App\Models\Product;
+use App\Models\Shop;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class ProductSeeder extends Seeder
@@ -12,9 +15,13 @@ class ProductSeeder extends Seeder
      */
     public function run(): void
     {
-        // Create 10 categories, each with 20 products
-        Category::factory(10)
-            ->hasProducts(20)
+        $shops = Shop::factory(5)->create();
+
+        $categories = Category::factory(10)->create();
+
+        Product::factory(200)
+            ->recycle($shops)
+            ->recycle($categories)
             ->create();
     }
 }

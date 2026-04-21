@@ -120,7 +120,7 @@
                         </div>
                         <div class="order-row">
                             <span class="label">Payment Method:</span>
-                            <span class="value">{{ strtoupper($order->payment_method) }}</span>
+                            <span class="value">{{ strtoupper($order->payment_method->value) }}</span>
                         </div>
                         <div class="order-row" style="margin-top: 15px;">
                             <span class="label" style="vertical-align: middle;">Total Price:</span>

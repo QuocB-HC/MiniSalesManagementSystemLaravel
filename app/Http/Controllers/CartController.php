@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\DiscountType;
+use App\Enums\OrderStatus;
+use App\Enums\PaymentMethod;
+use App\Enums\ProductStatus;
 use App\Mail\OrderNotification;
 use App\Models\Discount;
 use App\Models\Order;
@@ -34,6 +38,10 @@ class CartController extends Controller
 
         if (! $product) {
             return response()->json(['success' => false, 'message' => 'Product not found!'], 404);
+        }
+
+        if (! in_array($product->status, [ProductStatus::APPROVED, ProductStatus::OUT_OF_STOCK], true)) {
+            return response()->json(['success' => false, 'message' => 'This product is currently unavailable.'], 403);
         }
 
         // Validate input
@@ -161,7 +169,7 @@ class CartController extends Controller
         }
 
         $discountAmount = 0;
-        if ($discount->type === 'fixed') {
+        if ($discount->type === DiscountType::FIXED) {
             $discountAmount = (float) $discount->value;
         } else {
             $discountAmount = ($subtotal * (float) $discount->value) / 100;
@@ -221,7 +229,7 @@ class CartController extends Controller
                     ($totalPrice >= $discount->min_order_value)) {
 
                     $discountAmount = 0;
-                    if ($discount->type === 'fixed') {
+                    if ($discount->type === DiscountType::FIXED) {
                         $discountAmount = (float) $discount->value;
                     } else {
                         $discountAmount = ($totalPrice * (float) $discount->value) / 100;
@@ -251,7 +259,7 @@ class CartController extends Controller
                 'receiver_address' => $request->address,
                 'note' => $request->note,
                 'payment_method' => $request->payment_method,
-                'status' => 'pending',
+                'status' => OrderStatus::PENDING,
             ]);
 
             // 5. Save to 'order_items' table (Details of each product)
@@ -265,7 +273,7 @@ class CartController extends Controller
             }
 
             // 6. PAYMENT STREAMING
-            if ($request->payment_method == 'vnpay') {
+            if ($request->payment_method === PaymentMethod::VNPAY->value) {
                 // VNPAY CASE:
                 // - Do not deduct from storage immediately.
                 // - Commit to save order int DB and go to pay.
@@ -277,7 +285,7 @@ class CartController extends Controller
             } else {
                 // COD CASE:
                 // Update Order Status
-                $order->update(['status' => 'processing']);
+                $order->update(['status' => OrderStatus::PROCESSING]);
 
                 // - Deduct from storage immediately.
                 foreach ($cart as $id => $details) {

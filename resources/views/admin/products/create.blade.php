@@ -59,12 +59,16 @@
                         <div class="form-group">
                             <label for="status">Status</label>
                             <select name="status" id="status" required class="form-input">
-                                <option value="available" {{ old('status') == 'available' ? 'selected' : '' }}>
-                                    Available</option>
+                                <option value="pending" {{ old('status', 'pending') == 'pending' ? 'selected' : '' }}>
+                                    Pending</option>
+                                <option value="approved" {{ old('status') == 'approved' ? 'selected' : '' }}>
+                                    Approved</option>
+                                <option value="rejected" {{ old('status') == 'rejected' ? 'selected' : '' }}>
+                                    Rejected</option>
+                                <option value="hidden" {{ old('status') == 'hidden' ? 'selected' : '' }}>
+                                    Hidden</option>
                                 <option value="out_of_stock" {{ old('status') == 'out_of_stock' ? 'selected' : '' }}>
                                     Out of Stock</option>
-                                <option value="discontinued" {{ old('status') == 'discontinued' ? 'selected' : '' }}>
-                                    Discontinued</option>
                             </select>
                         </div>
                     </div>
@@ -113,7 +117,7 @@
                 });
 
                 const statusInput = document.getElementById('status');
-                const isStatusChanged = statusInput && statusInput.value !== 'available';
+                const isStatusChanged = statusInput && statusInput.value !== 'pending';
 
                 if (isFormDirty || isStatusChanged) {
                     e.preventDefault();

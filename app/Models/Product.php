@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use App\Enums\ProductStatus;
 use Database\Factories\ProductFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -17,7 +19,6 @@ use Illuminate\Database\Eloquent\Model;
     'committed_quantity',
     'image_url',
     'status',
-    'is_disabled',
 ])]
 class Product extends Model
 {
@@ -28,28 +29,41 @@ class Product extends Model
         'name',
         'sku',
         'category_id',
+        'shop_id',
         'description',
         'price',
         'stock_quantity',
         'committed_quantity',
         'image_url',
         'status',
-        'is_disabled',
     ];
 
-    protected function cast(): array
+    protected function casts(): array
     {
         return [
             'price' => 'decimal:2',
             'stock_quantity' => 'integer',
             'committed_quantity' => 'integer',
-            'is_disabled' => 'boolean',
+            'status' => ProductStatus::class,
         ];
+    }
+
+    public function scopeVisibleOnStorefront(Builder $query): Builder
+    {
+        return $query->whereIn('status', [
+            ProductStatus::APPROVED->value,
+            ProductStatus::OUT_OF_STOCK->value,
+        ]);
     }
 
     public function category()
     {
         return $this->belongsTo(Category::class);
+    }
+
+    public function shop()
+    {
+        return $this->belongsTo(Shop::class);
     }
 
     public function getImageUrlAttribute($value)

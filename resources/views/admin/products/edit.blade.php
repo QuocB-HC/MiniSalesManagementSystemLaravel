@@ -60,15 +60,21 @@
                     <div class="form-group">
                         <label for="status">Status</label>
                         <select name="status" id="status" required class="form-input">
-                            <option value="available"
-                                {{ old('status', $product->status) == 'available' ? 'selected' : '' }}>
-                                Available</option>
+                            <option value="pending"
+                                {{ old('status', $product->status->value) == 'pending' ? 'selected' : '' }}>
+                                Pending</option>
+                            <option value="approved"
+                                {{ old('status', $product->status->value) == 'approved' ? 'selected' : '' }}>
+                                Approved</option>
+                            <option value="rejected"
+                                {{ old('status', $product->status->value) == 'rejected' ? 'selected' : '' }}>
+                                Rejected</option>
+                            <option value="hidden"
+                                {{ old('status', $product->status->value) == 'hidden' ? 'selected' : '' }}>
+                                Hidden</option>
                             <option value="out_of_stock"
-                                {{ old('status', $product->status) == 'out_of_stock' ? 'selected' : '' }}>
+                                {{ old('status', $product->status->value) == 'out_of_stock' ? 'selected' : '' }}>
                                 Out of Stock</option>
-                            <option value="discontinued"
-                                {{ old('status', $product->status) == 'discontinued' ? 'selected' : '' }}>
-                                Discontinued</option>
                         </select>
                     </div>
                 </div>

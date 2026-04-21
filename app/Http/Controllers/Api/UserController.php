@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Enums\UserRole;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -21,7 +22,7 @@ class UserController extends Controller
 
     public function showCustomers()
     {
-        $users = User::oldest()->where('role', 'customer');
+        $users = User::oldest()->where('role', UserRole::CUSTOMER->value);
 
         return response()->json([
             'status' => 'success',

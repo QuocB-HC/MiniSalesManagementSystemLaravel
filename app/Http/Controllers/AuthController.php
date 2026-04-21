@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\UserRole;
 use App\Mail\ResetPasswordMail;
 use App\Mail\VerifyCodeMail;
 use App\Models\User;
@@ -51,7 +52,7 @@ class AuthController extends Controller
             }
 
             // Redirect to intended page or home with success message
-            if (Auth::user()->hasRole('admin')) {
+            if (Auth::user()->hasRole(UserRole::ADMIN)) {
                 return redirect()->route('admin.dashboard')->with('success', 'Login successful!');
             } else {
                 return redirect()->intended('/')->with('success', 'Login successful!');

@@ -32,11 +32,11 @@
                 <h3><i class="fa-solid fa-circle-info"></i> Order Information</h3>
                 <p><strong>Date:</strong> {{ $order->created_at->format('d/m/Y H:i') }}</p>
                 <p><strong>Status:</strong>
-                    <span class="status-badge status-{{ Str::slug($order->status) }}">
-                        {{ ucfirst($order->status) }}
+                    <span class="status-badge status-{{ Str::slug($order->status->value) }}">
+                        {{ ucfirst($order->status->value) }}
                     </span>
                 </p>
-                <p><strong>Payment Method:</strong> Cash on Delivery (COD)</p>
+                <p><strong>Payment Method:</strong> {{ $order->payment_method->value === 'cod' ? 'Cash on Delivery (COD)' : 'Bank Transfer' }}</p>
             </div>
         </div>
 

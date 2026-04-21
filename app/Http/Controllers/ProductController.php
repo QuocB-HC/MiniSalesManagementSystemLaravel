@@ -13,11 +13,10 @@ class ProductController extends Controller
      */
     public function index()
     {
-        // Get products that are not disabled, sorted by latest
         $products = Product::with('category')
-            ->where('is_disabled', false)
+            ->visibleOnStorefront()
             ->latest()
-            ->paginate(15); // Paginate with 15 products per page
+            ->paginate(15);
         $categories = Category::all();
 
         return view('pages.product-list', compact('products', 'categories'));
@@ -28,8 +27,7 @@ class ProductController extends Controller
      */
     public function search(Request $request)
     {
-        // Initialize the query but do not execute
-        $query = Product::query()->where('is_disabled', 0);
+        $query = Product::query()->visibleOnStorefront();
 
         // Search by name or sku (Use 'search' key)
         $query->when($request->search, function ($q, $search) {
@@ -49,8 +47,11 @@ class ProductController extends Controller
     public function searchAjax(Request $request)
     {
         $query = $request->get('query');
-        $products = Product::where('name', 'LIKE', "%{$query}%")
-            ->orWhere('sku', 'LIKE', "%{$query}%")
+        $products = Product::visibleOnStorefront()
+            ->where(function ($q) use ($query) {
+                $q->where('name', 'LIKE', "%{$query}%")
+                    ->orWhere('sku', 'LIKE', "%{$query}%");
+            })
             ->take(5)
             ->get();
 
@@ -60,7 +61,7 @@ class ProductController extends Controller
     public function homePage()
     {
         $products = Product::latest()
-            ->where('is_disabled', false)
+            ->visibleOnStorefront()
             ->With('category')
             ->take(4)
             ->get();
@@ -73,7 +74,7 @@ class ProductController extends Controller
     {
         $products = Product::with('category')
             ->where('category_id', $category)
-            ->where('is_disabled', false)
+            ->visibleOnStorefront()
             ->latest()
             ->paginate(15);
         $categories = Category::all();
@@ -83,7 +84,7 @@ class ProductController extends Controller
 
     public function detail($id)
     {
-        $product = Product::findOrFail($id);
+        $product = Product::visibleOnStorefront()->findOrFail($id);
 
         return view('pages.product-detail', compact('product'));
     }

@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->foreignId('category_id')->constrained()->onDelete('cascade');
+            $table->foreignId('shop_id')->constrained()->onDelete('cascade');
             $table->string('name');
             $table->string('sku')->unique();
             $table->text('description')->nullable();
@@ -21,8 +22,8 @@ return new class extends Migration
             $table->integer('committed_quantity')->default(0);
             $table->decimal('price', 8, 2);
             $table->string('image_url')->nullable();
-            $table->boolean('is_disabled')->default(false);
-            $table->string('status')->default('available');
+            // pending, approved, rejected, hidden, out_of_stock
+            $table->string('status')->default('pending');
             $table->timestamps();
         });
     }

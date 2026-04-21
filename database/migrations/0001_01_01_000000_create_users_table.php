@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('phone')->nullable();
             $table->string('address')->nullable();
             $table->string('avatar_url')->default('https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y');
+            // admin, seller, customer
             $table->string('role')->default('customer');
             $table->boolean('is_banned')->default(false);
             $table->timestamp('email_verified_at')->nullable();

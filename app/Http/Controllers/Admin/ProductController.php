@@ -41,7 +41,7 @@ class ProductController extends Controller
             'category_id' => 'required|exists:categories,id',
             'price' => 'required|numeric|min:0',
             'stock_quantity' => 'required|integer|min:0',
-            'status' => 'required|in:available,out_of_stock,discontinued',
+            'status' => 'required|in:pending,approved,rejected,hidden,out_of_stock',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'description' => 'nullable|string',
         ]);
@@ -75,7 +75,7 @@ class ProductController extends Controller
             'category_id' => 'required|exists:categories,id',
             'price' => 'required|numeric|min:0',
             'stock_quantity' => 'required|integer|min:0',
-            'status' => 'required|in:available,out_of_stock,discontinued',
+            'status' => 'required|in:pending,approved,rejected,hidden,out_of_stock',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'description' => 'nullable|string',
         ]);

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Enums\UserRole;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
@@ -10,7 +11,7 @@ class UserController extends Controller
 {
     public function index()
     {
-        $users = User::oldest()->where('role', 'customer')->paginate(10);
+        $users = User::oldest()->where('role', UserRole::CUSTOMER->value)->paginate(10);
 
         return view('admin.users.index', compact('users'));
     }

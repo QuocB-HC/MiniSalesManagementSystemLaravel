@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Enums\OrderStatus;
 use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\Product;
@@ -75,7 +76,7 @@ class VNPayService
 
             if ($request->vnp_ResponseCode == '00') {
                 // Update Order Status
-                $order->update(['status' => 'processing']);
+                $order->update(['status' => OrderStatus::PROCESSING]);
 
                 // Deduct from storage immediately here (Payment successful)
                 foreach ($order->items as $item) {

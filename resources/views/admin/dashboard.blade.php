@@ -70,10 +70,10 @@
                             <td data-label="Order ID">#{{ $order->id }}</td>
                             <td data-label="Customer">{{ $order->receiver_name ?? 'Guest' }}</td>
                             <td data-label="Status"><span
-                                    class="status {{ $order->status }}">{{ ucfirst($order->status) }}</span></td>
+                                    class="status {{ $order->status->value }}">{{ ucfirst($order->status->value) }}</span></td>
                             <td data-label="Total">{{ number_format($order->total_price, 0, ',', '.') }} VND</td>
                             <td data-label="Actions">
-                                @if ($order->status !== 'cancelled')
+                                @if ($order->status->value !== 'cancelled')
                                     <form
                                         onsubmit="confirmModal(event, 'Chage Order Status', 'Are you sure to change status of this order?')"
                                         action="{{ route('admin.orders.updateStatus', $order) }}" method="POST"
@@ -81,20 +81,20 @@
                                         @csrf
                                         @method('PUT')
                                         <select name="status" class="status-select">
-                                            <option value="pending" {{ $order->status === 'pending' ? 'selected' : '' }}>
+                                            <option value="pending" {{ $order->status->value === 'pending' ? 'selected' : '' }}>
                                                 Pending
                                             </option>
                                             <option value="processing"
-                                                {{ $order->status === 'processing' ? 'selected' : '' }}>Processing
+                                                {{ $order->status->value === 'processing' ? 'selected' : '' }}>Processing
                                             </option>
-                                            <option value="shipping" {{ $order->status === 'shipping' ? 'selected' : '' }}>
+                                            <option value="shipping" {{ $order->status->value === 'shipping' ? 'selected' : '' }}>
                                                 Shipping
                                             </option>
                                             <option value="completed"
-                                                {{ $order->status === 'completed' ? 'selected' : '' }}>Completed
+                                                {{ $order->status->value === 'completed' ? 'selected' : '' }}>Completed
                                             </option>
                                             <option value="cancelled"
-                                                {{ $order->status === 'cancelled' ? 'selected' : '' }}>Cancelled
+                                                {{ $order->status->value === 'cancelled' ? 'selected' : '' }}>Cancelled
                                             </option>
                                         </select>
                                         <button type="submit" class="update-button">Update</button>
@@ -136,10 +136,10 @@
                         <tr>
                             <td data-label="Order ID">#{{ $order->id }}</td>
                             <td data-label="Customer">{{ $order->receiver_name ?? 'Guest' }}</td>
-                            <td data-label="Status"><span class="status shipping">{{ ucfirst($order->status) }}</span></td>
+                            <td data-label="Status"><span class="status shipping">{{ ucfirst($order->status->value) }}</span></td>
                             <td data-label="Total">{{ number_format($order->total_price, 0, ',', '.') }} VND</td>
                             <td data-label="Actions">
-                                @if ($order->status !== 'cancelled')
+                                @if ($order->status->value !== 'cancelled')
                                     <form
                                         onsubmit="confirmModal(event, 'Chage Order Status', 'Are you sure to change status of this order?')"
                                         action="{{ route('admin.orders.updateStatus', $order) }}" method="POST"
@@ -147,20 +147,20 @@
                                         @csrf
                                         @method('PUT')
                                         <select name="status" class="status-select">
-                                            <option value="pending" {{ $order->status === 'pending' ? 'selected' : '' }}>
+                                            <option value="pending" {{ $order->status->value === 'pending' ? 'selected' : '' }}>
                                                 Pending
                                             </option>
                                             <option value="processing"
-                                                {{ $order->status === 'processing' ? 'selected' : '' }}>Processing
+                                                {{ $order->status->value === 'processing' ? 'selected' : '' }}>Processing
                                             </option>
-                                            <option value="shipping" {{ $order->status === 'shipping' ? 'selected' : '' }}>
+                                            <option value="shipping" {{ $order->status->value === 'shipping' ? 'selected' : '' }}>
                                                 Shipping
                                             </option>
                                             <option value="completed"
-                                                {{ $order->status === 'completed' ? 'selected' : '' }}>Completed
+                                                {{ $order->status->value === 'completed' ? 'selected' : '' }}>Completed
                                             </option>
                                             <option value="cancelled"
-                                                {{ $order->status === 'cancelled' ? 'selected' : '' }}>Cancelled
+                                                {{ $order->status->value === 'cancelled' ? 'selected' : '' }}>Cancelled
                                             </option>
                                         </select>
                                         <button type="submit" class="update-button">Update</button>

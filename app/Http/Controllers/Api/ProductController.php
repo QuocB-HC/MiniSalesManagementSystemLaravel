@@ -10,7 +10,7 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $products = Product::all();
+        $products = Product::visibleOnStorefront()->get();
 
         if ($products->count() === 0) {
             return response()->json(['status' => 'fail', 'message' => 'No products found'], 404);
@@ -26,8 +26,7 @@ class ProductController extends Controller
 
     public function search(Request $request)
     {
-        // Initialize the query but do not execute
-        $query = Product::query()->where('is_disabled', 0);
+        $query = Product::query()->visibleOnStorefront();
 
         // Search by name or sku (Use 'search' key)
         $query->when($request->search, function ($q, $search) {
@@ -53,7 +52,7 @@ class ProductController extends Controller
 
     public function show($id)
     {
-        $product = Product::find($id);
+        $product = Product::visibleOnStorefront()->find($id);
         if (! $product) {
             return response()->json(['status' => 'fail', 'message' => 'Product not found'], 404);
         }

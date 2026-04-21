@@ -24,9 +24,9 @@
                             <p><strong>Total Items:</strong> {{ $order->total_quantity }}</p>
                             <p><strong>Total Price:</strong> {{ number_format($order->total_price, 0, ',', '.') }} VND
                             </p>
-                            <p><strong>Payment Method:</strong> {{ $order->payment_method == 'cod' ? 'Cash on Delivery (COD)' : 'Bank Transfer' }}</p>
+                            <p><strong>Payment Method:</strong> {{ $order->payment_method->value === 'cod' ? 'Cash on Delivery (COD)' : 'Bank Transfer' }}</p>
                             <p><strong>Status:</strong> <span
-                                    class="order-status status-{{ Str::slug($order->status) }}">{{ ucfirst($order->status) }}</span>
+                                    class="order-status status-{{ Str::slug($order->status->value) }}">{{ ucfirst($order->status->value) }}</span>
                             </p>
                             @if ($order->discount_code)
                                 <p><strong>Discount Applied:</strong> {{ $order->discount_code }}

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\DiscountType;
 use Database\Factories\DiscountFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -25,6 +26,7 @@ class Discount extends Model
     protected function casts(): array
     {
         return [
+            'type' => DiscountType::class,
             'value' => 'decimal:2',
             'min_order_value' => 'decimal:2',
             'max_discount_amount' => 'decimal:2',

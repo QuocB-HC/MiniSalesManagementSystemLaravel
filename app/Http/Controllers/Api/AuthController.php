@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Enums\UserRole;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -50,7 +51,7 @@ class AuthController extends Controller
             'password' => Hash::make($request->password), // Always remember Hash Password!
             'phone' => $request->phone,
             'address' => $request->address,
-            'role' => 'customer', // Default is customer
+            'role' => UserRole::CUSTOMER, // Default is customer
         ]);
 
         // 3. Create token

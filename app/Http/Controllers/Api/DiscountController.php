@@ -3,8 +3,9 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\Discount;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
 
 class DiscountController extends Controller
 {
@@ -35,7 +36,7 @@ class DiscountController extends Controller
             'value' => 'required|numeric|min:1',
             'min_order_value' => 'numeric|min:0',
             'usage_limit' => 'nullable|integer|min:1',
-            'end_date' => 'nullable|date|after:now',
+            'expires_at' => 'nullable|date|after:now',
         ]);
 
         $discount = Discount::create($validated);
@@ -53,7 +54,7 @@ class DiscountController extends Controller
 
         // Check expire date
         $now = Carbon::now();
-        if (($discount->start_date && $now < $discount->start_date) || ($discount->end_date && $now > $discount->end_date)) {
+        if ($discount->expires_at && $now > $discount->expires_at) {
             return response()->json(['status' => 'success', 'message' => 'The discount has expired'], 400);
         }
 

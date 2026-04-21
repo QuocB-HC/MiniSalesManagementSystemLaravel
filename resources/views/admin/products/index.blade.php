@@ -53,7 +53,7 @@
                             <td>{{ number_format($product->price, 0, ',', '.') }} VND</td>
                             <td>{{ $product->stock_quantity }}</td>
                             <td>
-                                <span class="status {{ $product->status }}">{{ ucfirst($product->status) }}</span>
+                                <span class="status {{ $product->status->value }}">{{ ucfirst(str_replace('_', ' ', $product->status->value)) }}</span>
                             </td>
                             <td class="action-btns">
                                 <a href="{{ route('admin.products.edit', $product->id) }}"

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('discounts', function (Blueprint $table) {
             $table->id();
             $table->string('code')->unique();
-            $table->enum('type', ['percentage', 'fixed']);
+            $table->string('type')->default('percentage');
             $table->decimal('value', 12, 2);
             $table->decimal('min_order_value', 12, 2)->nullable();
             $table->decimal('max_discount_amount', 12, 2)->nullable();

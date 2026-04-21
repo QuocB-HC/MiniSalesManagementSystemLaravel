@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Enums\OrderStatus;
+use App\Enums\UserRole;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\User;
@@ -13,15 +15,15 @@ class DashboardController extends Controller
     public function index()
     {
         // 1. Get key statistics for the dashboard
-        $totalUsers = User::where('role', 'customer')->count();
+        $totalUsers = User::where('role', UserRole::CUSTOMER->value)->count();
         $totalOrders = Order::count();
-        $totalRevenue = Order::where('status', 'completed')->sum('total_price');
+        $totalRevenue = Order::where('status', OrderStatus::COMPLETED->value)->sum('total_price');
         $newUsersThisMonth = User::whereMonth('created_at', Carbon::now()->month)
-            ->where('role', 'customer')
+            ->where('role', UserRole::CUSTOMER->value)
             ->count();
 
         // Sales statistics for the last 7 days (Data for the chart)
-        $revenueLast7Days = Order::where('status', 'completed')
+        $revenueLast7Days = Order::where('status', OrderStatus::COMPLETED->value)
             ->where('created_at', '>=', Carbon::now()->subDays(7))
             ->select(
                 DB::raw('DATE(created_at) as date'),
@@ -37,8 +39,8 @@ class DashboardController extends Controller
             ->get();
 
         // 2. Get the list of pending orders for the table below
-        $pendingOrders = Order::whereIn('status', ['pending', 'processing'])->oldest()->paginate(5);
-        $shippingOrders = Order::whereIn('status', ['shipping'])->oldest()->paginate(5);
+        $pendingOrders = Order::whereIn('status', [OrderStatus::PENDING->value, OrderStatus::PROCESSING->value])->oldest()->paginate(5);
+        $shippingOrders = Order::whereIn('status', [OrderStatus::SHIPPING->value])->oldest()->paginate(5);
 
         // 3. Return the view with all the data
         return view('admin.dashboard', compact(

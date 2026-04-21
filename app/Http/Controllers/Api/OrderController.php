@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Enums\DiscountType;
+use App\Enums\OrderStatus;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Models\Discount;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
-use App\Models\Discount;
+use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
@@ -84,7 +86,7 @@ class OrderController extends Controller
                     $discount = Discount::where('code', $request->discount_code)
                         ->where('is_active', true)
                         ->where(function ($q) {
-                            $q->whereNull('end_date')->orWhere('end_date', '>=', now());
+                            $q->whereNull('expires_at')->orWhere('expires_at', '>=', now());
                         })->first();
 
                     if (! $discount) {
@@ -98,7 +100,7 @@ class OrderController extends Controller
                     $discountId = $discount->id;
                     $appliedCode = $discount->code;
 
-                    if ($discount->type === 'percentage') {
+                    if ($discount->type === DiscountType::PERCENTAGE) {
                         $discountValue = ($totalPrice * $discount->value) / 100;
                     } else {
                         $discountValue = $discount->value;
@@ -121,7 +123,7 @@ class OrderController extends Controller
                     'receiver_phone' => $request->receiver_phone,
                     'receiver_address' => $request->receiver_address,
                     'note' => $request->note,
-                    'status' => 'pending',
+                    'status' => OrderStatus::PENDING,
                 ]);
 
                 // 5. Save Order Items (Insert into array to optimize speed)
@@ -158,13 +160,13 @@ class OrderController extends Controller
         }
 
         // Check if the new state is the same as the old state; if so, no further action is needed
-        if ($order->status === $request->status) {
+        if ($order->status->value === $request->status) {
             return response()->json(['message' => 'Status is the same as before'], 200);
         }
 
         return DB::transaction(function () use ($request, $order) {
             // IMPORTANT LOGIC: If you switch to Cancelled from an uncancelled state
-            if ($request->status === 'cancelled' && $order->status !== 'cancelled') {
+            if ($request->status === OrderStatus::CANCELLED->value && $order->status !== OrderStatus::CANCELLED) {
                 foreach ($order->items as $item) {
                     $item->product->increment('stock_quantity', $item->quantity);
                 }

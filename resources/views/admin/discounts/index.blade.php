@@ -33,9 +33,9 @@
                         <tr>
                             <td>#{{ $discount->id }}</td>
                             <td><strong>{{ $discount->code }}</strong></td>
-                            <td>{{ ucfirst($discount->type) }}</td>
+                            <td>{{ ucfirst($discount->type->value) }}</td>
                             <td>
-                                {{ $discount->type === 'percentage' ? number_format($discount->value, 0) . '%' : number_format($discount->value, 0) . ' VND' }}
+                                {{ $discount->type->value === 'percentage' ? number_format($discount->value, 0) . '%' : number_format($discount->value, 0) . ' VND' }}
                             </td>
                             <td>{{ $discount->min_order_value ? number_format($discount->min_order_value, 0) . ' VND' : '-' }}
                             </td>
