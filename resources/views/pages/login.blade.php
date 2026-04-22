@@ -37,3 +37,49 @@
         </div>
     </div>
 @endsection
+
+@push('scripts')
+    <script>
+        document.querySelector('form').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            let btn = this.querySelector('.btn-login');
+            btn.disabled = true;
+            btn.innerText = 'Signing in...';
+
+            let formData = new FormData(this);
+            let data = Object.fromEntries(formData.entries());
+
+            fetch(this.action, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Accept": "application/json",
+                        "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
+                    },
+                    body: JSON.stringify(data)
+                })
+                .then(async response => {
+                    const result = await response.json();
+                    if (!response.ok) {
+                        throw new Error(result.message || "Login failed");
+                    }
+                    return result;
+                })
+                .then(result => {
+                    handleAjaxResponse(result);
+
+                    if (result.redirect) {
+                        setTimeout(() => {
+                            window.location.href = result.redirect;
+                        }, 1000);
+                    }
+                })
+                .catch(error => {
+                    showToast("error", error.message);
+                    btn.disabled = false;
+                    btn.innerText = 'Sign In';
+                });
+        });
+    </script>
+@endpush

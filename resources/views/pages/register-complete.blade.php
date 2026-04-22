@@ -23,16 +23,80 @@
 
                 <div class="form-group">
                     <label>Password</label>
-                    <input type="password" name="password">
+                    <div style="position: relative">
+                        <input type="password" name="password" id="password">
+                        <span class="toggle-password" onclick="togglePassword('password', this)">👁️</span>
+                    </div>
                 </div>
 
                 <div class="form-group">
                     <label>Confirm Password</label>
-                    <input type="password" name="password_confirmation">
+                    <div style="position: relative">
+                        <input type="password" name="password_confirmation" id="password_confirmation">
+                        <span class="toggle-password" onclick="togglePassword('password_confirmation', this)">👁️</span>
+                    </div>
                 </div>
 
-                <button type="submit" class="btn-register">Complete registration</button>
+                <button type="submit" class="btn-register active">Complete registration</button>
             </form>
         </div>
     </div>
 @endsection
+
+@push('scripts')
+    <script>
+        document.querySelector('form').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            let btn = this.querySelector('.btn-register');
+            btn.disabled = true;
+            btn.innerText = 'Signing Up...';
+
+            let formData = new FormData(this);
+            let data = Object.fromEntries(formData.entries());
+
+            fetch(this.action, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Accept": "application/json",
+                        "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
+                    },
+                    body: JSON.stringify(data)
+                })
+                .then(async response => {
+                    const result = await response.json();
+                    if (!response.ok) {
+                        throw new Error(result.message || "Something went wrong");
+                    }
+                    return result;
+                })
+                .then(result => {
+                    handleAjaxResponse(result);
+
+                    if (result.redirect) {
+                        setTimeout(() => {
+                            window.location.href = result.redirect;
+                        }, 1000);
+                    }
+                })
+                .catch(error => {
+                    showToast("error", error.message);
+                    btn.disabled = false;
+                    btn.innerText = 'Sign Up';
+                });
+        });
+
+        function togglePassword(inputId, iconElement) {
+            const passwordInput = document.getElementById(inputId);
+
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+                iconElement.innerText = "🙈";
+            } else {
+                passwordInput.type = "password";
+                iconElement.innerText = "👁️";
+            }
+        }
+    </script>
+@endpush

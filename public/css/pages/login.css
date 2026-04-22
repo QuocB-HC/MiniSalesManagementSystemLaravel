@@ -58,10 +58,19 @@
     cursor: pointer;
     transition: 0.3s;
 }
-
+.btn-login.active {
+    background-color: #28a745;
+    color: white;
+    cursor: pointer;
+}
 .btn-login:hover {
     background: #218838;
 }
+.btn-login:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+}
+
 .error {
     color: red;
     font-size: 12px;

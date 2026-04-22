@@ -17,7 +17,7 @@
                 <div class="form-group">
                     <label>Email Address</label>
                     <div class="input-with-button">
-                        <input type="email" name="email" value="{{ old('email') }}" required>
+                        <input type="email" name="email" value="{{ old('email') }}">
                         <button type="button" class="send-code-btn" id="btnSendCode">Send code</button>
                     </div>
                 </div>
@@ -35,7 +35,7 @@
                     <input type="hidden" name="verify_email_code" id="final_otp">
                 </div>
 
-                <button type="submit" class="btn-register">Sign Up</button>
+                <button type="submit" class="btn-register active">Sign Up</button>
             </form>
 
             <div class="register-footer">
@@ -49,75 +49,93 @@
     <script>
         document.getElementById('btnSendCode').addEventListener('click', function() {
             let btn = this;
-            let email = document.querySelector('input[name="email"]').value;
+            let emailInput = document.querySelector('input[name="email"]');
+            let email = emailInput.value;
 
-            if (!email | email.trim() === "") {
-                if (typeof showToast === "function") {
-                    showToast("warning", "Please enter email first!");
-                } else {
-                    alert('Please enter email first!');
-                }
-                return;
-            }
-
-            // 1. Disable button after clicked
             btn.disabled = true;
+            let originalText = btn.innerText;
             btn.innerText = 'Sending...';
 
             fetch("{{ route('send.code') }}", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
+                        "Accept": "application/json",
                         "X-CSRF-TOKEN": "{{ csrf_token() }}"
                     },
                     body: JSON.stringify({
                         email: email
                     })
                 })
-                .then(response => response.json())
+                .then(async response => {
+                    const result = await response.json();
+                    if (!response.ok) {
+                        throw new Error(result.message || "Failed to send code");
+                    }
+                    return result;
+                })
                 .then(data => {
-                    if (data.success) {
-                        if (typeof showToast === "function") {
-                            showToast("success", data.message);
-                        } else {
-                            alert('Verification code sent!');
-                        }
+                    showToast("success", data.message);
 
-                        // 2. Count down timer
-                        let seconds = 60;
+                    let seconds = 60;
+                    let timer = setInterval(function() {
+                        seconds--;
                         btn.innerText = `Wait ${seconds}s`;
 
-                        let timer = setInterval(function() {
-                            seconds--;
-                            btn.innerText = `Wait ${seconds}s`;
-
-                            if (seconds <= 0) {
-                                clearInterval(timer);
-                                btn.disabled = false; // Able to click again
-                                btn.innerText = 'Resend code';
-                            }
-                        }, 1000);
-                    } else {
-                        if (typeof showToast === "function") {
-                            showToast("warning", data.message);
-                        } else {
-                            alert(data.message);
+                        if (seconds <= 0) {
+                            clearInterval(timer);
+                            btn.disabled = false;
+                            btn.innerText = 'Resend code';
                         }
+                    }, 1000);
+                })
+                .catch(error => {
+                    showToast("error", error.message);
 
-                        btn.disabled = false;
-                        btn.innerText = 'Send code';
+                    btn.disabled = false;
+                    btn.innerText = 'Send code';
+                });
+        });
+
+        document.querySelector('form').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            let btn = this.querySelector('.btn-register');
+            btn.disabled = true;
+            btn.innerText = 'Signing up...';
+
+            let formData = new FormData(this);
+            let data = Object.fromEntries(formData.entries());
+
+            fetch(this.action, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Accept": "application/json",
+                        "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
+                    },
+                    body: JSON.stringify(data)
+                })
+                .then(async response => {
+                    const result = await response.json();
+                    if (!response.ok) {
+                        throw new Error(result.message || "Something went wrong");
+                    }
+                    return result;
+                })
+                .then(result => {
+                    handleAjaxResponse(result);
+
+                    if (result.redirect) {
+                        setTimeout(() => {
+                            window.location.href = result.redirect;
+                        }, 1000);
                     }
                 })
                 .catch(error => {
-                    if (typeof showToast === "function") {
-                        showToast("error", data.message);
-                    } else {
-                        alert(data.message);
-                    }
-
-                    console.error('Error:', data.message);
+                    showToast("error", error.message);
                     btn.disabled = false;
-                    btn.innerText = 'Send code';
+                    btn.innerText = 'Sign Up';
                 });
         });
 

@@ -18,9 +18,10 @@ return new class extends Migration
             $table->string('logo_url')->nullable();
             $table->string('address');
             $table->string('phone');
-            $table->string('facebook')->nullable();
-            $table->string('instagram')->nullable();
-            $table->string('twitter')->nullable();
+            $table->string('facebook_url')->nullable();
+            $table->string('instagram_url')->nullable();
+            $table->string('twitter_url')->nullable();
+            $table->string('status')->default('pending');
             $table->timestamps();
         });
     }

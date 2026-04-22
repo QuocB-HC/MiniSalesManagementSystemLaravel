@@ -24,9 +24,9 @@ class ShopFactory extends Factory
             'address' => $this->faker->address(),
             'phone' => $this->faker->phoneNumber(),
             'logo_url' => $this->faker->imageUrl(200, 200, 'business', true, 'logo'),
-            'facebook' => 'https://facebook.com/' . $this->faker->userName(),
-            'instagram' => 'https://instagram.com/' . $this->faker->userName(),
-            'twitter' => 'https://twitter.com/' . $this->faker->userName(),
+            'facebook_url' => 'https://facebook.com/' . $this->faker->userName(),
+            'instagram_url' => 'https://instagram.com/' . $this->faker->userName(),
+            'twitter_url' => 'https://twitter.com/' . $this->faker->userName(),
             'created_at' => now(),
             'updated_at' => now(),
         ];

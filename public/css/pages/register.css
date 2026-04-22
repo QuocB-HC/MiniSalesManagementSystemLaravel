@@ -46,6 +46,16 @@
     border-radius: 6px;
     box-sizing: border-box; /* Important to prevent overflow */
 }
+.form-group .toggle-password {
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+    font-size: 18px;
+    user-select: none;
+    z-index: 10;
+}
 .form-group .input-with-button {
     display: flex;
     align-items: center;
@@ -108,9 +118,17 @@
     cursor: pointer;
     transition: 0.3s;
 }
-
+.btn-submit.active {
+    background-color: #28a745;
+    color: white;
+    cursor: pointer;
+}
 .btn-register:hover {
     background: #218838;
+}
+.btn-register:disabled {
+    background: #ccc;
+    cursor: not-allowed;
 }
 .error {
     color: red;

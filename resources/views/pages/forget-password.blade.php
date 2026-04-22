@@ -69,337 +69,234 @@
 @push('scripts')
     <script>
         /**
-         * Handles UI transitions between reset steps
-         * @param {number} step - The target step number (1, 2, or 3)
+         * UI TRANSITION BETWEEN STEPS
+         * Manages the visibility of content and updates the stepper indicators.
          */
         function goToStep(step) {
             // 1. Hide all step contents
             document.querySelectorAll('.step-content').forEach(el => el.style.display = 'none');
 
             // 2. Show the target step content
-            document.getElementById('step-' + step).style.display = 'block';
+            const targetStep = document.getElementById('step-' + step);
+            if (targetStep) targetStep.style.display = 'block';
 
-            // 3. Update Stepper Circle indicators
+            // 3. Update Stepper Circle indicators (Active state)
             document.querySelectorAll('.step').forEach((el, idx) => {
                 if (idx + 1 <= step) {
                     el.classList.add('active');
+                } else {
+                    el.classList.remove('active');
                 }
             });
 
-            // 4. Update Stepper Connecting Lines
-            const lines = document.querySelectorAll('.step-line');
-            lines.forEach((line, idx) => {
+            // 4. Update Stepper Connecting Lines (Active state)
+            document.querySelectorAll('.step-line').forEach((line, idx) => {
                 if (idx + 1 < step) {
                     line.classList.add('active');
+                } else {
+                    line.classList.remove('active');
                 }
             });
         }
 
         /**
-         * STEP 1: Request OTP via Email
+         * GLOBAL AJAX WRAPPER
+         * Standardizes fetch requests and error handling for Laravel responses.
          */
-        function handleStep1(event) {
+        async function sendAjaxRequest(url, data) {
+            const response = await fetch(url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json",
+                    "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
+                },
+                body: JSON.stringify(data)
+            });
+
+            const result = await response.json();
+            if (!response.ok) {
+                // Throws error to be caught by the .catch() block with Laravel validation messages
+                throw new Error(result.message || "Something went wrong!");
+            }
+            return result;
+        }
+
+        /**
+         * STEP 1: REQUEST OTP VIA EMAIL
+         * Validates email input and triggers the OTP sending process.
+         */
+        async function handleStep1(event) {
             const btn = event.currentTarget;
-            let email = document.getElementById('email').value;
+            const email = document.getElementById('email').value;
 
             if (!email) {
-                if (typeof showToast === "function") {
-                    showToast("warning", "Please enter your email address.");
-                } else {
-                    alert("Please enter your email address.");
-                }
-
-                return;
+                return showToast("error", "Please enter your email address.");
             }
 
-            // UI State: Loading
+            // Set UI to loading state
             btn.disabled = true;
-            const originalText = btn.innerText;
             btn.innerText = 'Sending...';
 
-            fetch("{{ route('password.sendOtp') }}", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "X-CSRF-TOKEN": "{{ csrf_token() }}"
-                    },
-                    body: JSON.stringify({
-                        email: email
-                    })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        if (typeof showToast === "function") {
-                            showToast("success", "Verification code sent!");
-                        } else {
-                            alert("Verification code sent!");
-                        }
-
-                        // Count down timer
-                        let seconds = 60;
-                        btn.innerText = `Wait ${seconds}s`;
-
-                        let timer = setInterval(function() {
-                            seconds--;
-                            btn.innerText = `Wait ${seconds}s`;
-
-                            if (seconds <= 0) {
-                                clearInterval(timer);
-                                btn.disabled = false; // Able to click again
-                                btn.innerText = 'Resend code';
-                            }
-                        }, 1000);
-
-                        goToStep(2); // Proceed to OTP verification
-                    } else {
-                        if (typeof showToast === "function") {
-                            showToast("warning", data.message || "Error sending code!");
-                        } else {
-                            alert(data.message || "Error sending code!");
-                        }
-
-                        btn.disabled = false;
-                        btn.innerText = 'Send code';
-                    }
-                })
-                .catch(error => {
-                    if (typeof showToast === "function") {
-                        showToast("error", error.message);
-                    } else {
-                        alert(error.message);
-                    }
-
-                    btn.disabled = false;
-                    btn.innerText = 'Send code';
+            try {
+                const data = await sendAjaxRequest("{{ route('password.sendOtp') }}", {
+                    email
                 });
-        }
+                showToast("success", data.message);
 
-        // OTP Input
-        const inputs = document.querySelectorAll('.otp-input');
-        const finalInput = document.getElementById('final_otp');
-
-        inputs.forEach((input, index) => {
-            // 1. Enter number
-            input.addEventListener('input', (e) => {
-                if (e.target.value.length > 0 && index < inputs.length - 1) {
-                    inputs[index + 1].focus();
-                }
-                updateFinalCode();
-            });
-
-            // 2. Enter Backspace to delete
-            input.addEventListener('keydown', (e) => {
-                if (e.key === 'Backspace' && e.target.value.length === 0 && index > 0) {
-                    inputs[index - 1].focus();
-                }
-            });
-
-            // 3. Handle situations where the user pastes entire codes
-            input.addEventListener('paste', (e) => {
-                // Block default paste event
-                e.preventDefault();
-
-                const pastedData = e.clipboardData.getData('text').replace(/\D/g, '').slice(0, 6);
-
-                if (pastedData.length > 0) {
-                    pastedData.split('').forEach((char, i) => {
-                        if (inputs[index + i]) {
-                            inputs[index + i].value = char;
-                        }
-                    });
-
-                    const lastInputIndex = Math.min(index + pastedData.length - 1, inputs.length - 1);
-                    inputs[lastInputIndex].focus();
-
-                    updateFinalCode();
-                }
-            });
-        });
-
-        function updateFinalCode() {
-            let code = "";
-            inputs.forEach(input => code += input.value);
-            finalInput.value = code; // Assign code to a hidden input to submit the form
+                // Start 60s cooldown timer
+                startResendTimer(btn);
+                goToStep(2);
+            } catch (error) {
+                showToast("error", error.message);
+                btn.disabled = false;
+                btn.innerText = 'Continue';
+            }
         }
 
         /**
-         * STEP 2: Verify the 6-digit OTP
+         * RESEND CODE COOLDOWN TIMER
          */
-        function handleStep2(event) {
-            const btn = event.currentTarget;
+        function startResendTimer(btn) {
+            let seconds = 60;
+            const timer = setInterval(() => {
+                seconds--;
+                btn.innerText = `Wait ${seconds}s`;
+                if (seconds <= 0) {
+                    clearInterval(timer);
+                    btn.disabled = false;
+                    btn.innerText = "Resend Code";
+                }
+            }, 1000);
+        }
 
-            // Get OTP from inputs
+        /**
+         * STEP 2: VERIFY THE 6-DIGIT OTP
+         * Collects OTP digits and verifies them against the server session.
+         */
+        async function handleStep2(event) {
+            const btn = event.currentTarget;
+            const email = document.getElementById('email').value;
             let otp = "";
             document.querySelectorAll('.otp-input').forEach(input => otp += input.value);
 
             if (otp.length < 6) {
-                if (typeof showToast === "function") {
-                    showToast("warning", "Please enter the full 6-digit code.");
-                } else {
-                    alert("Please enter the full 6-digit code.");
-                }
-
-                return;
+                return showToast("error", "Please enter the full 6-digit code.");
             }
 
-            // UI State: Loading
             btn.disabled = true;
-            const originalText = btn.innerText;
             btn.innerText = 'Verifying...';
 
-            fetch("{{ route('password.verifyOtp') }}", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "X-CSRF-TOKEN": "{{ csrf_token() }}"
-                    },
-                    body: JSON.stringify({
-                        otp: otp,
-                        email: document.getElementById('email').value
-                    })
-                })
-                .then(res => res.json())
-                .then(data => {
-                    if (data.success) {
-                        if (typeof showToast === "function") {
-                            showToast("success", "Verify OTP successful!");
-                        } else {
-                            alert("Verify OTP successful!");
-                        }
-
-                        goToStep(3); // Proceed to password reset
-                    } else {
-                        if (typeof showToast === "function") {
-                            showToast("warning", data.message || "Invalid or expired OTP.");
-                        } else {
-                            alert(data.message || "Invalid or expired OTP.");
-                        }
-
-                        btn.disabled = false;
-                        btn.innerText = originalText;
-                    }
-                })
-                .catch(error => {
-                    if (typeof showToast === "function") {
-                        showToast("error", error.message || "Connection lost. Please try again.");
-                    } else {
-                        alert(error.message || "Connection lost. Please try again.");
-                    }
-
-                    btn.disabled = false;
-                    btn.innerText = originalText;
+            try {
+                const data = await sendAjaxRequest("{{ route('password.verifyOtp') }}", {
+                    otp,
+                    email
                 });
-        }
-
-        // Toggle Password Visibility
-        function togglePassword(inputId, iconElement) {
-            const passwordInput = document.getElementById(inputId);
-
-            if (passwordInput.type === "password") {
-                passwordInput.type = "text";
-                iconElement.innerText = "🙈";
-            } else {
-                passwordInput.type = "password";
-                iconElement.innerText = "👁️";
+                showToast("success", data.message);
+                goToStep(3);
+            } catch (error) {
+                showToast("error", error.message);
+                btn.disabled = false;
+                btn.innerText = 'Verify Code';
             }
-        }
-
-        // Reset Stepper
-        function clearStepper() {
-            // Reset step circle (steps)
-            document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
-
-            // Reset step line (lines)
-            document.querySelectorAll('.step-line').forEach(el => el.classList.remove('active'));
-
-            // Reset step 1 to the default active setting
-            document.getElementById('st-1').classList.add('active');
         }
 
         /**
-         * STEP 3: Submit New Password
+         * STEP 3: SUBMIT NEW PASSWORD
+         * Validates new password match and updates the user account.
          */
-        function handleStep3(event) {
+        async function handleStep3(event) {
+            const btn = event.currentTarget;
             const password = document.getElementById('new_password').value;
             const confirm = document.getElementById('confirm_password').value;
-            const btn = event.currentTarget;
-            const errorMsg = document.getElementById('error-3');
+            const email = document.getElementById('email').value;
 
-            // Client-side validation
+            // Basic client-side validation
             if (password.length < 8) {
-                if (typeof showToast === "function") {
-                    showToast("warning", "Password must be at least 8 characters long.");
-                } else {
-                    alert("Password must be at least 8 characters long.");
-                }
-
-                return;
+                return showToast("error", "Password must be at least 8 characters.");
             }
+
             if (password !== confirm) {
-                if (typeof showToast === "function") {
-                    showToast("warning", "Passwords do not match.");
-                } else {
-                    alert("Passwords do not match.");
-                }
-
-                return;
+                return showToast("error", "Passwords do not match.");
             }
 
-            // UI State: Loading
             btn.disabled = true;
-            const originalText = btn.innerText;
             btn.innerText = 'Updating...';
 
-            fetch("{{ route('password.update') }}", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "X-CSRF-TOKEN": "{{ csrf_token() }}"
-                    },
-                    body: JSON.stringify({
-                        password: password,
-                        password_confirmation: confirm,
-                        email: document.getElementById('email').value
-                    })
-                })
-                .then(res => res.json())
-                .then(data => {
-                    if (data.success) {
-                        if (typeof showToast === "function") {
-                            showToast("success", "Your password has been updated.");
-                        } else {
-                            alert("Your password has been updated.");
-                        }
-
-                        window.location.href = "{{ route('login') }}";
-                    } else {
-                        if (typeof showToast === "function") {
-                            showToast("warning", data.message || 'Update failed. Please try again.');
-                        } else {
-                            alert(data.message || 'Update failed. Please try again.');
-                        }
-
-                        btn.disabled = false;
-                        btn.innerText = originalText;
-
-                        clearStepper();
-                        goToStep(1);
-                    }
-                })
-                .catch(error => {
-                    if (typeof showToast === "function") {
-                        showToast("error", error.message || 'System error. Contact support if this persists.');
-                    } else {
-                        alert(error.message || 'System error. Contact support if this persists.');
-                    }
-
-                    btn.disabled = false;
-                    btn.innerText = originalText;
-
-                    clearStepper();
-                    goToStep(1);
+            try {
+                const data = await sendAjaxRequest("{{ route('password.update') }}", {
+                    password: password,
+                    password_confirmation: confirm,
+                    email: email
                 });
+
+                showToast("success", data.message);
+
+                // Redirect to login page after a short delay
+                setTimeout(() => {
+                    window.location.href = "{{ route('login') }}";
+                }, 1500);
+            } catch (error) {
+                showToast("error", error.message);
+                btn.disabled = false;
+                btn.innerText = 'Update Password';
+
+                // If the error is related to session expiration, reset to step 1
+                if (error.message.includes('session') || error.message.includes('expired')) {
+                    setTimeout(() => goToStep(1), 2000);
+                }
+            }
+        }
+
+        /**
+         * OTP INPUT BEHAVIORS
+         * Handles auto-focus, backspace navigation, and pasting entire codes.
+         */
+        const otpInputs = document.querySelectorAll('.otp-input');
+        otpInputs.forEach((input, index) => {
+            // Handle number input and auto-focus next
+            input.addEventListener('input', (e) => {
+                if (e.target.value.length > 0 && index < otpInputs.length - 1) {
+                    otpInputs[index + 1].focus();
+                }
+            });
+
+            // Handle backspace navigation and Enter to submit
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Backspace' && e.target.value.length === 0 && index > 0) {
+                    otpInputs[index - 1].focus();
+                }
+                if (e.key === 'Enter' && index === otpInputs.length - 1) {
+                    const step2Btn = document.querySelector('#step-2 .btn-submit');
+                    if (step2Btn) step2Btn.click();
+                }
+            });
+
+            // Handle pasting 6-digit codes
+            input.addEventListener('paste', (e) => {
+                e.preventDefault();
+                const pastedData = e.clipboardData.getData('text').replace(/\D/g, '').slice(0, 6);
+                if (pastedData.length > 0) {
+                    pastedData.split('').forEach((char, i) => {
+                        if (otpInputs[i]) otpInputs[i].value = char;
+                    });
+                    otpInputs[Math.min(pastedData.length - 1, 5)].focus();
+                }
+            });
+        });
+
+        /**
+         * TOGGLE PASSWORD VISIBILITY
+         */
+        function togglePassword(inputId, iconElement) {
+            const input = document.getElementById(inputId);
+            if (input.type === "password") {
+                input.type = "text";
+                iconElement.innerText = "🙈";
+            } else {
+                input.type = "password";
+                iconElement.innerText = "👁️";
+            }
         }
     </script>
 @endpush
