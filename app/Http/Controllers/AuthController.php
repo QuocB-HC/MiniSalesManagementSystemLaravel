@@ -44,7 +44,7 @@ class AuthController extends Controller
 
             $redirectUrl = Auth::user()->hasRole(UserRole::ADMIN)
                         ? route('admin.dashboard')
-                        : session()->pull('url.intended', '/');
+                        : route('home');
 
             return response()->json([
                 'success' => true,
