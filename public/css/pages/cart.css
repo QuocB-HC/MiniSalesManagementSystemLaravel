@@ -9,10 +9,24 @@
     box-sizing: border-box;
 }
 
+.cart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
 .cart-title {
     font-size: 28px;
-    margin-bottom: 30px;
+    /* margin-bottom: 30px; */
     color: #333;
+}
+.btn-clear-cart {
+    background: none;
+    border: 1px solid #ff4d4d;
+    color: #ff4d4d;
+    padding: 5px 15px;
+    border-radius: 5px;
+    cursor: pointer;
 }
 
 /* 2-column layout */

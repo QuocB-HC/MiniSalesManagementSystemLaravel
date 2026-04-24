@@ -34,6 +34,7 @@ Route::prefix('cart')->as('cart.')->group(function () {
     Route::get('/', [CartController::class, 'index'])->name('index'); // cart.index
     Route::post('/update/{id}', [CartController::class, 'updateQuantity'])->name('update'); // cart.update
     Route::delete('/remove/{id}', [CartController::class, 'removeFromCart'])->name('remove'); // cart.remove
+    Route::delete('/clear', [CartController::class, 'clearCart'])->name('clear'); // cart.clear
 });
 
 // 2. AUTHENTICATION ROUTES

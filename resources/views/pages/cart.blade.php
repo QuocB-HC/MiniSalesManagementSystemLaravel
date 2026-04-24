@@ -8,7 +8,20 @@
 
 @section('content')
     <div class="cart-container">
-        <h1 class="cart-title">Shopping Cart</h1>
+        <div class="cart-header">
+            <h1 class="cart-title">Shopping Cart</h1>
+
+            @if (session('cart') && count(session('cart')) > 0)
+                <form action="{{ route('cart.clear') }}" method="POST"
+                    onsubmit="return confirmModal(event, 'Clear Cart', 'Do you want to remove all items from your cart?')">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn-clear-cart">
+                        <i class="fa-solid fa-trash-arrow-up"></i> Clear Cart
+                    </button>
+                </form>
+            @endif
+        </div>
 
         @if (session('cart') && count(session('cart')) > 0)
             <div class="cart-wrapper">
@@ -20,8 +33,7 @@
                                     alt="{{ $details['name'] }}">
                             </div>
                             <div class="item-info">
-                                <a href="{{ route('products.detail', $id) }}"
-                                    class="item-name">{{ $details['name'] }}</a>
+                                <a href="{{ route('products.detail', $id) }}" class="item-name">{{ $details['name'] }}</a>
                                 <p class="item-price">{{ number_format($details['price'], 0, ',', '.') }} VND</p>
                                 <div class="item-qty">
                                     <form action="{{ route('cart.update', $id) }}" method="POST" class="qty-form">
@@ -69,7 +81,7 @@
                         <div class="summary-actions">
                             <a href="{{ route('checkout.index') }}" id="btn-checkout" class="btn-checkout">Proceed to
                                 Checkout</a>
-                            <a href="{{ route('home') }}" class="continue-shopping">Continue Shopping</a>
+                            <a href="{{ route('products.index') }}" class="continue-shopping">Continue Shopping</a>
                         </div>
                     </div>
                 </div>

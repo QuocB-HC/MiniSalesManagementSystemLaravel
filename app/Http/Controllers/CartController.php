@@ -127,6 +127,13 @@ class CartController extends Controller
         return redirect()->back()->with('success', 'Item removed from cart!');
     }
 
+    public function clearCart()
+    {
+        session()->forget('cart');
+
+        return redirect()->back()->with('success', 'Cart cleared!');
+    }
+
     public function checkout()
     {
         $cartItems = session()->get('cart', []);
