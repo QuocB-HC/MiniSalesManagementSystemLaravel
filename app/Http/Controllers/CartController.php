@@ -6,6 +6,7 @@ use App\Enums\DiscountType;
 use App\Enums\OrderStatus;
 use App\Enums\PaymentMethod;
 use App\Enums\ProductStatus;
+use App\Http\Requests\Cart\AddToCartRequest;
 use App\Mail\OrderNotification;
 use App\Models\Discount;
 use App\Models\Order;
@@ -16,7 +17,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Validator;
 
 class CartController extends Controller
 {
@@ -32,7 +32,7 @@ class CartController extends Controller
         return view('pages.cart', compact('cartItems', 'totalAmount'));
     }
 
-    public function addToCart($id, Request $request)
+    public function addToCart($id, AddToCartRequest $request)
     {
         $product = Product::findOrFail($id);
 
@@ -42,18 +42,6 @@ class CartController extends Controller
 
         if (! in_array($product->status, [ProductStatus::APPROVED, ProductStatus::OUT_OF_STOCK], true)) {
             return response()->json(['success' => false, 'message' => 'This product is currently unavailable.'], 403);
-        }
-
-        // Validate input
-        $validator = Validator::make($request->all(), [
-            'quantity' => 'required|integer|min:1|max:'.$product->stock_quantity,
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Invalid quantity or exceeds stock limit!',
-            ], 200);
         }
 
         $quantity = (int) $request->input('quantity', 1);
@@ -193,22 +181,13 @@ class CartController extends Controller
         ]);
     }
 
-    public function placeOrder(Request $request, VNPayService $vnpayService)
+    public function placeOrder(PlaceOrderRequest $request, VNPayService $vnpayService)
     {
         // 1. Take cart from Session
         $cart = session()->get('cart', []);
         if (empty($cart)) {
             return redirect()->route('cart.index')->with('error', 'Your cart is empty!');
         }
-
-        // 2. Validate input data (receiver's info)
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'phone' => 'required|string|max:15',
-            'address' => 'required|string|max:500',
-            'discount_id' => 'nullable|exists:discounts,id',
-            'payment_method' => 'required|in:cod,vnpay',
-        ]);
 
         // 3. Use Database Transaction to ensure safety
         // If saving product fails, order information will also be canceled (no database clutter)
