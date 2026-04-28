@@ -7,6 +7,7 @@ use App\Enums\OrderStatus;
 use App\Enums\PaymentMethod;
 use App\Enums\ProductStatus;
 use App\Http\Requests\Cart\AddToCartRequest;
+use App\Http\Requests\Cart\PlaceOrderRequest;
 use App\Mail\OrderNotification;
 use App\Models\Discount;
 use App\Models\Order;

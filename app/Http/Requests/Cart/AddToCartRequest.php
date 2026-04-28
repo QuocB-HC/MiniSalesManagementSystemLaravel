@@ -34,7 +34,8 @@ class AddToCartRequest extends FormRequest
     {
         throw new HttpResponseException(response()->json([
             'success' => false,
-            'message' => 'Invalid quantity or exceeds stock limit!',
+            'message' => $validator->errors()->first(),
+            'errors' => $validator->errors(),
         ], 200));
     }
 }

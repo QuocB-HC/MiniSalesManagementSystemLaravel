@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Requests\Cart;
+namespace App\Http\Requests\User;
 
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\ValidationException;
 
-class PlaceOrderRequest extends FormRequest
+class UpdateProfileRequest extends FormRequest
 {
     public function authorize(): bool
     {
@@ -17,23 +17,21 @@ class PlaceOrderRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'phone' => 'required|string|max:15',
-            'address' => 'required|string|max:500',
-            'discount_id' => 'nullable|exists:discounts,id',
-            'payment_method' => 'required|in:cod,vnpay',
+            'phone' => 'nullable|string|max:15',
+            'address' => 'nullable|string|max:500',
         ];
     }
 
     public function messages(): array
     {
         return [
-            'name.required' => 'Please enter recipient name.',
-            'phone.required' => 'Please enter phone number.',
+            'name.required' => 'Name is required.',
+            'name.string' => 'Name must be a string.',
+            'name.max' => 'Name must not exceed 255 characters.',
+            'phone.string' => 'Phone number must be a string.',
             'phone.max' => 'Phone number must not exceed 15 characters.',
-            'address.required' => 'Please enter delivery address.',
-            'discount_id.exists' => 'Discount code is invalid.',
-            'payment_method.required' => 'Please select a payment method.',
-            'payment_method.in' => 'Invalid payment method selected.',
+            'address.string' => 'Address must be a string.',
+            'address.max' => 'Address must not exceed 500 characters.',
         ];
     }
 
