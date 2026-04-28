@@ -32,3 +32,6 @@ const confirmModal = (event, title, message, type = "confirm") => {
         }
     });
 };
+
+window.confirmModal = confirmModal;
+export { confirmModal };

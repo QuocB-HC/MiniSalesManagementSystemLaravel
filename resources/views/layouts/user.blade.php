@@ -24,8 +24,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <script src="{{ asset('js/notifications/toast-handler.js') }}"></script>
-    <script src="{{ asset('js/notifications/modal-handler.js') }}"></script>
+    @vite(['resources/js/notifications/toast-handler.js', 'resources/js/notifications/modal-handler.js'])
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {

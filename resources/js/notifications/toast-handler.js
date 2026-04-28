@@ -16,3 +16,6 @@ const showToast = (icon, title) => {
         title: title
     });
 };
+
+window.showToast = showToast;
+export { showToast };
