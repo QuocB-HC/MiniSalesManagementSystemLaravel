@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Discount;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
-class StoreDiscountRequest extends FormRequest
+class UpdateDiscountRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,15 +14,15 @@ class StoreDiscountRequest extends FormRequest
     public function authorize(): bool
     {
         // Change this logic based on your application's authorization needs.
-        // Example: Only admin users can create discounts
+        // Example: Only admin users can update discounts
         // return auth()->user() && auth()->user()->is_admin;
         return true;
     }
 
     protected function prepareForValidation()
     {
+        // Ensure that 'is_active' is always present in the validated data, even if the checkbox is not checked (which means it won't be sent in the request)
         $this->merge([
-            // If checkbox is not checked, it won't be present in the request, so we set it to false
             'is_active' => $this->has('is_active'),
         ]);
     }
@@ -34,14 +35,29 @@ class StoreDiscountRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'code' => ['required', 'string', 'max:255', 'unique:discounts,code'],
-            'type' => ['required', 'in:fixed,percentage'], // Only allow 'fixed' or 'percentage'
-            'value' => ['required', 'numeric', 'min:0'],
+            // When updating, we need to ignore the current discount's code for uniqueness check
+            'code' => [
+                'required', 
+                'string', 
+                'max:255', 
+                Rule::unique('discounts', 'code')->ignore($this->discount->id)
+            ],
+            'type' => ['required', 'in:fixed,percentage'],
+            'value' => [
+                'required', 
+                'numeric', 
+                'min:0',
+                function ($attribute, $value, $fail) {
+                    if ($this->type === 'percentage' && $value > 100) {
+                        $fail('The discount value as a percentage cannot exceed 100%.');
+                    }
+                }
+            ],
             'min_order_value' => ['nullable', 'numeric', 'min:0'],
             'max_discount_amount' => ['nullable', 'numeric', 'min:0'],
             'usage_limit' => ['nullable', 'integer', 'min:0'],
-            'expires_at' => ['nullable', 'date', 'after_or_equal:today'],
-            'is_active' => ['boolean'], // Laravel will automatically convert 'on' to true and absence to false for checkboxes
+            'expires_at' => ['nullable', 'date'],
+            'is_active' => ['boolean'],
         ];
     }
 
@@ -58,16 +74,8 @@ class StoreDiscountRequest extends FormRequest
             'type.required' => 'The discount type is required.',
             'type.in' => 'The discount type is invalid. Only "fixed" or "percentage" are allowed.',
             'value.required' => 'The discount value is required.',
-            'value' => [
-                'required' => 'The discount value is required.',
-                'numeric' => 'The discount value must be a number.',
-                'min:0' => 'The discount value must be a positive number.',
-                function ($attribute, $value, $fail) {
-                    if ($this->type === 'percentage' && $value > 100) {
-                        $fail('The discount value as a percentage cannot exceed 100%.');
-                    }
-                },
-            ],
+            'value.numeric' => 'The discount value must be a number.',
+            'value.min' => 'The discount value must be a positive number.',
             'expires_at.date' => 'The expiration date is invalid.',
             'expires_at.after_or_equal' => 'The expiration date must be today or a future date.',
         ];

@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreDiscountRequest;
-use App\Http\Requests\UpdateDiscountRequest;
+use App\Http\Requests\Discount\StoreDiscountRequest;
+use App\Http\Requests\Discount\UpdateDiscountRequest;
 use App\Models\Discount;
 use Illuminate\Support\Facades\Log;
 
