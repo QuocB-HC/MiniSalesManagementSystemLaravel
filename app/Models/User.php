@@ -18,8 +18,8 @@ use Illuminate\Notifications\Notifiable;
     'phone',
     'address',
     'avatar_url',
-    'is_banned'
-    ])]
+    'is_banned',
+])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
@@ -34,7 +34,7 @@ class User extends Authenticatable
         'phone',
         'address',
         'avatar_url',
-        'is_banned'
+        'is_banned',
     ];
 
     /**
@@ -55,5 +55,10 @@ class User extends Authenticatable
     public function hasRole(UserRole $role): bool
     {
         return $this->role === $role;
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->role === UserRole::ADMIN;
     }
 }

@@ -3,11 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Product\StoreProductRequest;
+use App\Http\Requests\Product\UpdateProductRequest;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 
 class ProductController extends Controller
 {
@@ -33,21 +34,11 @@ class ProductController extends Controller
         return view('admin.products.create', compact('categories'));
     }
 
-    public function store(Request $request)
+    public function store(StoreProductRequest $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'sku' => 'required|string|max:50|unique:products,sku',
-            'category_id' => 'required|exists:categories,id',
-            'price' => 'required|numeric|min:0',
-            'stock_quantity' => 'required|integer|min:0',
-            'status' => 'required|in:pending,approved,rejected,hidden,out_of_stock',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'description' => 'nullable|string',
-        ]);
+        $data = $request->validated();
 
-        $data = $request->only(['name', 'sku', 'category_id', 'price', 'stock_quantity', 'status', 'description']);
-        $data['slug'] = Str::slug($request->name).'-'.time();
+        $data['shop_id'] = 2;
 
         if ($request->hasFile('image')) {
             // Store the uploaded image in the 'public/products' directory and save the URL in the database
@@ -67,25 +58,9 @@ class ProductController extends Controller
         return view('admin.products.edit', compact('product', 'categories'));
     }
 
-    public function update(Request $request, Product $product)
+    public function update(UpdateProductRequest $request, Product $product)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'sku' => 'required|string|max:50|unique:products,sku,'.$product->id,
-            'category_id' => 'required|exists:categories,id',
-            'price' => 'required|numeric|min:0',
-            'stock_quantity' => 'required|integer|min:0',
-            'status' => 'required|in:pending,approved,rejected,hidden,out_of_stock',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'description' => 'nullable|string',
-        ]);
-
-        $data = $request->only(['name', 'sku', 'category_id', 'price', 'stock_quantity', 'status', 'description']);
-
-        // Update slug only if the name has changed to avoid breaking existing links
-        if ($product->name !== $request->name) {
-            $data['slug'] = Str::slug($request->name).'-'.time();
-        }
+        $data = $request->validated();
 
         if ($request->hasFile('image')) {
             // Delete the old image file if it exists

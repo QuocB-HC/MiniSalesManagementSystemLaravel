@@ -22,8 +22,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <script src="{{ asset('js/notifications/toast-handler.js') }}"></script>
-    <script src="{{ asset('js/notifications/modal-handler.js') }}"></script>
+    @vite(['resources/js/notifications/toast-handler.js', 'resources/js/notifications/modal-handler.js'])
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -37,6 +36,17 @@
 
             @if (session('warning'))
                 showToast('warning', '{{ session('warning') }}');
+            @endif
+
+            @if ($errors->any())
+                @php
+                    $allErrors = '';
+                    foreach ($errors->all() as $error) {
+                        $allErrors .= '• ' . $error . '<br>';
+                    }
+                @endphp
+
+                showToast('error', '{!! $allErrors !!}');
             @endif
         });
 
