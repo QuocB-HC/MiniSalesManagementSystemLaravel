@@ -5,6 +5,7 @@ namespace App\Http\Requests\Product;
 use App\Models\User;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Exception\ValidationException;
 
 class StoreProductRequest extends FormRequest
 {

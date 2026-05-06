@@ -70,6 +70,21 @@
     width: 20%;
     align-items: center;
     justify-content: flex-end;
+    gap: 20px;
+}
+.header-list .create-shop-btn {
+    padding: 10px 20px;
+    border-radius: 20px;
+    border: 1px solid white;
+    background: none;
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+}
+.header-list .create-shop-btn:hover {
+    background: white;
+    color: #333;
+    border-color: white;
 }
 
 /* --- CUSTOM DROPDOWN --- */

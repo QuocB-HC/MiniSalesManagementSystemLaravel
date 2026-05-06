@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Shop;
-use App\Http\Requests\StoreShopRequest;
-use App\Http\Requests\UpdateShopRequest;
+use App\Http\Requests\Shop\StoreShopRequest;
+use App\Http\Requests\Shop\UpdateShopRequest;
 
 class ShopController extends Controller
 {
@@ -13,7 +13,7 @@ class ShopController extends Controller
      */
     public function index()
     {
-        //
+        return view('pages.shop-information-form');
     }
 
     /**
@@ -29,7 +29,12 @@ class ShopController extends Controller
      */
     public function store(StoreShopRequest $request)
     {
-        //
+        $data = $request->validated();
+        $data['user_id'] = auth()->id();
+
+        Shop::create($data);
+
+        return redirect()->route('home')->with('success', 'Shop information saved successfully.');
     }
 
     /**

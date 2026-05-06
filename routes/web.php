@@ -1,17 +1,18 @@
 <?php
 
+use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\DiscountController as AdminDiscountController;
+use App\Http\Controllers\Admin\OrderController as AdminOrderController;
+use App\Http\Controllers\Admin\ProductController as AdminProductController;
+use App\Http\Controllers\Admin\UserController as AdminUserController;
+use App\Http\Controllers\Admin\ShopController as AdminShopController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CartController;
-use App\Http\Controllers\ProductController;
-use App\Http\Controllers\UserController;
 use App\Http\Controllers\OrderController;
-use App\Http\Controllers\PaymentController;
-use App\Http\Controllers\Admin\DashboardController;
-use App\Http\Controllers\Admin\ProductController as AdminProductController; // Rename to avoid conflict with public ProductController
-use App\Http\Controllers\Admin\CategoryController as AdminCategoryController; // Rename to avoid conflict with public CategoryController
-use App\Http\Controllers\Admin\UserController as AdminUserController; // Rename to avoid conflict with public UserController
-use App\Http\Controllers\Admin\OrderController as AdminOrderController; // Rename to avoid conflict with public OrderController
-use App\Http\Controllers\Admin\DiscountController as AdminDiscountController; // Rename to avoid conflict with public DiscountController
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ShopController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 // 1. PUBLIC ROUTES (accessible to all users)
@@ -26,7 +27,6 @@ Route::prefix('products')->as('products.')->group(function () {
     Route::get('/search', [ProductController::class, 'search'])->name('search'); // products.search
     Route::get('/search-ajax', [ProductController::class, 'searchAjax'])->name('searchAjax'); // products.searchAjax
 });
-
 
 // Cart routes
 Route::prefix('cart')->as('cart.')->group(function () {
@@ -65,6 +65,12 @@ Route::middleware('auth')->group(function () {
         Route::put('/update', [UserController::class, 'update'])->name('update'); // profile.update
     });
 
+    // Shop information routes
+    Route::prefix('shop')->as('shop.')->group(function () {
+        Route::get('/', [ShopController::class, 'index'])->name('index'); // shop.index
+        Route::post('/create', [ShopController::class, 'store'])->name('store'); // shop.store
+    });
+
     // Checkout routes
     Route::prefix('checkout')->as('checkout.')->group(function () {
         Route::get('/', [CartController::class, 'checkout'])->name('index'); // checkout.index
@@ -86,17 +92,20 @@ Route::middleware('auth')->group(function () {
     Route::middleware('can:admin')->prefix('admin')->as('admin.')->group(function () {
         // Admin dashboard route
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard'); // admin.dashboard
-        
+
+        Route::get('/shops', [AdminShopController::class, 'index'])->name('shops.index'); // admin.shops.index
+
         // Admin product routes
-        Route::resource('products', AdminProductController::class)->except(['show']); // admin.products.index, admin.products.create, etc.
-        
+        Route::get('shops/{shop_id}/products', [AdminProductController::class, 'index'])->name('products.index'); // admin.products.index
+        // Route::resource('products', AdminProductController::class)->except(['show']); // admin.products.index, admin.products.create, etc.
+
         // Admin category routes
         Route::resource('categories', AdminCategoryController::class)->except(['show']); // admin.categories.index, admin.categories.create, etc.
-        
+
         // Admin user routes
         Route::get('/users', [AdminUserController::class, 'index'])->name('users.index'); // admin.users.index
         Route::put('/users/{user}', [AdminUserController::class, 'updateIsBanned'])->name('users.updateIsBanned'); // admin.users.updateIsBanned
-        
+
         // Admin order routes
         Route::get('/orders', [AdminOrderController::class, 'index'])->name('orders.index'); // admin.orders.index
         Route::put('/orders/{order}', [AdminOrderController::class, 'updateStatus'])->name('orders.updateStatus'); // admin.orders.updateStatus

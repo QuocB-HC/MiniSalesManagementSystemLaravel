@@ -10,7 +10,7 @@
     <div class="main-container create-container">
         <header class="form-header">
             <h1>Edit Product</h1>
-            <a href="{{ route('admin.products.index') }}" class="view-btn btn-back">Back to List</a>
+            {{-- <a href="{{ route('admin.products.index') }}" class="view-btn btn-back">Back to List</a> --}}
         </header>
 
         <div class="form-container">
@@ -99,7 +99,7 @@
 
                 <div class="form-actions">
                     <button type="submit" class="view-btn btn-save">Update Product</button>
-                    <a href="{{ route('admin.products.index') }}" class="view-btn btn-reset">Cancel</a>
+                    {{-- <a href="{{ route('admin.products.index') }}" class="view-btn btn-reset">Cancel</a> --}}
                 </div>
             </form>
         </div>

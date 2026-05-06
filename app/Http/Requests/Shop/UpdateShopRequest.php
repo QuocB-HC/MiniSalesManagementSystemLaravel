@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Shop;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreShopRequest extends FormRequest
+class UpdateShopRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,5 +25,22 @@ class StoreShopRequest extends FormRequest
         return [
             //
         ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            //
+        ];
+    }
+
+    protected function failedValidation(Validator $validator)
+    {
+        throw new ValidationException($validator,
+            redirect()->back()
+                ->withErrors($validator)
+                ->withInput()
+                ->with('error', $errorMessage)
+        );
     }
 }

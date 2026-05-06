@@ -1,0 +1,144 @@
+/*========== Default ==========*/
+/* Filters */
+.category-filters {
+    margin: 20px 0;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+.filter-btn {
+    background-color: #eee;
+    color: #333;
+    border: 1px solid black !important;
+    justify-self: center;
+}
+.filter-btn:hover {
+    background-color: #333;
+    color: white;
+}
+.filter-btn.active {
+    background-color: #333;
+    color: #fff;
+}
+
+.admin-table th:nth-child(1) {
+    width: 5%;
+} /* ID */
+.admin-table th:nth-child(2) {
+    width: 5%;
+} /* Image */
+.admin-table th:nth-child(3) {
+    width: 10%;
+} /* SKU */
+.admin-table th:nth-child(4) {
+    width: auto;
+} /* Product Name (Let this column be flexible) */
+.admin-table th:nth-child(5) {
+    width: 10%;
+} /* Price */
+.admin-table th:nth-child(6) {
+    width: 5%;
+} /* Stock */
+.admin-table th:nth-child(7) {
+    width: 10%;
+} /* Status */
+.admin-table th:nth-child(8) {
+    width: 15%;
+} /* Actions */
+
+/* Handling cases where product names are too long. */
+.admin-table td strong {
+    display: block;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.product-img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+.status {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: bold;
+}
+.social-link {
+    color: #333;
+    font-size: 18px;
+    transition: color 0.3s ease-in-out;
+}
+.social-link:hover {
+    color: #007bff;
+}
+
+/* Status Badges */
+.status.available {
+    background: #e6f4ea;
+    color: #1e7e34;
+}
+.status.out_of_stock {
+    background: #feecef;
+    color: #d91e18;
+}
+.status.discontinued {
+    background: #f0f0f0;
+    color: #666;
+}
+
+/*========== Tablet ==========*/
+@media (max-width: 991px) {
+    .main-container {
+        width: 100%;
+        padding: 20px;
+        box-sizing: border-box;
+        overflow-x: hidden;
+    }
+
+    .recent-section {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .admin-table {
+        table-layout: auto;
+        min-width: 800px;
+    }
+
+    header h1 {
+        font-size: 1.5rem;
+    }
+}
+
+/*========== Mobile ==========*/
+@media (max-width: 767px) {
+    header {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+        width: 100%;
+        box-sizing: border-box;
+        padding: 0;
+        padding-top: 10px;
+    }
+
+    header h1 {
+        width: 100%;
+        text-align: center;
+        margin: 0;
+    }
+
+    .view-btn.btn-add {
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        margin: 0 auto;
+        display: block;
+        text-align: center;
+    }
+}

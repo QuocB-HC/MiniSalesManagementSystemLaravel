@@ -42,7 +42,7 @@ class AuthController extends Controller
                 ], 401)->onlyInput('email');
             }
 
-            $redirectUrl = Auth::user()->hasRole(UserRole::ADMIN)
+            $redirectUrl = Auth::user()->isAdmin()
                         ? route('admin.dashboard')
                         : route('home');
 

@@ -10,17 +10,17 @@
     <div class="main-container">
         <header>
             <h1>Products Management</h1>
-            <a href="{{ route('admin.products.create') }}" class="view-btn btn-add">New Product</a>
+            {{-- <a href="{{ route('admin.products.create') }}" class="view-btn btn-add">New Product</a> --}}
         </header>
 
         <!-- Category Filter Tabs -->
         <div class="category-filters">
-            <a href="{{ route('admin.products.index') }}"
+            <a href="{{ route('admin.products.index', $shop->id) }}"
                 class="view-btn filter-btn {{ !request('category_id') ? 'active' : '' }}">
                 All
             </a>
             @foreach ($categories as $cat)
-                <a href="{{ route('admin.products.index', ['category_id' => $cat->id]) }}"
+                <a href="{{ route('admin.products.index', ['shop_id' => $shop->id, 'category_id' => $cat->id]) }}"
                     class="view-btn filter-btn {{ request('category_id') == $cat->id ? 'active' : '' }}">
                     {{ $cat->name }}
                 </a>
@@ -53,10 +53,11 @@
                             <td>{{ number_format($product->price, 0, ',', '.') }} VND</td>
                             <td>{{ $product->stock_quantity }}</td>
                             <td>
-                                <span class="status {{ $product->status->value }}">{{ ucfirst(str_replace('_', ' ', $product->status->value)) }}</span>
+                                <span
+                                    class="status {{ $product->status->value }}">{{ ucfirst(str_replace('_', ' ', $product->status->value)) }}</span>
                             </td>
                             <td class="action-btns">
-                                <a href="{{ route('admin.products.edit', $product->id) }}"
+                                {{-- <a href="{{ route('admin.products.edit', $product->id) }}"
                                     class="view-btn btn-edit">Edit</a>
                                 <form
                                     onsubmit="confirmModal(event, 'Delete Product', 'Are you sure you want to delete this product?', 'delete')"
@@ -64,7 +65,7 @@
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="view-btn btn-delete">Delete</button>
-                                </form>
+                                </form> --}}
                             </td>
                         </tr>
                     @empty

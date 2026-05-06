@@ -37,6 +37,8 @@
 
         <div class="user-list">
             @auth
+                <button type="button" onclick="window.location.href='{{ route('shop.index') }}'" class="create-shop-btn">Create Shop</button>
+
                 <li class="custom-dropdown" id="userDropdown">
                     <div class="dropdown-trigger" onclick="toggleUserMenu(event)">
                         <img src="{{ Auth::user()->avatar_url ?? 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->name) }}"
