@@ -67,8 +67,9 @@ Route::middleware('auth')->group(function () {
 
     // Shop information routes
     Route::prefix('shop')->as('shop.')->group(function () {
-        Route::get('/', [ShopController::class, 'index'])->name('index'); // shop.index
-        Route::post('/create', [ShopController::class, 'store'])->name('store'); // shop.store
+        Route::get('/information/{id?}', [ShopController::class, 'index'])->name('index'); // shop.index
+        Route::get('/create', [ShopController::class, 'create'])->name('create'); // shop.create
+        Route::post('/store', [ShopController::class, 'store'])->name('store'); // shop.store
     });
 
     // Checkout routes
@@ -94,6 +95,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard'); // admin.dashboard
 
         Route::get('/shops', [AdminShopController::class, 'index'])->name('shops.index'); // admin.shops.index
+        Route::put('/shops/{shop}/approve', [AdminShopController::class, 'updateStatusToApproved'])->name('shops.approve'); // admin.shops.approve
+        Route::put('/shops/{shop}/reject', [AdminShopController::class, 'updateStatusToRejected'])->name('shops.reject'); // admin.shops.reject
 
         // Admin product routes
         Route::get('shops/{shop_id}/products', [AdminProductController::class, 'index'])->name('products.index'); // admin.products.index

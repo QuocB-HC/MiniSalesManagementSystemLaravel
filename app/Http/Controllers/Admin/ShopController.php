@@ -2,18 +2,48 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Enums\ShopStatus;
+use App\Enums\UserRole;
 use App\Http\Controllers\Controller;
 use App\Models\Shop;
 
 class ShopController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        $shops = Shop::with('user')->oldest()->paginate(10);
+        $shops = Shop::with('user')->where('status', ShopStatus::APPROVED)->oldest()->paginate(10);
 
-        return view('admin.shops.index', compact('shops'));
+        $pendingShops = Shop::with('user')->where('status', ShopStatus::PENDING)->oldest()->paginate(10);
+
+        return view('admin.shops.index', compact('shops', 'pendingShops'));
+    }
+
+    public function updateStatusToApproved(Shop $shop)
+    {
+        if ($shop->status === ShopStatus::PENDING) {
+            $shop->status = ShopStatus::APPROVED;
+            $shop->save();
+
+            if ($shop->user->role === UserRole::CUSTOMER) {
+                $shop->user->role = 'seller';
+                $shop->user->save();
+            }
+
+            return redirect()->back()->with('success', 'Shop approved successfully.');
+        }
+
+        return redirect()->back()->with('error', 'Invalid shop status.');
+    }
+
+    public function updateStatusToRejected(Shop $shop)
+    {
+        if ($shop->status === ShopStatus::PENDING) {
+            $shop->status = ShopStatus::REJECTED;
+            $shop->save();
+
+            return redirect()->back()->with('success', 'Shop rejected successfully.');
+        }
+
+        return redirect()->back()->with('error', 'Invalid shop status.');
     }
 }

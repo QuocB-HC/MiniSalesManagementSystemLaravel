@@ -1,15 +1,16 @@
 @extends('layouts.user', ['hideHeaderFooter' => true])
 
-@section('title', 'Shop Information')
+@section('title', 'Create Shop')
 
 @push('styles')
-    <link rel="stylesheet" href="{{ asset('css/pages/shop-information-form.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/pages/shop-create-form.css') }}">
 @endpush
 
 @section('content')
     <div class="form-container">
         <h2>Setup Your Shop</h2>
-        <form action="{{ route('shop.store') }}" method="POST" enctype="multipart/form-data">
+        <form onsubmit="confirmModal(event, 'Create Shop Confirm', 'Are you sure you want to create this shop?')"
+            action="{{ route('shop.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
 
             <div class="form-group">

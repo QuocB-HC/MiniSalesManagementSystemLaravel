@@ -2,18 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Shop;
 use App\Http\Requests\Shop\StoreShopRequest;
 use App\Http\Requests\Shop\UpdateShopRequest;
+use App\Models\Shop;
 
 class ShopController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index($shopId = null)
     {
-        return view('pages.shop-information-form');
+        $userId = auth()->id();
+        $shops = Shop::where('user_id', $userId)->get();
+
+        $shop = $shopId ? Shop::find($shopId) : $shops->first();
+
+        return view('pages.shop-information', compact('shops', 'shop'));
     }
 
     /**
@@ -21,7 +26,7 @@ class ShopController extends Controller
      */
     public function create()
     {
-        //
+        return view('pages.shop-create-form');
     }
 
     /**

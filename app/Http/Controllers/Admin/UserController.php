@@ -4,14 +4,17 @@ namespace App\Http\Controllers\Admin;
 
 use App\Enums\UserRole;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
     public function index()
     {
-        $users = User::oldest()->where('role', UserRole::CUSTOMER->value)->paginate(10);
+        $users = User::oldest()->where(function ($query) {
+            $query->where('role', UserRole::CUSTOMER->value)
+                ->orWhere('role', UserRole::SELLER->value);
+        })->paginate(10);
 
         return view('admin.users.index', compact('users'));
     }
@@ -23,7 +26,7 @@ class UserController extends Controller
         ]);
 
         $user->update([
-            'is_banned' => $request->is_banned
+            'is_banned' => $request->is_banned,
         ]);
 
         return redirect()->route('admin.users.index')

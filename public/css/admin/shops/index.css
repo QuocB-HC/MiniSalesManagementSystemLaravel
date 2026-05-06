@@ -1,50 +1,31 @@
 /*========== Default ==========*/
-/* Filters */
-.category-filters {
-    margin: 20px 0;
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-}
-.filter-btn {
-    background-color: #eee;
-    color: #333;
-    border: 1px solid black !important;
-    justify-self: center;
-}
-.filter-btn:hover {
-    background-color: #333;
-    color: white;
-}
-.filter-btn.active {
-    background-color: #333;
-    color: #fff;
-}
-
 .admin-table th:nth-child(1) {
     width: 5%;
 } /* ID */
 .admin-table th:nth-child(2) {
     width: 5%;
-} /* Image */
+} /* Logo */
 .admin-table th:nth-child(3) {
     width: 10%;
-} /* SKU */
+} /* User Name */
 .admin-table th:nth-child(4) {
     width: auto;
-} /* Product Name (Let this column be flexible) */
+} /* Shop Name */
 .admin-table th:nth-child(5) {
     width: 10%;
-} /* Price */
+} /* Address */
 .admin-table th:nth-child(6) {
-    width: 5%;
-} /* Stock */
-.admin-table th:nth-child(7) {
     width: 10%;
-} /* Status */
+} /* Phone Number */
+.admin-table th:nth-child(7) {
+    width: 8%;
+} /* Social Media */
 .admin-table th:nth-child(8) {
-    width: 15%;
-} /* Actions */
+    width: 8%;
+} /* Status */
+.admin-table th:nth-child(9) {
+    width: 8%;
+} /* Products */
 
 /* Handling cases where product names are too long. */
 .admin-table td strong {
@@ -77,17 +58,27 @@
 }
 
 /* Status Badges */
-.status.available {
+.status.pending {
+    background: #f0f0f0;
+    color: #666;
+}
+.status.approved {
     background: #e6f4ea;
     color: #1e7e34;
 }
-.status.out_of_stock {
+.status.rejected {
     background: #feecef;
     color: #d91e18;
 }
-.status.discontinued {
+.status.banned {
     background: #f0f0f0;
     color: #666;
+}
+
+.action-btns {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
 /*========== Tablet ==========*/

@@ -19,6 +19,7 @@
                         <tr>
                             <th>ID</th>
                             <th>Name</th>
+                            <th>Role</th>
                             <th>Email</th>
                             <th>Phone</th>
                             <th>Joined Date</th>
@@ -31,7 +32,8 @@
                             <tr>
                                 <td>#{{ $user->id }}</td>
                                 <td class="text-center"><strong>{{ $user->name }}</strong></td>
-                                <td class="text-center">{{ $user->email }}</td>
+                                <td class="text-center">{{ $user->role->name }}</td>
+                                <td class="text-center text-overflow">{{ $user->email }}</td>
                                 <td class="text-center">{{ $user->phone }}</td>
                                 <td>{{ $user->created_at->format('d/m/Y') }}</td>
                                 <td>

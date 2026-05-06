@@ -37,7 +37,15 @@
 
         <div class="user-list">
             @auth
-                <button type="button" onclick="window.location.href='{{ route('shop.index') }}'" class="create-shop-btn">Create Shop</button>
+                @if (auth()->user()->role->value == 'seller')
+                    <button type="button" onclick="window.location.href='{{ route('shop.index') }}'"
+                        class="create-shop-btn">Your Shop</button>
+                @endif
+
+                @if (auth()->user()->role->value == 'customer')
+                    <button type="button" onclick="window.location.href='{{ route('shop.create') }}'"
+                        class="create-shop-btn">Create Shop</button>
+                @endif
 
                 <li class="custom-dropdown" id="userDropdown">
                     <div class="dropdown-trigger" onclick="toggleUserMenu(event)">
