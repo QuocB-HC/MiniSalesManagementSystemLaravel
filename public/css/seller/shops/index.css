@@ -4,21 +4,44 @@
     padding: 2rem;
 }
 
+.shop-card {
+    background: #ffffff;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    margin-bottom: 2rem;
+}
+.shop-card label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    color: #636e72;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+}
+.shop-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
 .shop-item {
-    display: inline-block;
-    margin-right: 15px;
-    padding: 8px 16px;
-    background: #f8f9fa;
+    padding: 6px 16px;
     border-radius: 20px;
     border: 1px solid #dee2e6;
-    color: #6c757d;
     text-decoration: none;
-    transition: all 0.2s;
+    color: #2d3436;
+    font-size: 0.85rem;
+    transition: 0.3s;
+    background: #ffffff;
 }
 .shop-item:hover {
-    background: #007bff;
-    color: #fff;
-    border-color: #007bff;
+    background: #f8f9fa;
+    border-color: #adb5bd;
+}
+.shop-item.active {
+    background: #2d3436;
+    color: #ffffff;
+    border-color: #2d3436;
 }
 
 .info-container {
@@ -47,7 +70,7 @@
     border-radius: 50%;
     object-fit: cover;
     border: 6px solid #fff;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
     margin-bottom: 1.5rem;
     transition: transform 0.3s ease;
 }
@@ -71,9 +94,18 @@
     letter-spacing: 1px;
 }
 
-.status-badge.pending { background: #fff3cd; color: #856404; }
-.status-badge.approved { background: #d4edda; color: #155724; }
-.status-badge.rejected { background: #f8d7da; color: #721c24; }
+.status-badge.pending {
+    background: #fff3cd;
+    color: #856404;
+}
+.status-badge.approved {
+    background: #d4edda;
+    color: #155724;
+}
+.status-badge.rejected {
+    background: #f8d7da;
+    color: #721c24;
+}
 
 .social-links {
     display: flex;
@@ -101,7 +133,7 @@
 }
 
 .shop-details h3::after {
-    content: '';
+    content: "";
     position: absolute;
     bottom: -8px;
     left: 0;
@@ -156,14 +188,24 @@
     cursor: pointer;
 }
 
-.btn-add { background: #28a745; color: white; }
-.btn-edit { background: #007bff; color: white; text-decoration: none; }
-.btn-delete { background: #6c757d; color: white; }
+.btn-add {
+    background: #28a745;
+    color: white;
+}
+.btn-edit {
+    background: #007bff;
+    color: white;
+    text-decoration: none;
+}
+.btn-delete {
+    background: #6c757d;
+    color: white;
+}
 
 .view-btn:hover {
     opacity: 0.9;
     transform: translateY(-2px);
-    box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
 }
 
 nav[aria-label="breadcrumb"] {

@@ -27,6 +27,9 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('admin', function (User $user) {
             return $user->role === UserRole::ADMIN;
         });
+        Gate::define('seller', function (User $user) {
+            return $user->role === UserRole::SELLER;
+        });
 
         View::composer('*', function ($view) {
             $cart = session()->get('cart', []);

@@ -38,12 +38,12 @@
         <div class="user-list">
             @auth
                 @if (auth()->user()->role->value == 'seller')
-                    <button type="button" onclick="window.location.href='{{ route('shop.index') }}'"
+                    <button type="button" onclick="window.location.href='{{ route('seller.shop.index') }}'"
                         class="create-shop-btn">Your Shop</button>
                 @endif
 
                 @if (auth()->user()->role->value == 'customer')
-                    <button type="button" onclick="window.location.href='{{ route('shop.create') }}'"
+                    <button type="button" onclick="window.location.href='{{ route('seller.shop.create') }}'"
                         class="create-shop-btn">Create Shop</button>
                 @endif
 

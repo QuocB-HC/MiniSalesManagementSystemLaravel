@@ -5,13 +5,14 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DiscountController as AdminDiscountController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
-use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Admin\ShopController as AdminShopController;
+use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
-use App\Http\Controllers\ShopController;
+use App\Http\Controllers\Seller\ProductController as SellerProductController;
+use App\Http\Controllers\Seller\ShopController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -65,13 +66,6 @@ Route::middleware('auth')->group(function () {
         Route::put('/update', [UserController::class, 'update'])->name('update'); // profile.update
     });
 
-    // Shop information routes
-    Route::prefix('shop')->as('shop.')->group(function () {
-        Route::get('/information/{id?}', [ShopController::class, 'index'])->name('index'); // shop.index
-        Route::get('/create', [ShopController::class, 'create'])->name('create'); // shop.create
-        Route::post('/store', [ShopController::class, 'store'])->name('store'); // shop.store
-    });
-
     // Checkout routes
     Route::prefix('checkout')->as('checkout.')->group(function () {
         Route::get('/', [CartController::class, 'checkout'])->name('index'); // checkout.index
@@ -88,6 +82,21 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::get('/return-vnpay', [CartController::class, 'vnpayReturn']);
+
+    // SELLER ROUTES (only for users with seller role)
+    Route::middleware('can:seller')->prefix('seller')->as('seller.')->group(function () {
+        // Shop information routes
+        Route::prefix('shop')->as('shop.')->group(function () {
+            Route::get('/information/{id?}', [ShopController::class, 'index'])->name('index'); // seller.shop.index
+            Route::get('/create', [ShopController::class, 'create'])->name('create'); // seller.shop.create
+            Route::post('/store', [ShopController::class, 'store'])->name('store'); // seller.shop.store
+        });
+
+        // Product management routes
+        Route::prefix('products')->as('products.')->group(function () {
+            Route::get('/{shopId?}', [SellerProductController::class, 'index'])->name('index'); // seller.products.index
+        });
+    });
 
     // ADMIN ROUTES (only for users with admin role)
     Route::middleware('can:admin')->prefix('admin')->as('admin.')->group(function () {

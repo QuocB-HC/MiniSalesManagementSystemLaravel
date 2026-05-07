@@ -3,20 +3,27 @@
 @section('title', 'Shop Information - ' . $shop->name)
 
 @push('styles')
-    <link rel="stylesheet" href="{{ asset('css/pages/shop-information.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/seller/shops/index.css') }}">
 @endpush
 
 @section('content')
     <div class="main-container">
         <header class="mb-4">
             <h1>Shop Details</h1>
-            <nav>
-                @foreach ($shops as $item)
-                    <a href="{{ route('shop.index', $item->id) }}" class="shop-item">
-                        {{ $item->name }}
-                    </a>
-                @endforeach
-            </nav>
+            
+            @if ($shops->count() > 1)
+                <div class="shop-card">
+                    <label>Switch Shop:</label>
+                    <div class="shop-list">
+                        @foreach ($shops as $item)
+                            <a href="{{ route('seller.shop.index', $item->id) }}"
+                                class="shop-item {{ $item->id == $shop->id ? 'active' : '' }}">
+                                {{ $item->name }}
+                            </a>
+                        @endforeach
+                    </div>
+                </div>
+            @endif
         </header>
 
         <div class="info-container">
@@ -74,11 +81,9 @@
                         </form>
                     @endif
 
-                    <a href="{{ route('admin.products.index', $shop->id) }}" class="view-btn btn-edit">
+                    <a href="{{ route('seller.products.index', $shop->id) }}" class="view-btn btn-edit">
                         View Products ({{ $shop->products_count ?? $shop->products->count() }})
                     </a>
-
-                    <button class="view-btn btn-delete" onclick="history.back()">Back</button>
                 </div>
             </div>
         </div>

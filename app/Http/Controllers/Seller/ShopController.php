@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Seller;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\Shop\StoreShopRequest;
 use App\Http\Requests\Shop\UpdateShopRequest;
 use App\Models\Shop;
@@ -18,7 +19,7 @@ class ShopController extends Controller
 
         $shop = $shopId ? Shop::find($shopId) : $shops->first();
 
-        return view('pages.shop-information', compact('shops', 'shop'));
+        return view('seller.shops.index', compact('shops', 'shop'));
     }
 
     /**
@@ -26,7 +27,7 @@ class ShopController extends Controller
      */
     public function create()
     {
-        return view('pages.shop-create-form');
+        return view('seller.shops.create');
     }
 
     /**
@@ -40,37 +41,5 @@ class ShopController extends Controller
         Shop::create($data);
 
         return redirect()->route('home')->with('success', 'Shop information saved successfully.');
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Shop $shop)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Shop $shop)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateShopRequest $request, Shop $shop)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Shop $shop)
-    {
-        //
     }
 }
