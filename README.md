@@ -30,6 +30,9 @@ cd mini-sales-laravel
 
 ### 2. Install Dependencies
 ```bash
+# Install Node Module
+npm i
+
 # Install PHP dependencies
 composer install
 ```
