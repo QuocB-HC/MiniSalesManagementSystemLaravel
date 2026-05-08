@@ -52,6 +52,9 @@ php artisan migrate:fresh --seed
 
 ### 5. Launch the Application
 ```bash
+# Start the development server
+npm run dev
+
 # Start the Laravel development server
 php artisan serve
 ```
