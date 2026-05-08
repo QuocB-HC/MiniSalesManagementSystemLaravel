@@ -21,7 +21,10 @@
 
                 <div class="form-group">
                     <label>Password</label>
-                    <input type="password" name="password">
+                    <div style="position: relative">
+                        <input type="password" name="password" id="password">
+                        <span class="toggle-password" onclick="togglePassword('password', this)">👁️</span>
+                    </div>
                 </div>
 
                 <button type="submit" class="btn-login">Sign In</button>
@@ -81,5 +84,17 @@
                     btn.innerText = 'Sign In';
                 });
         });
+
+        function togglePassword(inputId, iconElement) {
+            const passwordInput = document.getElementById(inputId);
+
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+                iconElement.innerText = "🙈";
+            } else {
+                passwordInput.type = "password";
+                iconElement.innerText = "👁️";
+            }
+        }
     </script>
 @endpush

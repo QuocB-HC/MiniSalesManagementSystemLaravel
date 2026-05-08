@@ -10,7 +10,7 @@
     <div class="form-container">
         <h2>Setup Your Shop</h2>
         <form onsubmit="confirmModal(event, 'Create Shop Confirm', 'Are you sure you want to create this shop?')"
-            action="{{ route('seller.shop.store') }}" method="POST" enctype="multipart/form-data">
+            action="{{ route('shop.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
 
             <div class="form-group">

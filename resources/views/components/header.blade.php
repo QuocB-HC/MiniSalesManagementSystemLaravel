@@ -43,7 +43,7 @@
                 @endif
 
                 @if (auth()->user()->role->value == 'customer')
-                    <button type="button" onclick="window.location.href='{{ route('seller.shop.create') }}'"
+                    <button type="button" onclick="window.location.href='{{ route('shop.create') }}'"
                         class="create-shop-btn">Create Shop</button>
                 @endif
 

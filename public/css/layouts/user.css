@@ -14,6 +14,16 @@ body {
     display: none;
 }
 
+.text-left {
+    text-align: left !important;
+}
+.text-center {
+    text-align: center !important;
+}
+.text-right {
+    text-align: right !important;
+}
+
 /* Pagination */
 .pagination-container {
     margin-top: 20px;

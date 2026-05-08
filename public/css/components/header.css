@@ -255,6 +255,11 @@
     color: #28a745;
     font-weight: bold;
 }
+.no-result {
+    padding: 10px;
+    text-align: center;
+    color: #999;
+}
 
 /*========== Tablet ==========*/
 @media (max-width: 991px) {

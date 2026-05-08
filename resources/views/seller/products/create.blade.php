@@ -1,24 +1,26 @@
-@extends('layouts.admin', ['hideSideBar' => true])
+@extends('layouts.user', ['hideHeaderFooter' => true])
 
 @section('title', 'Add New Product')
 
 @push('styles')
-    <link rel="stylesheet" href="{{ asset('css/admin/products/create.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/seller/products/create.css') }}">
 @endpush
 
 @section('content')
     <div class="main-container create-container">
         <header class="form-header">
             <h1>Add New Product</h1>
-            {{-- <a href="{{ route('admin.products.index') }}" id="btn-back" class="view-btn btn-back">Back to List</a> --}}
+            <a href="{{ route('seller.products.index') }}" id="btn-back" class="view-btn btn-back">Back to List</a>
         </header>
 
         <div class="form-container">
-            <form action="{{ route('admin.products.store') }}" method="POST" enctype="multipart/form-data"
+            <form action="{{ route('seller.products.store') }}" method="POST" enctype="multipart/form-data"
                 class="product-form">
                 @csrf
 
                 <div class="form-grid">
+                    <input type="hidden" name="shop_id" value="{{ $currentShopId }}">
+
                     <div class="form-group">
                         <label for="name">Product Name</label>
                         <input type="text" name="name" id="name" value="{{ old('name') }}" required
@@ -58,18 +60,8 @@
 
                     <div class="form-group">
                         <label for="status">Status</label>
-                        <select name="status" id="status" required class="form-input">
-                            <option value="pending" {{ old('status', 'pending') == 'pending' ? 'selected' : '' }}>
-                                Pending</option>
-                            <option value="approved" {{ old('status') == 'approved' ? 'selected' : '' }}>
-                                Approved</option>
-                            <option value="rejected" {{ old('status') == 'rejected' ? 'selected' : '' }}>
-                                Rejected</option>
-                            <option value="hidden" {{ old('status') == 'hidden' ? 'selected' : '' }}>
-                                Hidden</option>
-                            <option value="out_of_stock" {{ old('status') == 'out_of_stock' ? 'selected' : '' }}>
-                                Out of Stock</option>
-                        </select>
+                        <input type="text" value="Pending" readonly class="form-input">
+                        <input type="hidden" name="status" id="status" value="pending">
                     </div>
                 </div>
 

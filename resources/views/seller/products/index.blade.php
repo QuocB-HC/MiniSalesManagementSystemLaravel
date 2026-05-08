@@ -13,7 +13,7 @@
                 <h1>Products of: {{ $currentShop->name }}</h1>
                 <p>Manage your inventory and pricing.</p>
             </div>
-            <a href="#" class="btn btn-primary">
+            <a href="{{ route('seller.products.create', $currentShop->id) }}" class="btn btn-primary">
                 <i class="fas fa-plus"></i> Add New Product
             </a>
         </div>
@@ -36,35 +36,37 @@
             <table>
                 <thead>
                     <tr>
-                        <th>Product</th>
-                        <th>Category</th>
-                        <th>Price</th>
-                        <th>Stock</th>
-                        <th>Status</th>
-                        <th style="text-align: right">Actions</th>
+                        <th class="text-center">Image</th>
+                        <th class="text-center">Name</th>
+                        <th class="text-center">Category</th>
+                        <th class="text-center">Price</th>
+                        <th class="text-center">Stock</th>
+                        <th class="text-center">Status</th>
+                        <th class="text-center">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     @forelse($products as $product)
                         <tr>
+                            <td class="text-center">
+                                <img src="{{ $product->image_url }}" alt="{{ $product->name }}" class="product-img">
+                            </td>
                             <td>
                                 <div class="product-info">
-                                    <img src="{{ $product->image_url }}" alt="{{ $product->name }}" class="product-img">
                                     <div>
                                         <div class="product-name">{{ $product->name }}</div>
                                         <div class="product-sku">SKU: {{ $product->sku }}</div>
                                     </div>
                                 </div>
                             </td>
-                            <td>{{ $product->category->name }}</td>
-                            <td>{{ number_format($product->price, 0, ',', '.') }}đ</td>
-                            <td>{{ $product->stock_quantity }}</td>
-                            <td>
-                                <span class="badge {{ $product->stock_quantity > 0 ? 'badge-success' : 'badge-danger' }}">
-                                    {{ $product->stock_quantity > 0 ? 'In Stock' : 'Out of Stock' }}
-                                </span>
+                            <td class="text-center">{{ $product->category->name }}</td>
+                            <td class="text-center">{{ number_format($product->price, 0, ',', '.') }}đ</td>
+                            <td class="text-center">{{ $product->stock_quantity }}</td>
+                            <td class="text-center">
+                                <span
+                                    class="status {{ $product->status->value }}">{{ ucfirst(str_replace('_', ' ', $product->status->value)) }}</span>
                             </td>
-                            <td>
+                            <td class="text-center">
                                 <div class="action-btns">
                                     <a href="#" class="btn-icon btn-edit"><i class="fas fa-edit"></i></a>
                                     <form action="#" method="POST" style="margin:0">
@@ -89,7 +91,9 @@
             </table>
 
             <div class="pagination-wrapper">
-                {{ $products->links() }}
+                <div class="pagination-container">
+                    {{ $products->links() }}
+                </div>
             </div>
         </div>
     </div>

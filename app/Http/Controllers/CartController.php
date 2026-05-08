@@ -276,7 +276,18 @@ class CartController extends Controller
 
                 // - Deduct from storage immediately.
                 foreach ($cart as $id => $details) {
-                    Product::where('id', $id)->decrement('stock_quantity', $details['quantity']);
+                    $product = Product::lockForUpdate()->find($id);
+                    $quantity = $details['quantity'];
+                    
+                    if ($product) {
+                        DB::transaction(function () use ($product, $quantity) {
+                            $product->decrement('stock_quantity', $quantity);
+
+                            if ($product->fresh()->stock_quantity <= 0) {
+                                $product->update(['status' => ProductStatus::OUT_OF_STOCK]);
+                            }
+                        });
+                    }
                 }
 
                 session()->forget('cart');

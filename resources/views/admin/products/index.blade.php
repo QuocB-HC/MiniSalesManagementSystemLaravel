@@ -57,15 +57,7 @@
                                     class="status {{ $product->status->value }}">{{ ucfirst(str_replace('_', ' ', $product->status->value)) }}</span>
                             </td>
                             <td class="action-btns">
-                                {{-- <a href="{{ route('admin.products.edit', $product->id) }}"
-                                    class="view-btn btn-edit">Edit</a>
-                                <form
-                                    onsubmit="confirmModal(event, 'Delete Product', 'Are you sure you want to delete this product?', 'delete')"
-                                    action="{{ route('admin.products.destroy', $product->id) }}" method="POST">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="view-btn btn-delete">Delete</button>
-                                </form> --}}
+                                
                             </td>
                         </tr>
                     @empty

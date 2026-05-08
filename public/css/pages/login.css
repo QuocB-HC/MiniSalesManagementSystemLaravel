@@ -47,6 +47,17 @@
     box-sizing: border-box; /* Important to prevent overflow */
 }
 
+.form-group .toggle-password {
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+    font-size: 18px;
+    user-select: none;
+    z-index: 10;
+}
+
 .btn-login {
     width: 100%;
     padding: 12px;

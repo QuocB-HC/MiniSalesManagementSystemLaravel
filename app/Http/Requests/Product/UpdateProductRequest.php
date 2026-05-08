@@ -2,20 +2,19 @@
 
 namespace App\Http\Requests\Product;
 
-use App\Models\User;
+use App\Enums\UserRole;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
+use App\Models\Product;
 
 class UpdateProductRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
-        return auth()->check() && auth()->user()->isAdmin();
+        return auth()->check() && auth()->user()->hasRole(UserRole::SELLER);
     }
 
     protected function prepareForValidation()
@@ -27,63 +26,64 @@ class UpdateProductRequest extends FormRequest
     }
 
     /**
-     * Get the validation rules that apply to the request.
-     *
      * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
         return [
+            'category_id' => 'required|exists:categories,id',
+            'shop_id' => 'required|exists:shops,id',
             'name' => 'required|string|max:255',
             'sku' => [
                 'required',
                 'string',
-                'max:50',
-                Rule::unique('products', 'sku')->ignore($this->product->id),
+                'max:100',
+                Rule::unique('products', 'sku')->ignore($this->route('product')),
             ],
-            'category_id' => 'required|exists:categories,id',
-            'price' => 'required|numeric|min:0',
+            'description' => 'nullable|string|max:1000',
             'stock_quantity' => 'required|integer|min:0',
-            'status' => 'required|in:pending,approved,rejected,hidden,out_of_stock',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'description' => 'nullable|string',
+            'price' => 'required|numeric|min:0',
+            'image' => 'nullable|image|max:2048',
         ];
     }
 
     public function messages(): array
     {
         return [
-            'name.required' => 'Product name is required.',
-            'name.string' => 'Product name must be a string.',
-            'name.max' => 'Product name must not exceed 255 characters.',
-            'sku.required' => 'SKU is required.',
-            'sku.string' => 'SKU must be a string.',
-            'sku.max' => 'SKU must not exceed 50 characters.',
-            'sku.unique' => 'SKU must be unique.',
-            'category_id.required' => 'Category is required.',
-            'category_id.exists' => 'Selected category does not exist.',
-            'price.required' => 'Price is required.',
-            'price.numeric' => 'Price must be a number.',
-            'price.min' => 'Price must be at least 0.',
-            'stock_quantity.required' => 'Stock quantity is required.',
-            'stock_quantity.integer' => 'Stock quantity must be an integer.',
-            'stock_quantity.min' => 'Stock quantity must be at least 0.',
-            'status.required' => 'Status is required.',
-            'status.in' => 'Status must be one of the following: pending, approved, rejected, hidden, out_of_stock.',
+            'category_id.required' => 'The category field is required.',
+            'category_id.exists' => 'The selected category is invalid.',
+            'shop_id.required' => 'The shop field is required.',
+            'shop_id.exists' => 'The selected shop is invalid.',
+            'name.required' => 'The product name is required.',
+            'name.string' => 'The product name must be a string.',
+            'name.max' => 'The product name may not be greater than 255 characters.',
+            'sku.required' => 'The SKU is required.',
+            'sku.string' => 'The SKU must be a string.',
+            'sku.max' => 'The SKU may not be greater than 100 characters.',
+            'sku.unique' => 'The SKU has already been taken.',
+            'description.string' => 'The description must be a string.',
+            'description.max' => 'The description may not be greater than 1000 characters.',
+            'stock_quantity.required' => 'The stock quantity is required.',
+            'stock_quantity.integer' => 'The stock quantity must be an integer.',
+            'stock_quantity.min' => 'The stock quantity must be at least 0.',
+            'price.required' => 'The price is required.',
+            'price.numeric' => 'The price must be a number.',
+            'price.min' => 'The price must be at least 0.',
             'image.image' => 'The uploaded file must be an image.',
-            'image.mimes' => 'The image must be a file of type: jpeg, png, jpg, gif.',
-            'image.max' => 'The image size must not exceed 2048 kilobytes.',
-            'description.string' => 'Description must be a string.',
+            'image.max' => 'The image may not be greater than 2048 kilobytes.',
         ];
     }
 
     protected function failedValidation(Validator $validator)
     {
-        throw new ValidationException($validator,
+        $firstError = $validator->errors()->first();
+
+        throw new ValidationException(
+            $validator,
             redirect()->back()
                 ->withErrors($validator)
                 ->withInput()
-                ->with('error', $errorMessage)
+                ->with('error', $firstError)
         );
     }
 }

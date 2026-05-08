@@ -139,20 +139,32 @@ tbody tr:hover {
     color: #636e72;
 }
 
-.badge {
+.status {
     padding: 4px 10px;
     border-radius: 6px;
     font-size: 0.75rem;
     font-weight: bold;
     display: inline-block;
 }
-.badge-success {
-    background-color: #d4edda;
-    color: #155724;
+.status.pending {
+    background: #fff3cd;
+    color: #856404;
 }
-.badge-danger {
-    background-color: #f8d7da;
-    color: #721c24;
+.status.approved {
+    background: #e6f4ea;
+    color: #1e7e34;
+}
+.status.rejected {
+    background: #feecef;
+    color: #d91e18;
+}
+.status.out_of_stock {
+    background: #feecef;
+    color: #d91e18;
+}
+.status.hidden {
+    background: #f0f0f0;
+    color: #666;
 }
 
 .action-btns {
