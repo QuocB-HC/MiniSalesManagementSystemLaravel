@@ -24,8 +24,8 @@ Follow these steps to get your local development environment running:
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/your-username/mini-sales-laravel.git
-cd mini-sales-laravel
+git clone https://github.com/QuocB-HC/MiniSalesManagementSystemLaravel.git
+cd MiniSalesManagementSystemLaravel
 ```
 
 ### 2. Install Dependencies
