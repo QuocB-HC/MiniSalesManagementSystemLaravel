@@ -10,7 +10,9 @@
     <div class="main-container">
         <header>
             <h1>Products Management</h1>
-            {{-- <a href="{{ route('admin.products.create') }}" class="view-btn btn-add">New Product</a> --}}
+            <button type="button" onclick="openModal('customModal')" class="view-btn btn-add">
+                Open Pending Products Modal
+            </button>
         </header>
 
         <!-- Category Filter Tabs -->
@@ -57,7 +59,7 @@
                                     class="status {{ $product->status->value }}">{{ ucfirst(str_replace('_', ' ', $product->status->value)) }}</span>
                             </td>
                             <td class="action-btns">
-                                
+
                             </td>
                         </tr>
                     @empty
@@ -75,4 +77,103 @@
             </div>
         </div>
     </div>
+
+    <div id="customModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Pending Products</h2>
+                <button class="close-icon" onclick="closeModal('customModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <section class="recent-section">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Image</th>
+                                <th>SKU</th>
+                                <th>Product Name</th>
+                                <th>Price</th>
+                                <th>Stock</th>
+                                <th>Status</th>
+                                <th>Update Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse ($pendingProducts as $product)
+                                <tr>
+                                    <td>#{{ $product->id }}</td>
+                                    <td>
+                                        <img src="{{ $product->image_url }}" alt="{{ $product->name }}"
+                                            class="product-img">
+                                    </td>
+                                    <td>{{ $product->sku }}</td>
+                                    <td><strong>{{ $product->name }}</strong></td>
+                                    <td>{{ number_format($product->price, 0, ',', '.') }} VND</td>
+                                    <td>{{ $product->stock_quantity }}</td>
+                                    <td>
+                                        <span
+                                            class="status {{ $product->status->value }}">{{ ucfirst(str_replace('_', ' ', $product->status->value)) }}</span>
+                                    </td>
+                                    <td class="action-btns">
+                                        <form
+                                            onsubmit="confirmModal(event, 'Approve Confirm', 'Are you sure you want to approve this product?')"
+                                            action="{{ route('admin.products.approve', $product->id) }}" method="POST">
+                                            @csrf
+                                            @method('PUT')
+                                            <button type="submit" class="view-btn btn-add">Approve</button>
+                                        </form>
+                                        <form
+                                            onsubmit="confirmModal(event, 'Reject Confirm', 'Are you sure you want to reject this product?')"
+                                            action="{{ route('admin.products.reject', $product->id) }}" method="POST">
+                                            @csrf
+                                            @method('PUT')
+                                            <button type="submit" class="view-btn btn-delete">Reject</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="8" class="no-data">No products found.</td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </section>
+
+                <div class="pagination-wrapper">
+                    <div class="pagination-container">
+                        {{ $pendingProducts->links() }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
+
+@push('scripts')
+    <script>
+        function openModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal-overlay')) {
+                event.target.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        }
+    </script>
+@endpush

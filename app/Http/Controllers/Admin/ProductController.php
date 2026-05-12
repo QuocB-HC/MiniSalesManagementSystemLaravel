@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Enums\ProductStatus;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Product;
@@ -19,33 +20,51 @@ class ProductController extends Controller
             $query->where('category_id', $request->category_id);
         }
 
-        $products = $query->latest()->paginate(10)->withQueryString();
+        $products = (clone $query)
+            ->whereNot('status', ProductStatus::PENDING)
+            ->latest()->paginate(10)->withQueryString();
+
+        $pendingProducts = (clone $query)
+            ->where('status', ProductStatus::PENDING)
+            ->latest()->paginate(10)->withQueryString();
 
         $categories = Category::all();
         $shop = Shop::findOrFail($shop_id);
 
-        return view('admin.products.index', compact('products', 'categories', 'shop'));
+        return view('admin.products.index', compact('products', 'pendingProducts', 'categories', 'shop'));
     }
 
-    public function changeStatusToApproved(Product $product)
+    public function updateStatusToApproved(Product $product)
     {
         if ($product->status === ProductStatus::HIDDEN || $product->status === ProductStatus::PENDING || $product->status === ProductStatus::OUT_OF_STOCK) {
             $product->status = ProductStatus::APPROVED;
             $product->save();
 
-            return redirect()->back()->with('success', 'Product status changed to approved successfully!');
+            return redirect()->back()->with('success', 'Product status updated to approved successfully!');
         }
 
         return redirect()->back()->with('error', 'Invalid product status.');
     }
 
-    public function changeStatusToHidden(Product $product)
+    public function updateStatusToRejected(Product $product)
+    {
+        if ($product->status === ProductStatus::HIDDEN || $product->status === ProductStatus::PENDING || $product->status === ProductStatus::OUT_OF_STOCK) {
+            $product->status = ProductStatus::REJECTED;
+            $product->save();
+
+            return redirect()->back()->with('success', 'Product status updated to rejected successfully!');
+        }
+
+        return redirect()->back()->with('error', 'Invalid product status.');
+    }
+
+    public function updateStatusToHidden(Product $product)
     {
         if ($product->status === ProductStatus::APPROVED || $product->status === ProductStatus::OUT_OF_STOCK) {
             $product->status = ProductStatus::HIDDEN;
             $product->save();
 
-            return redirect()->back()->with('success', 'Product status changed to hidden successfully!');
+            return redirect()->back()->with('success', 'Product status updated to hidden successfully!');
         }
 
         return redirect()->back()->with('error', 'Invalid product status.');

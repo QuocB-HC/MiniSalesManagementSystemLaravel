@@ -112,12 +112,20 @@ Route::middleware('auth')->group(function () {
         // Admin dashboard route
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard'); // admin.dashboard
 
-        Route::get('/shops', [AdminShopController::class, 'index'])->name('shops.index'); // admin.shops.index
-        Route::put('/shops/{shop}/approve', [AdminShopController::class, 'updateStatusToApproved'])->name('shops.approve'); // admin.shops.approve
-        Route::put('/shops/{shop}/reject', [AdminShopController::class, 'updateStatusToRejected'])->name('shops.reject'); // admin.shops.reject
+        // Admin shop routes
+        Route::prefix('shops')->as('shops.')->group(function () {
+                Route::get('/', [AdminShopController::class, 'index'])->name('index'); // admin.shops.index
+                Route::put('/{shop}/approve', [AdminShopController::class, 'updateStatusToApproved'])->name('approve'); // admin.shops.approve
+                Route::put('/{shop}/reject', [AdminShopController::class, 'updateStatusToRejected'])->name('reject'); // admin.shops.reject
+        });
 
         // Admin product routes
-        Route::get('shops/{shop_id}/products', [AdminProductController::class, 'index'])->name('products.index'); // admin.products.index
+        Route::prefix('shops')->as('products.')->group(function () {
+            Route::get('/{shop_id}/products', [AdminProductController::class, 'index'])->name('index'); // admin.products.index
+            Route::put('/approve/{product}', [AdminProductController::class, 'updateStatusToApproved'])->name('approve'); // admin.products.approve
+            Route::put('/reject/{product}', [AdminProductController::class, 'updateStatusToRejected'])->name('reject'); // admin.products.reject
+            Route::put('/hide/{product}', [AdminProductController::class, 'updateStatusToHidden'])->name('hide'); // admin.products.hide
+        });
 
         // Admin category routes
         Route::resource('categories', AdminCategoryController::class)->except(['show']); // admin.categories.index, admin.categories.create, etc.
