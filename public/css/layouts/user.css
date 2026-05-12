@@ -24,6 +24,12 @@ body {
     text-align: right !important;
 }
 
+.content-center {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+}
+
 /* Pagination */
 .pagination-container {
     margin-top: 20px;

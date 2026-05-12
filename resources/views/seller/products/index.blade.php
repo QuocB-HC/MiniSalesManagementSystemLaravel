@@ -1,3 +1,7 @@
+@php
+    use App\Enums\ProductStatus;
+@endphp
+
 @extends('layouts.user')
 
 @section('title', 'Products - ' . $currentShop->name)
@@ -66,23 +70,28 @@
                                 <span
                                     class="status {{ $product->status->value }}">{{ ucfirst(str_replace('_', ' ', $product->status->value)) }}</span>
                             </td>
-                            <td class="text-center">
+                            <td class="content-center">
                                 <div class="action-btns">
-                                    <a href="#" class="btn-icon btn-edit"><i class="fas fa-edit"></i></a>
-                                    <form action="#" method="POST" style="margin:0">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn-icon btn-delete"
-                                            onclick="return confirm('Delete?')">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </form>
+                                    <a href="{{ route('seller.products.edit', ['shopId' => $currentShop->id, 'id' => $product->id]) }}"
+                                        class="btn-icon btn-edit"><i class="fas fa-edit"></i></a>
+
+                                    @if ($product->status == ProductStatus::APPROVED || $product->status == ProductStatus::OUT_OF_STOCK)
+                                        <form
+                                            action="{{ route('seller.products.updateStatusToHidden', ['id' => $product->id]) }}"
+                                            method="POST"
+                                            onsubmit="return confirm('Are you sure you want to hide this product?');">
+                                            @csrf
+                                            @method('PATCH')
+                                            <button type="submit" class="btn-icon btn-hide"><i
+                                                    class="fas fa-eye-slash"></i></button>
+                                        </form>
+                                    @endif
                                 </div>
                             </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6" style="text-align: center; padding: 3rem; color: #999;">
+                            <td colspan="7" style="text-align: center; padding: 3rem; color: #999;">
                                 No products found in this shop.
                             </td>
                         </tr>

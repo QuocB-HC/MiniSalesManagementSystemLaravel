@@ -5,7 +5,7 @@
     padding: 0 1rem;
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     color: #2d3436;
-    background-color: #f4f7f6;
+    background-color: #f0f0f0;
 }
 
 .header-wrapper {
@@ -95,7 +95,11 @@
 table {
     width: 100%;
     border-collapse: collapse;
-    text-align: left;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    table-layout: fixed;
 }
 thead {
     background-color: #f8fafc;
@@ -108,10 +112,14 @@ th {
     color: #636e72;
     letter-spacing: 0.5px;
 }
+tbody tr {
+    border-bottom: 1px solid #edf2f7;
+}
 td {
     padding: 1rem;
-    border-bottom: 1px solid #edf2f7;
     vertical-align: middle;
+    box-sizing: border-box;
+    height: 100%;
 }
 tbody tr:hover {
     background-color: #fcfcfc;
@@ -169,7 +177,8 @@ tbody tr:hover {
 
 .action-btns {
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
+    align-items: center;
     gap: 8px;
 }
 

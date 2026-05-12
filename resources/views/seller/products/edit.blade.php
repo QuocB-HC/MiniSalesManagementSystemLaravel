@@ -3,7 +3,7 @@
 @section('title', 'Edit Product: ' . $product->name)
 
 @push('styles')
-    <link rel="stylesheet" href="{{ asset('css/admin/products/create.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/seller/products/create.css') }}">
 @endpush
 
 @section('content')
@@ -14,7 +14,7 @@
         </header>
 
         <div class="form-container">
-            <form action="{{ route('admin.products.update', $product->id) }}" method="POST" enctype="multipart/form-data"
+            <form action="{{ route('seller.products.update', $product->id) }}" method="POST" enctype="multipart/form-data"
                 class="product-form">
                 @csrf
                 @method('PUT')

@@ -32,13 +32,12 @@ class UpdateProductRequest extends FormRequest
     {
         return [
             'category_id' => 'required|exists:categories,id',
-            'shop_id' => 'required|exists:shops,id',
             'name' => 'required|string|max:255',
             'sku' => [
                 'required',
                 'string',
                 'max:100',
-                Rule::unique('products', 'sku')->ignore($this->route('product')),
+                Rule::unique('products', 'sku')->ignore($this->route('id')),
             ],
             'description' => 'nullable|string|max:1000',
             'stock_quantity' => 'required|integer|min:0',
@@ -52,8 +51,6 @@ class UpdateProductRequest extends FormRequest
         return [
             'category_id.required' => 'The category field is required.',
             'category_id.exists' => 'The selected category is invalid.',
-            'shop_id.required' => 'The shop field is required.',
-            'shop_id.exists' => 'The selected shop is invalid.',
             'name.required' => 'The product name is required.',
             'name.string' => 'The product name must be a string.',
             'name.max' => 'The product name may not be greater than 255 characters.',

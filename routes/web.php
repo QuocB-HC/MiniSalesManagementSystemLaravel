@@ -98,9 +98,12 @@ Route::middleware('auth')->group(function () {
 
         // Product management routes
         Route::prefix('products')->as('products.')->group(function () {
-            Route::get('/{shopId?}', [SellerProductController::class, 'index'])->name('index'); // seller.products.index
             Route::get('/{shopId?}/create', [SellerProductController::class, 'create'])->name('create'); // seller.products.create
             Route::post('/store', [SellerProductController::class, 'store'])->name('store'); // seller.products.store
+            Route::get('/edit/{id}', [SellerProductController::class, 'edit'])->name('edit'); // seller.products.edit
+            Route::put('/update/{id}', [SellerProductController::class, 'update'])->name('update'); // seller.products.update
+            Route::patch('/update-status-to-hidden/{id}', [SellerProductController::class, 'updateStatusToHidden'])->name('updateStatusToHidden'); // seller.products.updateStatusToHidden
+            Route::get('/{shopId?}', [SellerProductController::class, 'index'])->name('index'); // seller.products.index
         });
     });
 

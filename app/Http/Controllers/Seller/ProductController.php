@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\Seller;
 
+use App\Enums\ProductStatus;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Product\StoreProductRequest;
+use App\Http\Requests\Product\UpdateProductRequest;
+use App\Models\Category;
 use App\Models\Product;
 use App\Models\Shop;
-use App\Models\Category;
 use Illuminate\Http\Request;
-use App\Http\Requests\Product\StoreProductRequest;
 
 class ProductController extends Controller
 {
@@ -83,5 +85,18 @@ class ProductController extends Controller
         $product->update($data);
 
         return redirect()->route('seller.products.index')->with('success', 'Product updated successfully.');
+    }
+
+    public function updateStatusToHidden($id)
+    {
+        $product = Product::findOrFail($id);
+
+        if ($product->shop->user_id !== auth()->id()) {
+            return abort(403, 'You are not allowed to update this product.');
+        }
+
+        $product->update(['status' => ProductStatus::HIDDEN]);
+
+        return redirect()->route('seller.products.index')->with('success', 'Product status updated to hidden successfully.');
     }
 }
