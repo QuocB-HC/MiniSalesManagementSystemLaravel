@@ -1,3 +1,6 @@
+/* ============================================
+    DESKTOP — min-width: 992px
+   ============================================ */
 .main-container {
     max-width: 1200px;
     margin: 0 auto;
@@ -231,4 +234,175 @@ nav[aria-label="breadcrumb"] {
     background: #007bff;
     color: #fff;
     border-color: #007bff;
+}
+
+/* ============================================
+   TABLET — max-width: 991px
+   ============================================ */
+@media (max-width: 991px) {
+    .main-container {
+        padding: 1.5rem;
+    }
+
+    .info-container {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        padding: 2rem;
+    }
+
+    .shop-sidebar {
+        border-right: none;
+        border-bottom: 1px solid #f0f0f0;
+        padding-right: 0;
+        padding-bottom: 2rem;
+        flex-direction: row;
+        align-items: center;
+        text-align: left;
+        gap: 1.5rem;
+        flex-wrap: wrap;
+    }
+
+    .shop-logo-large {
+        width: 120px;
+        height: 120px;
+        margin-bottom: 0;
+        flex-shrink: 0;
+    }
+
+    .shop-sidebar-info {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+
+    .shop-sidebar h2 {
+        font-size: 1.3rem;
+        margin-bottom: 0.4rem;
+    }
+
+    .social-links {
+        justify-content: flex-start;
+        margin-top: 0.5rem;
+    }
+
+    .info-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+    }
+
+    .btn-group {
+        margin-top: 2rem;
+        flex-wrap: wrap;
+    }
+
+    .view-btn {
+        width: 100%;
+        text-align: center;
+        padding: 0.75rem 1rem;
+        font-size: 0.85rem;
+    }
+}
+
+
+/* ============================================
+   PHONE — max-width: 768px
+   ============================================ */
+@media (max-width: 768px) {
+    .main-container {
+        padding: 1rem;
+    }
+
+    header h1 {
+        font-size: 1.4rem;
+    }
+
+    .shop-card {
+        padding: 1rem;
+    }
+
+    .shop-list {
+        gap: 8px;
+    }
+
+    .shop-item {
+        font-size: 0.8rem;
+        padding: 5px 12px;
+    }
+
+    .info-container {
+        padding: 1.25rem;
+        gap: 1.5rem;
+        border-radius: 12px;
+    }
+
+    .shop-sidebar {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 0.75rem;
+        padding-bottom: 1.5rem;
+    }
+
+    .shop-logo-large {
+        width: 100px;
+        height: 100px;
+    }
+
+    .shop-sidebar h2 {
+        font-size: 1.2rem;
+    }
+
+    .social-links {
+        justify-content: center;
+    }
+
+    .shop-details h3 {
+        font-size: 1.1rem;
+        margin-bottom: 1.25rem;
+    }
+
+    .info-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .info-item[style*="grid-column"] {
+        grid-column: span 1 !important;
+    }
+
+    .info-item p {
+        font-size: 0.9rem;
+        height: auto;
+        min-height: 30px;
+        word-break: break-word;
+    }
+
+    .btn-group {
+        flex-direction: column;
+        gap: 8px;
+        margin-top: 1.5rem;
+        padding-top: 1.5rem;
+    }
+    .btn-group form {
+        width: 100%;
+    }
+
+    .view-btn {
+        width: 100%;
+        text-align: center;
+        padding: 0.75rem 1rem;
+        font-size: 0.85rem;
+        box-sizing: border-box;
+    }
+
+    nav[aria-label="breadcrumb"] {
+        gap: 6px;
+        padding: 8px;
+    }
+
+    .breadcrumb-item {
+        font-size: 0.8rem;
+        padding: 4px 10px;
+    }
 }
