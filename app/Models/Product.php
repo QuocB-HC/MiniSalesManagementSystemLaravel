@@ -81,4 +81,19 @@ class Product extends Model
         // 3. Return the default image if the above conditions are not met
         return asset('images/no-image.png'); // Or link placeholder
     }
+
+    public function isHidden(): bool
+    {
+        return $this->status === ProductStatus::HIDDEN;
+    }
+
+    public function canBeHidden(): bool
+    {
+        return in_array($this->status, [ProductStatus::APPROVED, ProductStatus::OUT_OF_STOCK]);
+    }
+
+    public function statusLogs(): HasMany
+    {
+        return $this->hasMany(ProductStatusLog::class);
+    }
 }

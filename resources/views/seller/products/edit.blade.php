@@ -14,7 +14,8 @@
         </header>
 
         <div class="form-container">
-            <form action="{{ route('seller.products.update', $product->id) }}" method="POST" enctype="multipart/form-data"
+            <form onsubmit="confirmModal(event, 'Update Product Confirm', 'Are you sure you want to update this product?')"
+                action="{{ route('seller.products.update', $product->id) }}" method="POST" enctype="multipart/form-data"
                 class="product-form">
                 @csrf
                 @method('PUT')
@@ -59,23 +60,8 @@
 
                     <div class="form-group">
                         <label for="status">Status</label>
-                        <select name="status" id="status" required class="form-input">
-                            <option value="pending"
-                                {{ old('status', $product->status->value) == 'pending' ? 'selected' : '' }}>
-                                Pending</option>
-                            <option value="approved"
-                                {{ old('status', $product->status->value) == 'approved' ? 'selected' : '' }}>
-                                Approved</option>
-                            <option value="rejected"
-                                {{ old('status', $product->status->value) == 'rejected' ? 'selected' : '' }}>
-                                Rejected</option>
-                            <option value="hidden"
-                                {{ old('status', $product->status->value) == 'hidden' ? 'selected' : '' }}>
-                                Hidden</option>
-                            <option value="out_of_stock"
-                                {{ old('status', $product->status->value) == 'out_of_stock' ? 'selected' : '' }}>
-                                Out of Stock</option>
-                        </select>
+                        <input type="text" value="{{ old('status', $product->status->value) }}" readonly class="form-input">
+                        <input type="hidden" name="status" id="status" value="{{ old('status', $product->status->value) }}">
                     </div>
                 </div>
 

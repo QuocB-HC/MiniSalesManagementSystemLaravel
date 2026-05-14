@@ -75,15 +75,38 @@
                                     <a href="{{ route('seller.products.edit', ['shopId' => $currentShop->id, 'id' => $product->id]) }}"
                                         class="btn-icon btn-edit"><i class="fas fa-edit"></i></a>
 
-                                    @if ($product->status == ProductStatus::APPROVED || $product->status == ProductStatus::OUT_OF_STOCK)
+                                    @php
+                                        $isHidden = $product->isHidden();
+                                    @endphp
+
+                                    @if ($isHidden)
                                         <form
-                                            action="{{ route('seller.products.updateStatusToHidden', ['id' => $product->id]) }}"
-                                            method="POST"
-                                            onsubmit="return confirm('Are you sure you want to hide this product?');">
+                                            onsubmit="confirmModal(event, 'Show Product Confirm', 'Are you sure you want to show this product?')"
+                                            action="{{ route('seller.products.updateStatusToVisible', ['id' => $product->id]) }}"
+                                            method="POST">
                                             @csrf
                                             @method('PATCH')
-                                            <button type="submit" class="btn-icon btn-hide"><i
-                                                    class="fas fa-eye-slash"></i></button>
+                                            <button type="submit" class="btn-icon btn-hide">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                        </form>
+                                    @else
+                                        @php
+                                            $canHide = $product->canBeHidden();
+                                            $cannotHide = !$canHide;
+                                        @endphp
+
+                                        <form
+                                            onsubmit="confirmModal(event, 'Hide Product Confirm', 'Are you sure you want to hide this product?')"
+                                            action="{{ route('seller.products.updateStatusToHidden', ['id' => $product->id]) }}"
+                                            method="POST">
+                                            @csrf
+                                            @method('PATCH')
+                                            <button type="submit"
+                                                class="btn-icon btn-hide {{ $cannotHide ? 'disabled' : '' }}"
+                                                @disabled($cannotHide)>
+                                                <i class="fas fa-eye-slash"></i>
+                                            </button>
                                         </form>
                                     @endif
                                 </div>

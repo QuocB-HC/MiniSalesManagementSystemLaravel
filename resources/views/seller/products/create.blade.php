@@ -14,7 +14,8 @@
         </header>
 
         <div class="form-container">
-            <form action="{{ route('seller.products.store') }}" method="POST" enctype="multipart/form-data"
+            <form onsubmit="confirmModal(event, 'Create Product Confirm', 'Are you sure you want to create this product?')"
+                action="{{ route('seller.products.store') }}" method="POST" enctype="multipart/form-data"
                 class="product-form">
                 @csrf
 

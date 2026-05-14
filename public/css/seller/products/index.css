@@ -203,9 +203,14 @@ tbody tr:hover {
     border-color: #007bff;
     color: #007bff;
 }
-.btn-delete:hover {
+.btn-hide:hover {
     border-color: #dc3545;
     color: #dc3545;
+}
+.btn-hide.disabled {
+    border-color: #dee2e6;
+    color: #dee2e6;
+    cursor: not-allowed;
 }
 
 /* ============================================
@@ -241,150 +246,181 @@ tbody tr:hover {
 /* ============================================
    PHONE — max-width: 768px
    ============================================ */
-@media (max-width: 768px) {
-    .main-container {
-        overflow: hidden;
-        margin: 1rem auto;
-        padding: 0 0.75rem;
-    }
 
+@media (max-width: 768px) {
+    html, body {
+        overflow-x: hidden;
+        max-width: 100%;
+    }
+ 
+    .main-container {
+        width: 100%;
+        max-width: 100%;
+        margin: 1rem 0;
+        padding: 0 0.75rem;
+        box-sizing: border-box;
+        overflow-x: hidden;
+    }
+ 
     .header-wrapper {
         flex-direction: column;
         align-items: flex-start;
-        gap: 1rem;
-        margin-bottom: 1.25rem;
-        padding: 10px auto;
+        gap: 0.75rem;
+        margin-bottom: 1rem;
     }
     .header-wrapper h1 {
-        font-size: 1.25rem;
+        font-size: 1.1rem;
+        word-break: break-word;
     }
     .header-wrapper p {
-        font-size: 0.85rem;
+        font-size: 0.82rem;
     }
-
     .btn {
+        width: 100%;
         justify-content: center;
         padding: 10px 16px;
+        box-sizing: border-box;
     }
-
+ 
     .shop-card {
         padding: 1rem;
-        margin-bottom: 1.25rem;
+        margin-bottom: 1rem;
     }
-
     .shop-item {
         font-size: 0.8rem;
         padding: 5px 12px;
     }
-
+ 
     .table-container {
-        overflow: scroll;
         background: transparent;
         box-shadow: none;
         border-radius: 0;
+        overflow: visible;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
     }
-
-    table,
-    thead,
-    tbody,
-    th,
-    td,
-    tr {
+ 
+    table, thead, tbody, th, td, tr {
         display: block;
+        box-sizing: border-box;
     }
-
+ 
+    table {
+        width: 100%;
+        max-width: 100%;
+        min-width: unset;
+        table-layout: unset;
+    }
+ 
     thead tr {
         display: none;
     }
-
+ 
     tbody tr {
+        width: 100%;
+        max-width: 100%;
         background: #ffffff;
         border-radius: 12px;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
         margin-bottom: 1rem;
-        padding: 1rem;
+        padding: 0.75rem;
         border: none;
+        box-sizing: border-box;
+        overflow: hidden;
     }
-
+ 
     tbody tr:hover {
         background: #ffffff;
     }
-
+ 
     td {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 0.5rem 0;
+        width: 100%;
+        max-width: 100%;
+        padding: 0.45rem 0;
         border: none;
         border-bottom: 1px solid #f0f0f0;
-        font-size: 0.875rem;
-        text-align: right;
+        font-size: 0.85rem;
+        height: auto;
         min-height: unset;
+        overflow: hidden;
+        text-align: right;
     }
-
+ 
     td:last-child {
         border-bottom: none;
     }
-
+ 
     td::before {
-        content: attr(data-label);
         font-weight: 700;
-        font-size: 0.75rem;
+        font-size: 0.7rem;
         color: #999;
         text-transform: uppercase;
         letter-spacing: 0.5px;
-        text-align: left;
         flex-shrink: 0;
-        margin-right: 1rem;
+        margin-right: 0.75rem;
+        white-space: nowrap;
     }
-
-    td:first-child {
+ 
+    td:nth-child(1) {
         justify-content: center;
+        padding: 0.75rem 0;
         border-bottom: 1px solid #f0f0f0;
-        padding-bottom: 0.75rem;
-        margin-bottom: 0.25rem;
     }
-
-    td:first-child::before {
-        display: none;
-    }
-
+    td:nth-child(1)::before { display: none; }
+ 
     .product-img {
         width: 64px;
         height: 64px;
+        max-width: 64px;
+        border-radius: 10px;
+        object-fit: cover;
+        display: block;
+        flex-shrink: 0;
     }
-
-    /* Ô Name */
+ 
     td:nth-child(2) {
         justify-content: flex-start;
-        padding-bottom: 0.75rem;
+        overflow: hidden;
     }
-
-    td:nth-child(2)::before {
-        display: none;
+    td:nth-child(2)::before { display: none; }
+ 
+    .product-info {
+        width: 100%;
+        min-width: 0;
+        overflow: hidden;
     }
-
     .product-name {
-        font-size: 1rem;
+        font-size: 0.92rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 100%;
     }
-
-    td.content-center {
-        justify-content: flex-end;
+    .product-sku {
+        font-size: 0.72rem;
     }
-
-    td.content-center::before {
-        content: "Actions";
-    }
-
+ 
+    td:nth-child(3)::before { content: "Category"; }
+    td:nth-child(4)::before { content: "Price"; }
+    td:nth-child(5)::before { content: "Stock"; }
+    td:nth-child(6)::before { content: "Status"; }
+     td:nth-child(7) { justify-content: space-between; }
+    td:nth-child(7)::before { content: "Actions"; }
+ 
     .action-btns {
         justify-content: flex-end;
+        flex-shrink: 0;
     }
-
+    .action-btns form {
+        display: inline-flex;
+        width: auto;
+    }
+ 
     .pagination-wrapper {
-        padding: 1rem 0.5rem;
-    }
-
-    .pagination-container nav {
-        justify-content: center;
+        padding: 1rem 0;
     }
 }

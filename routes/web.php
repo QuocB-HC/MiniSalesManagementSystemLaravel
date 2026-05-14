@@ -103,6 +103,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/edit/{id}', [SellerProductController::class, 'edit'])->name('edit'); // seller.products.edit
             Route::put('/update/{id}', [SellerProductController::class, 'update'])->name('update'); // seller.products.update
             Route::patch('/update-status-to-hidden/{id}', [SellerProductController::class, 'updateStatusToHidden'])->name('updateStatusToHidden'); // seller.products.updateStatusToHidden
+            Route::patch('/update-status-to-visible/{id}', [SellerProductController::class, 'updateStatusToVisible'])->name('updateStatusToVisible'); // seller.products.updateStatusToVisible
             Route::get('/{shopId?}', [SellerProductController::class, 'index'])->name('index'); // seller.products.index
         });
     });

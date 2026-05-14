@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\Seller;
 
 use App\Enums\ProductStatus;
+use App\Enums\UserRole;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Product\StoreProductRequest;
 use App\Http\Requests\Product\UpdateProductRequest;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\ProductStatusLog;
 use App\Models\Shop;
 use Illuminate\Http\Request;
 
@@ -95,8 +97,45 @@ class ProductController extends Controller
             return abort(403, 'You are not allowed to update this product.');
         }
 
+        $oldStatus = $product->status;
         $product->update(['status' => ProductStatus::HIDDEN]);
 
+        ProductStatusLog::create([
+            'product_id' => $product->id,
+            'old_status' => $oldStatus,
+            'new_status' => ProductStatus::HIDDEN,
+            'changed_by' => auth()->id(),
+            'changed_by_role' => UserRole::SELLER,
+        ]);
+
         return redirect()->route('seller.products.index')->with('success', 'Product status updated to hidden successfully.');
+    }
+
+    public function updateStatusToVisible($id)
+    {
+        $product = Product::findOrFail($id);
+
+        if ($product->shop->user_id !== auth()->id()) {
+            return abort(403, 'You are not allowed to update this product.');
+        }
+
+        $lastLog = ProductStatusLog::where('product_id', $product->id)
+            ->latest()
+            ->first();
+
+        $oldStatus = $product->status;
+        $restoredStatus = $lastLog->old_status;
+
+        $product->update(['status' => $restoredStatus]);
+
+        ProductStatusLog::create([
+            'product_id' => $product->id,
+            'old_status' => $oldStatus,
+            'new_status' => $restoredStatus,
+            'changed_by' => auth()->id(),
+            'changed_by_role' => 'seller',
+        ]);
+
+        return redirect()->route('seller.products.index')->with('success', 'Product status restored successfully.');
     }
 }
